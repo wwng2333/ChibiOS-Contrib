@@ -1,5 +1,6 @@
 /*
     ChibiOS - Copyright (C) 2006..2016 Giovanni Di Sirio
+                        (C) 2017 Charlie Waters <cawiii@me.com>
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -34,7 +35,7 @@
 /**
  * @brief   Maximum endpoint address.
  */
-#define USB_MAX_ENDPOINTS                   4
+#define USB_MAX_ENDPOINTS                   7
 
 /**
  * @brief   Status stage handling method.

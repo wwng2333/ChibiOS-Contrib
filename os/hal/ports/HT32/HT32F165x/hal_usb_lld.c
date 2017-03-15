@@ -1,5 +1,6 @@
 /*
     ChibiOS - Copyright (C) 2006..2016 Giovanni Di Sirio
+                        (C) 2017 Charlie Waters <cawiii@me.com>
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -23,6 +24,8 @@
  */
 
 #include "hal.h"
+
+#include "ht32f165x.h"
 
 #if (HAL_USE_USB == TRUE) || defined(__DOXYGEN__)
 
@@ -51,28 +54,28 @@ USBDriver USBD1;
  *          same time for EP0.
  */
 static union {
-  /**
+    /**
    * @brief   IN EP0 state.
    */
-  USBInEndpointState in;
-  /**
+    USBInEndpointState in;
+    /**
    * @brief   OUT EP0 state.
    */
-  USBOutEndpointState out;
+    USBOutEndpointState out;
 } ep0_state;
 
 /**
  * @brief   EP0 initialization structure.
  */
 static const USBEndpointConfig ep0config = {
-  USB_EP_MODE_TYPE_CTRL,
-  _usb_ep0setup,
-  _usb_ep0in,
-  _usb_ep0out,
-  0x40,
-  0x40,
-  &ep0_state.in,
-  &ep0_state.out
+    USB_EP_MODE_TYPE_CTRL,
+    _usb_ep0setup,
+    _usb_ep0in,
+    _usb_ep0out,
+    0x40,
+    0x40,
+    &ep0_state.in,
+    &ep0_state.out
 };
 
 /*===========================================================================*/
@@ -99,8 +102,8 @@ static const USBEndpointConfig ep0config = {
 void usb_lld_init(void) {
 
 #if PLATFORM_USB_USE_USB1 == TRUE
-  /* Driver initialization.*/
-  usbObjectInit(&USBD1);
+    /* Driver initialization.*/
+    usbObjectInit(&USBD1);
 #endif
 }
 
@@ -113,15 +116,15 @@ void usb_lld_init(void) {
  */
 void usb_lld_start(USBDriver *usbp) {
 
-  if (usbp->state == USB_STOP) {
-    /* Enables the peripheral.*/
+    if (usbp->state == USB_STOP) {
+        /* Enables the peripheral.*/
 #if PLATFORM_USB_USE_USB1 == TRUE
-    if (&USBD1 == usbp) {
+        if (&USBD1 == usbp) {
 
-    }
+        }
 #endif
-  }
-  /* Configures the peripheral.*/
+    }
+    /* Configures the peripheral.*/
 
 }
 
@@ -134,16 +137,16 @@ void usb_lld_start(USBDriver *usbp) {
  */
 void usb_lld_stop(USBDriver *usbp) {
 
-  if (usbp->state == USB_READY) {
-    /* Resets the peripheral.*/
+    if (usbp->state == USB_READY) {
+        /* Resets the peripheral.*/
 
-    /* Disables the peripheral.*/
+        /* Disables the peripheral.*/
 #if PLATFORM_USB_USE_USB1 == TRUE
-    if (&USBD1 == usbp) {
+        if (&USBD1 == usbp) {
 
-    }
+        }
 #endif
-  }
+    }
 }
 
 /**
@@ -155,11 +158,11 @@ void usb_lld_stop(USBDriver *usbp) {
  */
 void usb_lld_reset(USBDriver *usbp) {
 
-  /* Post reset initialization.*/
+    /* Post reset initialization.*/
 
-  /* EP0 initialization.*/
-  usbp->epc[0] = &ep0config;
-  usb_lld_init_endpoint(usbp, 0);
+    /* EP0 initialization.*/
+    usbp->epc[0] = &ep0config;
+    usb_lld_init_endpoint(usbp, 0);
 }
 
 /**
