@@ -5,7 +5,7 @@ STARTUPSRC = $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC/crt1.c \
 STARTUPASM = $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S
 
 STARTUPINC = $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC \
-             $(CHIBIOS_CONTRIB)/os/common/startup/ARMCMx/devices/HT32F165x \
+             $(CHIBIOS_CONTRIB)/os/common/startup/ARMCMx/devices/HT32F1654 \
              $(CHIBIOS)/os/common/ext/CMSIS/include \
              $(CHIBIOS_CONTRIB)/os/common/ext/CMSIS/HT32F165x
 

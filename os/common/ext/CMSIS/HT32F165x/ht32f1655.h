@@ -26,8 +26,9 @@
 #include "ht32f165x.h"
 #include "ht32f1655_reg.h"
 
-#define FLASH_SIZE      0x20000 // 128k
-#define SRAM_SIZE       0x8000  // 32k
+#define HT32F1654
+#define HT32_FLASH_SIZE      0x20000 // 128k
+#define HT32_SRAM_SIZE       0x8000  // 32k
 
 /****************************************************************/
 /*                  Peripheral memory map                       */
