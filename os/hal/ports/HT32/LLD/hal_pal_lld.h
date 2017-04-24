@@ -42,13 +42,13 @@
 /**
  * @brief   Width, in bits, of an I/O port.
  */
-#define PAL_IOPORTS_WIDTH           16U
+#define PAL_IOPORTS_WIDTH           32U
 
 /**
  * @brief   Whole port mask.
  * @details This macro specifies all the valid bits into a port.
  */
-#define PAL_WHOLE_PORT              ((ioportmask_t)0xFFFFU)
+#define PAL_WHOLE_PORT              ((ioportmask_t)0xFFFFFFFFU)
 /** @} */
 
 /**
@@ -122,11 +122,25 @@ typedef uint32_t ioportid_t;
 /*===========================================================================*/
 
 /**
- * @brief   First I/O port identifier.
- * @details Low level drivers can define multiple ports, it is suggested to
- *          use this naming convention.
+ * @brief   GPIO port A identifier.
  */
-#define IOPORT1         0
+#define IOPORTA         GPIO_A
+/**
+ * @brief   GPIO port B identifier.
+ */
+#define IOPORTB         GPIO_B
+/**
+ * @brief   GPIO port C identifier.
+ */
+#define IOPORTC         GPIO_C
+/**
+ * @brief   GPIO port D identifier.
+ */
+#define IOPORTD         GPIO_D
+/**
+ * @brief   GPIO port E identifier.
+ */
+#define IOPORTE         GPIO_E
 
 /*===========================================================================*/
 /* Implementation, some of the following macros could be implemented as      */

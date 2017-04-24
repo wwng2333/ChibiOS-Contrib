@@ -26,11 +26,11 @@
 #include "hal.h"
 
 #ifdef HT32F1654
-#include "ht32f1654.h"
+//#include "ht32f1654.h"
 #endif
 
 #ifdef HT32F1655
-#include "ht32f1655.h"
+//#include "ht32f1655.h"
 #endif
 
 #if (HAL_USE_USB == TRUE) || defined(__DOXYGEN__)
@@ -46,7 +46,7 @@
 /**
  * @brief   USB1 driver identifier.
  */
-#if (HT32_USB_USE_USB1 == TRUE) || defined(__DOXYGEN__)
+#if (HT32_USB_USE_USB0 == TRUE) || defined(__DOXYGEN__)
 USBDriver USBD1;
 #endif
 
@@ -106,12 +106,10 @@ static const USBEndpointConfig ep0config = {
  * @notapi
  */
 void usb_lld_init(void) {
-#if HT32_USB_USE_USB1 == TRUE
+#if HT32_USB_USE_USB0 == TRUE
     /* Driver initialization.*/
     usbObjectInit(&USBD1);
 #endif // HT32_USB_USE_USB1
-
-    USB->
 
 }
 
@@ -125,7 +123,7 @@ void usb_lld_init(void) {
 void usb_lld_start(USBDriver *usbp) {
     if (usbp->state == USB_STOP) {
         /* Enables the peripheral.*/
-#if HT32_USB_USE_USB1 == TRUE
+#if HT32_USB_USE_USB0 == TRUE
         if (&USBD1 == usbp) {
 
         }
@@ -147,7 +145,7 @@ void usb_lld_stop(USBDriver *usbp) {
         /* Resets the peripheral.*/
 
         /* Disables the peripheral.*/
-#if HT32_USB_USE_USB1 == TRUE
+#if HT32_USB_USE_USB0 == TRUE
         if (&USBD1 == usbp) {
 
         }

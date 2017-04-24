@@ -62,11 +62,11 @@
  */
 /**
  * @brief   USB driver enable switch.
- * @details If set to @p TRUE the support for USB1 is included.
+ * @details If set to @p TRUE the support for USB0 is included.
  * @note    The default is @p FALSE.
  */
-#if !defined(HT32_USB_USE_USB1) || defined(__DOXYGEN__)
-#define HT32_USB_USE_USB1                  FALSE
+#if !defined(HT32_USB_USE_USB0) || defined(__DOXYGEN__)
+#define HT32_USB_USE_USB0                  FALSE
 #endif
 /** @} */
 
@@ -341,7 +341,7 @@ struct USBDriver {
 /* External declarations.                                                    */
 /*===========================================================================*/
 
-#if (HT32_USB_USE_USB1 == TRUE) && !defined(__DOXYGEN__)
+#if (HT32_USB_USE_USB0 == TRUE) && !defined(__DOXYGEN__)
 extern USBDriver USBD1;
 #endif
 

@@ -27,6 +27,8 @@
 #ifndef HAL_ST_LLD_H
 #define HAL_ST_LLD_H
 
+#include "mcuconf.h"
+
 /*===========================================================================*/
 /* Driver constants.                                                         */
 /*===========================================================================*/
@@ -34,6 +36,18 @@
 /*===========================================================================*/
 /* Driver pre-compile time settings.                                         */
 /*===========================================================================*/
+
+/**
+ * @name    Configuration options
+ * @{
+ */
+/**
+ * @brief   SysTick timer IRQ priority.
+ */
+#if !defined(HT32_ST_IRQ_PRIORITY) || defined(__DOXYGEN__)
+#define HT32_ST_IRQ_PRIORITY    8
+#endif
+/** @} */
 
 /*===========================================================================*/
 /* Derived constants and error checks.                                       */

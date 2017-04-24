@@ -23,6 +23,8 @@
 #ifndef _HT32F165x_H_
 #define _HT32F165x_H_
 
+#define HT32
+
 /*
  * ==============================================================
  * ---------- Interrupt Number Definition -----------------------
@@ -120,11 +122,12 @@ typedef enum IRQn
  * @brief HT32F165x Interrupt Number Definition, according to the selected device
  *        in @ref Library_configuration_section
  */
-#define __FPU_PRESENT             0
-#define __MPU_PRESENT             0
-#define __NVIC_PRIO_BITS          4
-#define __Vendor_SysTickConfig    0
+#define __FPU_PRESENT           0
+#define __MPU_PRESENT           0
+#define __NVIC_PRIO_BITS        4
+#define __Vendor_SysTickConfig  0
+#define __CM3_REV               0x0201
 
-#include "core_cm3.h"            /* Cortex-M3 processor and core peripherals */
+#include "core_cm3.h"           /* Cortex-M3 processor and core peripherals */
 
 #endif
