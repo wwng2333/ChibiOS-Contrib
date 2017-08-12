@@ -12,12 +12,16 @@ endif
 ifneq ($(findstring HAL_USE_SERIAL TRUE,$(HALCONF)),)
 PLATFORMSRC += ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/NUC122/hal_serial_lld.c
 endif
+ifneq ($(findstring HAL_USE_USB TRUE,$(HALCONF)),)
+PLATFORMSRC += ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/NUC122/hal_usb_lld.c
+endif
 else
 PLATFORMSRC  = ${CHIBIOS}/os/hal/ports/common/ARMCMx/nvic.c \
                ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/NUC122/hal_lld.c \
                ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/NUC122/hal_pal_lld.c \
                ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/NUC122/hal_serial_lld.c \
-               ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/NUC122/hal_st_lld.c
+               ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/NUC122/hal_st_lld.c \
+               ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/NUC122/hal_usb_lld.c
 endif
 
 # Required include directories
