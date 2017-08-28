@@ -1,6 +1,5 @@
 /*
-    ChibiOS - Copyright (C) 2014 Derek Mulcahy
-                        (C) 2016 flabbergast <s3+flabbergast@sdfeu.org>
+    ChibiOS - Copyright (C) 2006..2016 Giovanni Di Sirio
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -16,28 +15,32 @@
 */
 
 /**
- * @file    HT32F1655/HT32_registry.h
+ * @file    HT32F1655/ht32_registry.h
  * @brief   HT32F1655 capabilities registry.
  *
  * @addtogroup HAL
  * @{
  */
 
-#ifndef HT32_REGISTRY_H_
-#define HT32_REGISTRY_H_
+#ifndef HT32_REGISTRY_H
+#define HT32_REGISTRY_H
 
-#if !defined(HT32) || defined(__DOXYGEN__)
-#define HT32
+/**
+ * @brief   Sub-family identifier.
+ */
+#if !defined(HT32F1655) || defined(__DOXYGEN__)
+#define HT32F1655
 #endif
+
+/*===========================================================================*/
+/* Common features.                                                          */
+/*===========================================================================*/
 
 /*===========================================================================*/
 /* Platform capabilities.                                                    */
 /*===========================================================================*/
 
-/**
- * @name    HT32F1655 capabilities
- * @{
- */
+#if defined(HT32F1655) || defined(__DOXYGEN__)
 
 /**
  * @brief   Maximum system and core clock (f_SYS) frequency.
@@ -55,7 +58,7 @@
 #define HT32_FLASHCLK_MAX       25000000L
 
 /**
- * @name    K20x7 attributes
+ * @name    HT32F1655 attributes
  * @{
  */
 
@@ -83,6 +86,8 @@
  
 /** @} */
 
-#endif /* KINETIS_REGISTRY_H_ */
+#endif /* defined(HT32F1655) */
+
+#endif /* HT32_REGISTRY_H */
 
 /** @} */

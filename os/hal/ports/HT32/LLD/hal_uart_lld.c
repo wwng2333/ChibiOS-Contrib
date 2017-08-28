@@ -37,7 +37,7 @@
 /**
  * @brief   UART1 driver identifier.
  */
-#if (PLATFORM_UART_USE_UART1 == TRUE) || defined(__DOXYGEN__)
+#if (HT32_UART_USE_UART1 == TRUE) || defined(__DOXYGEN__)
 UARTDriver UARTD1;
 #endif
 
@@ -53,7 +53,7 @@ UARTDriver UARTD1;
 /* Driver interrupt handlers.                                                */
 /*===========================================================================*/
 
-#if HT32_UART_USE_UART1 || defined(__DOXYGEN__)
+#if (HT32_UART_USE_UART1 == TRUE) || defined(__DOXYGEN__)
 
 #if !defined(HT32_UART1_HANDLER)
     #error "HT32_UART1_HANDLER not defined"
@@ -85,7 +85,7 @@ OSAL_IRQ_HANDLER(HT32_UART1_HANDLER) {
  */
 void uart_lld_init(void) {
 
-#if PLATFORM_UART_USE_UART1 == TRUE
+#if HT32_UART_USE_UART1 == TRUE
     /* Driver initialization.*/
     uartObjectInit(&UARTD1);
 #endif
@@ -102,7 +102,7 @@ void uart_lld_start(UARTDriver *uartp) {
 
   if (uartp->state == UART_STOP) {
     /* Enables the peripheral.*/
-#if PLATFORM_UART_USE_UART1 == TRUE
+#if HT32_UART_USE_UART1 == TRUE
     if (&UARTD1 == uartp) {
 
     }
@@ -125,7 +125,7 @@ void uart_lld_stop(UARTDriver *uartp) {
     /* Resets the peripheral.*/
 
     /* Disables the peripheral.*/
-#if PLATFORM_UART_USE_UART1 == TRUE
+#if HT32_UART_USE_UART1 == TRUE
     if (&UARTD1 == uartp) {
 
     }

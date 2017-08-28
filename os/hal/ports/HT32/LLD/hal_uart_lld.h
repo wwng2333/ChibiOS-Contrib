@@ -44,8 +44,8 @@
  * @details If set to @p TRUE the support for UART1 is included.
  * @note    The default is @p FALSE.
  */
-#if !defined(PLATFORM_UART_USE_UART1) || defined(__DOXYGEN__)
-#define PLATFORM_UART_USE_UART1             FALSE
+#if !defined(HT32_UART_USE_UART1) || defined(__DOXYGEN__)
+#define HT32_UART_USE_UART1         FALSE
 #endif
 /** @} */
 
@@ -182,7 +182,7 @@ struct UARTDriver {
 /* External declarations.                                                    */
 /*===========================================================================*/
 
-#if (PLATFORM_UART_USE_UART1 == TRUE) && !defined(__DOXYGEN__)
+#if (HT32_UART_USE_UART1 == TRUE) && !defined(__DOXYGEN__)
 extern UARTDriver UARTD1;
 #endif
 

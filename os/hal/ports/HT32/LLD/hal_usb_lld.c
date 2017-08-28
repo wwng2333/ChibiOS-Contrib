@@ -84,23 +84,151 @@ static const USBEndpointConfig ep0config = {
 /* Driver local functions.                                                   */
 /*===========================================================================*/
 
+static u32 usb_get_int_flags(void){
+    return USB->USBIER.word & USB->USBISR.word;
+}
+
+static void usb_clear_int_flags(u32 flags){
+    // flags are cleared by writing 1
+    // except ESOFIF, which is written normally
+    USB->USBISR.word = (USB->USBISR.word & USBISR_ESOFIF) | flags;
+}
+
+static u32 usb_get_ep_int_flags(int ep){
+    return USB->USBEP[ep].IER.word & USB->USBEP[ep].ISR.word;
+}
+
+static void usb_clear_ep_int_flags(int ep, u32 flags){
+    // flags are cleared by writing 1
+    USB->USBEP[ep].ISR.word = flags;
+}
+
 /*===========================================================================*/
 /* Driver interrupt handlers and threads.                                    */
 /*===========================================================================*/
 
-#if HT32_USB_USE_USB0 || defined(__DOXYGEN__) || 1
+#if (HT32_USB_USE_USB0 == TRUE) || defined(__DOXYGEN__) || 1
 
 /**
  * @brief USB interrupt handler.
  * @isr
  */
-OSAL_IRQ_HANDLER(HT32_USB_IRQ_VECTOR){
-    USBDriver *usbp = &USBD1;
-    u32 flag = (USB->USBIER.word & USB->USBISR.word);
 
+OSAL_IRQ_HANDLER(HT32_USB_IRQ_VECTOR) {
+    USBDriver *usbp = &USBD1;
     OSAL_IRQ_PROLOGUE();
 
+    u32 isr = usb_get_int_flags();
 
+    // Start of Frame Interrupt
+    if(isr & USBISR_SOFIF){
+        usb_clear_int_flags(USBISR_SOFIF);
+    }
+
+    // Suspend Interrupt
+    if(isr & USBISR_SUSPIF){
+        usb_clear_int_flags(USBISR_SUSPIF);
+    }
+
+    // Reset Interrupt
+    if(isr & USBISR_URSTIF){
+        usb_clear_int_flags(USBISR_URSTIF);
+        usb_lld_reset(usbp);
+    }
+
+    // Resume Interrupt
+    if(isr & USBISR_RSMIF){
+
+    }
+
+    // EP0 Interrupt
+    if(isr & USBISR_EP0IF){
+        u32 episr = usb_get_ep_int_flags(EP_0);
+        usb_clear_int_flags(USBISR_EP0IF);
+
+        // SETUP Token Received
+        if(episr & USBEPnISR_STRXIF){
+            usb_clear_ep_int_flags(EP_0, USBEPnISR_STRXIF);
+
+        }
+
+        // SETUP Data Received
+        if(episr & USBEPnISR_SDRXIF){
+            usb_clear_ep_int_flags(EP_0, USBEPnISR_SDRXIF);
+//            usb_lld_read_setup(usbp, 0, );
+        }
+
+        // OUT Token Received
+        if(episr & USBEPnISR_OTRXIF){
+            usb_clear_ep_int_flags(EP_0, USBEPnISR_OTRXIF);
+
+        }
+
+        // OUT Data Received
+        if(episr & USBEPnISR_ODRXIF){
+            usb_clear_ep_int_flags(EP_0, USBEPnISR_ODRXIF);
+
+        }
+
+        // IN Token Received
+        if(episr & USBEPnISR_ITRXIF){
+            usb_clear_ep_int_flags(EP_0, USBEPnISR_ITRXIF);
+
+        }
+
+        // IN Data Transmitted
+        if(episr & USBEPnISR_IDTXIF){
+            usb_clear_ep_int_flags(EP_0, USBEPnISR_IDTXIF);
+
+        }
+
+        // STALL Transmitted
+        if(episr & USBEPnISR_STLIF){
+            usb_clear_ep_int_flags(EP_0, USBEPnISR_STLIF);
+
+        }
+    }
+
+    // EP 1-7 Interrupt
+    u32 mask = USBISR_EP1IF;
+    for(int i = 1; i < 8; ++i){
+        // EPn Interrupt
+        if(isr & mask){
+            u32 episr = usb_get_ep_int_flags(i);
+            usb_clear_int_flags(mask);
+
+            // OUT Token Received
+            if(episr & USBEPnISR_OTRXIF){
+                usb_clear_ep_int_flags(i, USBEPnISR_OTRXIF);
+
+            }
+
+            // OUT Data Received
+            if(episr & USBEPnISR_ODRXIF){
+                usb_clear_ep_int_flags(i, USBEPnISR_ODRXIF);
+
+            }
+
+            // IN Token Received
+            if(episr & USBEPnISR_ITRXIF){
+                usb_clear_ep_int_flags(i, USBEPnISR_ITRXIF);
+
+            }
+
+            // IN Data Transmitted
+            if(episr & USBEPnISR_IDTXIF){
+                usb_clear_ep_int_flags(i, USBEPnISR_IDTXIF);
+
+            }
+
+            // STALL Transmitted
+            if(episr & USBEPnISR_STLIF){
+                usb_clear_ep_int_flags(i, USBEPnISR_STLIF);
+
+            }
+        }
+        mask = mask << 1;
+    }
 
     OSAL_IRQ_EPILOGUE();
 }
@@ -121,6 +249,19 @@ void usb_lld_init(void){
     /* Driver initialization.*/
     usbObjectInit(&USBD1);
 #endif // HT32_USB_USE_USB1
+
+    // enable USB clock
+    CKCU->AHBCCR.USBEN = 1;
+    // set usb prescaler
+    CKCU->GCFGR.USBPRE = 2;
+
+    // enable usb interrupts
+    USB->USBIER.word = USBIER_UGIE |
+                       USBIER_EP0IE | USBIER_EP1IE | USBIER_EP2IE |
+                       USBIER_URSTIE | USBIER_RSMIE | USBIER_SUSPIE;
+
+    // enable usb IRQ
+    nvicEnableVector(USB_IRQn, 1);
 }
 
 /**
@@ -171,6 +312,13 @@ void usb_lld_stop(USBDriver *usbp) {
  * @notapi
  */
 void usb_lld_reset(USBDriver *usbp) {
+    // USB Reset
+    RSTCU->AHBPRSTR.USBRST = 1;
+    // Clear CSR, except for DP pull up
+    USB->USBCSR.word &= USBCSR_DPPUEN;
+
+    usbp->address = 0;
+    usb_lld_set_address(usbp);
 
     /* Post reset initialization.*/
 
@@ -187,9 +335,8 @@ void usb_lld_reset(USBDriver *usbp) {
  * @notapi
  */
 void usb_lld_set_address(USBDriver *usbp) {
-
-  (void)usbp;
-
+    USB->USBCSR.ADRSET = 1;
+    USB->USBDEVA.DEVA = usbp->address & 0x7f;
 }
 
 /**
@@ -201,10 +348,29 @@ void usb_lld_set_address(USBDriver *usbp) {
  * @notapi
  */
 void usb_lld_init_endpoint(USBDriver *usbp, usbep_t ep) {
+    if(ep > USB_MAX_ENDPOINTS)
+        return;
 
-  (void)usbp;
-  (void)ep;
+    const USBEndpointConfig *epcp = usbp->epc[ep];
 
+    switch(epcp->ep_mode & USB_EP_MODE_TYPE){
+        case USB_EP_MODE_TYPE_CTRL:
+            break;
+        case USB_EP_MODE_TYPE_ISOC:
+            break;
+        case USB_EP_MODE_TYPE_BULK:
+            break;
+        case USB_EP_MODE_TYPE_INTR:
+            break;
+        default:
+            return;
+    }
+
+    if(ep){
+        USB->USBEP[ep].CFGR.word |= USBEPnCFGR_EPEN;
+    }
+
+    (void)usbp;
 }
 
 /**
@@ -215,9 +381,10 @@ void usb_lld_init_endpoint(USBDriver *usbp, usbep_t ep) {
  * @notapi
  */
 void usb_lld_disable_endpoints(USBDriver *usbp) {
+    (void)usbp;
 
-  (void)usbp;
-
+    for(int i = 1; i < USB_MAX_ENDPOINTS; ++i)
+        USB->USBEP[i].CFGR.word &= ~USBEPnCFGR_EPEN;
 }
 
 /**
@@ -232,12 +399,14 @@ void usb_lld_disable_endpoints(USBDriver *usbp) {
  *
  * @notapi
  */
-usbepstatus_t usb_lld_get_status_out(USBDriver *usbp, usbep_t ep) {
+usbepstatus_t usb_lld_get_status_out(USBDriver *usbp, usbep_t ep)
+{
+    (void)usbp;
+    (void)ep;
 
-  (void)usbp;
-  (void)ep;
+//    usbp->epc[ep]->
 
-  return EP_STATUS_DISABLED;
+    return EP_STATUS_DISABLED;
 }
 
 /**
