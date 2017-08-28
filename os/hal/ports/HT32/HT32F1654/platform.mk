@@ -5,6 +5,7 @@ PLATFORMSRC = $(CHIBIOS)/os/hal/ports/common/ARMCMx/nvic.c \
               $(CHIBIOS_CONTRIB)/os/hal/ports/HT32/LLD/hal_pal_lld.c \
               $(CHIBIOS_CONTRIB)/os/hal/ports/HT32/LLD/hal_spi_lld.c \
               $(CHIBIOS_CONTRIB)/os/hal/ports/HT32/LLD/hal_st_lld.c \
+              $(CHIBIOS_CONTRIB)/os/hal/ports/HT32/LLD/hal_uart_lld.c \
               $(CHIBIOS_CONTRIB)/os/hal/ports/HT32/LLD/hal_usb_lld.c
 
 # Required include directories
