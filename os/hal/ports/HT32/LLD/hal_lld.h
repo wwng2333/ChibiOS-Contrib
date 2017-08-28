@@ -25,6 +25,8 @@
 #ifndef _HAL_LLD_H_
 #define _HAL_LLD_H_
 
+#include "ht32_registry.h"
+
 /*===========================================================================*/
 /* Driver constants.                                                         */
 /*===========================================================================*/
@@ -33,7 +35,7 @@
  * @name    Platform identification macros
  * @{
  */
-#define PLATFORM_NAME           "templates"
+#define PLATFORM_NAME           "HT32"
 /** @} */
 
 /*===========================================================================*/

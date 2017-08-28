@@ -15,7 +15,7 @@ typedef unsigned long u32;
 #define STRUCT_REGISTER_END __attribute__((packed)) __attribute__ ((aligned(4))); u32 word; }
 
 // Clocks
-// ////////////////////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 #define TYPE_AHB        (1 << 28)
 #define TYPE_APB0       (2 << 28)
 #define TYPE_APB1       (3 << 28)
@@ -57,7 +57,7 @@ typedef unsigned long u32;
 #define CLOCK_ADC       TYPE_APB1 | (1 << 24)
 
 // Power Control Unit
-// ////////////////////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 #define PWRCU_BAKSR     PWRCU_BASE + 0x100  // Backup Domain Status
 #define PWRCU_BAKCR     PWRCU_BASE + 0x104  // Backup Domain Control
 #define PWRCU_BAKTEST   PWRCU_BASE + 0x108  // Backup Domain Test
@@ -178,10 +178,10 @@ STRUCT_SIZE_ASSERT(PWRCU_map, 0x228);
 //STRUCT_REG_CHECK(PWRCU, BAKREG9);
 
 // Real Time Clock
-// ////////////////////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 
 // Flash Memory Controller
-// ////////////////////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 #define FMC_TADR        FMC_BASE + 0x0      // Flash Target Address
 #define FMC_WRDR        FMC_BASE + 0x4      // Flash Write Data
 #define FMC_OCMR        FMC_BASE + 0xC      // Flash Operation Command
@@ -349,23 +349,23 @@ STRUCT_SIZE_ASSERT(FMC_map, 0x310);
 //STRUCT_REG_CHECK(FMC, SBVT3);
 
 // General Purpose Timers
-// ////////////////////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 
 // Basic Function Timers
-// ////////////////////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 
 // Motor Control Timers
-// ////////////////////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 
 // Operational Amplifier
 // Comparator
-// ////////////////////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 
 // External Interrupt/Event Controller
-// ////////////////////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 
 // Watchdog Timer
-// ////////////////////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 #define WDT_WDTCR       WDT_BASE + 0x0      // Watchdog Timer Control
 #define WDT_WDTMR0      WDT_BASE + 0x4      // Watchdog Timer Mode 0
 #define WDT_WDTMR1      WDT_BASE + 0x8      // Watchdog Timer Mode 1
@@ -376,34 +376,34 @@ STRUCT_SIZE_ASSERT(FMC_map, 0x310);
 
 // Clock Control Unit
 // Reset Control Unit
-// ////////////////////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 
 // CRC
-// ////////////////////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 
 // Peripheral Direct Memory Access
-// ////////////////////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 
 // USART
-// ////////////////////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 
 // UART
-// ////////////////////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 
 // I2C
-// ////////////////////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 
 // Inter-IC Sound
-// ////////////////////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 
 // Smart Card Interface
-// ////////////////////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 
 // Extend Bus Interface
-// ////////////////////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 
 // USB
-// ////////////////////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 #define EP_0            0
 #define EP_1            1
 #define EP_2            2
@@ -426,149 +426,101 @@ STRUCT_SIZE_ASSERT(FMC_map, 0x310);
 #define USB_USBEPnTCR(n)    EPn_BASE(n) + 0x20  // USB Endpoint n Transfer Count
 #define USB_USBEPnCFGR(n)   EPn_BASE(n) + 0x24  // USB Endpoint n Configuration
 
-#define USB_USBEP0CSR   USB_USBEPnCSR(0)
-#define USB_USBEP0IER   USB_USBEPnIER(0)
-#define USB_USBEP0ISR   USB_USBEPnISR(0)
-#define USB_USBEP0TCR   USB_USBEPnTCR(0)
-#define USB_USBEP0CFGR  USB_USBEPnCFGR(0)
-
-#define USB_USBEP1CSR   USB_USBEPnCSR(1)
-#define USB_USBEP1IER   USB_USBEPnIER(1)
-#define USB_USBEP1ISR   USB_USBEPnISR(1)
-#define USB_USBEP1TCR   USB_USBEPnTCR(1)
-#define USB_USBEP1CFGR  USB_USBEPnCFGR(1)
-
-#define USB_USBEP2CSR   USB_USBEPnCSR(2)
-#define USB_USBEP2IER   USB_USBEPnIER(2)
-#define USB_USBEP2ISR   USB_USBEPnISR(2)
-#define USB_USBEP2TCR   USB_USBEPnTCR(2)
-#define USB_USBEP2CFGR  USB_USBEPnCFGR(2)
-
-#define USB_USBEP3CSR   USB_USBEPnCSR(3)
-#define USB_USBEP3IER   USB_USBEPnIER(3)
-#define USB_USBEP3ISR   USB_USBEPnISR(3)
-#define USB_USBEP3TCR   USB_USBEPnTCR(3)
-#define USB_USBEP3CFGR  USB_USBEPnCFGR(3)
-
-#define USB_USBEP4CSR   USB_USBEPnCSR(4)
-#define USB_USBEP4IER   USB_USBEPnIER(4)
-#define USB_USBEP4ISR   USB_USBEPnISR(4)
-#define USB_USBEP4TCR   USB_USBEPnTCR(4)
-#define USB_USBEP4CFGR  USB_USBEPnCFGR(4)
-
-#define USB_USBEP5CSR   USB_USBEPnCSR(5)
-#define USB_USBEP5IER   USB_USBEPnIER(5)
-#define USB_USBEP5ISR   USB_USBEPnISR(5)
-#define USB_USBEP5TCR   USB_USBEPnTCR(5)
-#define USB_USBEP5CFGR  USB_USBEPnCFGR(5)
-
-#define USB_USBEP6CSR   USB_USBEPnCSR(6)
-#define USB_USBEP6IER   USB_USBEPnIER(6)
-#define USB_USBEP6ISR   USB_USBEPnISR(6)
-#define USB_USBEP6TCR   USB_USBEPnTCR(6)
-#define USB_USBEP6CFGR  USB_USBEPnCFGR(6)
-
-#define USB_USBEP7CSR   USB_USBEPnCSR(7)
-#define USB_USBEP7IER   USB_USBEPnIER(7)
-#define USB_USBEP7ISR   USB_USBEPnISR(7)
-#define USB_USBEP7TCR   USB_USBEPnTCR(7)
-#define USB_USBEP7CFGR  USB_USBEPnCFGR(7)
-
 // USBCSR
-#define USBCSR_FRES     ((u32)0x002)        // Force USB Reset Control
-#define USBCSR_PDWN     ((u32)0x004)        // Power Down Mode Control
-#define USBCSR_LPMODE   ((u32)0x008)        // Low-Power Mode Control
-#define USBCSR_GENRSM   ((u32)0x020)        // Resume Request Generation Control
-#define USBCSR_RXDP     ((u32)0x040)        // Received DP Line Status
-#define USBCSR_RXDM     ((u32)0x080)        // Received DM Line Status
-#define USBCSR_ADRSET   ((u32)0x100)        // Device Address Setting Control
-#define USBCSR_SRAMRSTC ((u32)0x200)        // USB SRAM Reset Condition
-#define USBCSR_DPPUEN   ((u32)0x400)        // DP Pull Up Enable
-#define USBCSR_DPWKEN   ((u32)0x800)        // DP Wake Up Enable
+#define USBCSR_FRES         ((u32)0x002)        // Force USB Reset Control
+#define USBCSR_PDWN         ((u32)0x004)        // Power Down Mode Control
+#define USBCSR_LPMODE       ((u32)0x008)        // Low-Power Mode Control
+#define USBCSR_GENRSM       ((u32)0x020)        // Resume Request Generation Control
+#define USBCSR_RXDP         ((u32)0x040)        // Received DP Line Status
+#define USBCSR_RXDM         ((u32)0x080)        // Received DM Line Status
+#define USBCSR_ADRSET       ((u32)0x100)        // Device Address Setting Control
+#define USBCSR_SRAMRSTC     ((u32)0x200)        // USB SRAM Reset Condition
+#define USBCSR_DPPUEN       ((u32)0x400)        // DP Pull Up Enable
+#define USBCSR_DPWKEN       ((u32)0x800)        // DP Wake Up Enable
 
 // USBIER
-#define USBIER_UGIE     ((u32)0x0001)       // USB global Interrupt Enable
-#define USBIER_SOFIE    ((u32)0x0002)       // Start Of Frame Interrupt Enable
-#define USBIER_URSTIE   ((u32)0x0004)       // USB Reset Interrupt Enable
-#define USBIER_RSMIE    ((u32)0x0008)       // Resume Interrupt Enable
-#define USBIER_SUSPIE   ((u32)0x0010)       // Suspend Interrupt Enable
-#define USBIER_ESOFIE   ((u32)0x0020)       // Expected Start Of Frame Enable
-#define USBIER_EP0IE    ((u32)0x0100)       // Endpoint 0 Interrupt Enable
-#define USBIER_EP1IE    ((u32)0x0200)       // Endpoint 1 Interrupt Enable
-#define USBIER_EP2IE    ((u32)0x0400)       // Endpoint 2 Interrupt Enable
-#define USBIER_EP3IE    ((u32)0x0800)       // Endpoint 3 Interrupt Enable
-#define USBIER_EP4IE    ((u32)0x1000)       // Endpoint 4 Interrupt Enable
-#define USBIER_EP5IE    ((u32)0x2000)       // Endpoint 5 Interrupt Enable
-#define USBIER_EP6IE    ((u32)0x4000)       // Endpoint 6 Interrupt Enable
-#define USBIER_EP7IE    ((u32)0x8000)       // Endpoint 7 Interrupt Enable
+#define USBIER_UGIE         ((u32)0x0001)       // USB global Interrupt Enable
+#define USBIER_SOFIE        ((u32)0x0002)       // Start Of Frame Interrupt Enable
+#define USBIER_URSTIE       ((u32)0x0004)       // USB Reset Interrupt Enable
+#define USBIER_RSMIE        ((u32)0x0008)       // Resume Interrupt Enable
+#define USBIER_SUSPIE       ((u32)0x0010)       // Suspend Interrupt Enable
+#define USBIER_ESOFIE       ((u32)0x0020)       // Expected Start Of Frame Enable
+#define USBIER_EP0IE        ((u32)0x0100)       // Endpoint 0 Interrupt Enable
+#define USBIER_EP1IE        ((u32)0x0200)       // Endpoint 1 Interrupt Enable
+#define USBIER_EP2IE        ((u32)0x0400)       // Endpoint 2 Interrupt Enable
+#define USBIER_EP3IE        ((u32)0x0800)       // Endpoint 3 Interrupt Enable
+#define USBIER_EP4IE        ((u32)0x1000)       // Endpoint 4 Interrupt Enable
+#define USBIER_EP5IE        ((u32)0x2000)       // Endpoint 5 Interrupt Enable
+#define USBIER_EP6IE        ((u32)0x4000)       // Endpoint 6 Interrupt Enable
+#define USBIER_EP7IE        ((u32)0x8000)       // Endpoint 7 Interrupt Enable
 
 // USBISR
-#define USBISR_SOFIF    ((u32)0x0002)       // Start Of Frame Interrupt Flag
-#define USBISR_URSTIF   ((u32)0x0004)       // USB Reset Interrupt Flag
-#define USBISR_RSMIF    ((u32)0x0008)       // Resume Interrupt Flag
-#define USBISR_SUSPIF   ((u32)0x0010)       // Suspend Interrupt Flag
-#define USBISR_ESOFIF   ((u32)0x0020)       // Expected Start Of Frame Interrupt
-#define USBISR_EP0IF    ((u32)0x0100)       // Endpoint 0 Interrupt Flag
-#define USBISR_EP1IF    ((u32)0x0200)       // Endpoint 1 Interrupt Flag
-#define USBISR_EP2IF    ((u32)0x0400)       // Endpoint 2 Interrupt Flag
-#define USBISR_EP3IF    ((u32)0x0800)       // Endpoint 3 Interrupt Flag
-#define USBISR_EP4IF    ((u32)0x1000)       // Endpoint 4 Interrupt Flag
-#define USBISR_EP5IF    ((u32)0x2000)       // Endpoint 5 Interrupt Flag
-#define USBISR_EP6IF    ((u32)0x4000)       // Endpoint 6 Interrupt Flag
-#define USBISR_EP7IF    ((u32)0x8000)       // Endpoint 7 Interrupt Flag
-#define USBISR_EPnIF    ((u32)0xFF00)       // Endpoint Interrupt Mask
+#define USBISR_SOFIF        ((u32)0x0002)       // Start Of Frame Interrupt Flag
+#define USBISR_URSTIF       ((u32)0x0004)       // USB Reset Interrupt Flag
+#define USBISR_RSMIF        ((u32)0x0008)       // Resume Interrupt Flag
+#define USBISR_SUSPIF       ((u32)0x0010)       // Suspend Interrupt Flag
+#define USBISR_ESOFIF       ((u32)0x0020)       // Expected Start Of Frame Interrupt
+#define USBISR_EP0IF        ((u32)1 << 8)       // Endpoint 0 Interrupt Flag
+#define USBISR_EP1IF        ((u32)1 << 9)       // Endpoint 1 Interrupt Flag
+#define USBISR_EP2IF        ((u32)1 << 10)      // Endpoint 2 Interrupt Flag
+#define USBISR_EP3IF        ((u32)1 << 11)      // Endpoint 3 Interrupt Flag
+#define USBISR_EP4IF        ((u32)1 << 12)      // Endpoint 4 Interrupt Flag
+#define USBISR_EP5IF        ((u32)1 << 13)      // Endpoint 5 Interrupt Flag
+#define USBISR_EP6IF        ((u32)1 << 14)      // Endpoint 6 Interrupt Flag
+#define USBISR_EP7IF        ((u32)1 << 15)      // Endpoint 7 Interrupt Flag
+#define USBISR_EPnIF        ((u32)0xFF00)       // Endpoint Interrupt Mask
 
 // USBCFGR
-#define USBCFGR_FRNUM   ((u32)0x3FF)        // Frame Number
-#define USBCFGR_SOFLCK  ((u32)1 << 16)      // Start-of-Frame Lock Flag
-#define USBCFGR_LSOF    ((u32)0x3 << 17)    // Lost Start-of-Frame Number
+#define USBCFGR_FRNUM       ((u32)0x3FF)        // Frame Number
+#define USBCFGR_SOFLCK      ((u32)1 << 16)      // Start-of-Frame Lock Flag
+#define USBCFGR_LSOF        ((u32)0x3 << 17)    // Lost Start-of-Frame Number
 
 // USBEPnCSR
-#define EPnCSR_DTGTX    ((u32)0x01)         // Data Toggle Status, for IN transfer
-#define EPnCSR_NAKTX    ((u32)0x02)         // NAK Status, for IN transfer
-#define EPnCSR_STLTX    ((u32)0x04)         // STALL Status, for IN transfer
-#define EPnCSR_DTGRX    ((u32)0x08)         // Data Toggle Status, for OUT transfer
-#define EPnCSR_NAKRX    ((u32)0x10)         // NAK Status, for OUT transfer
-#define EPnCSR_STLRX    ((u32)0x20)         // STALL Status, for OUT transfer
+#define USBEPnCSR_DTGTX     ((u32)0x01)         // Data Toggle Status, for IN transfer
+#define USBEPnCSR_NAKTX     ((u32)0x02)         // NAK Status, for IN transfer
+#define USBEPnCSR_STLTX     ((u32)0x04)         // STALL Status, for IN transfer
+#define USBEPnCSR_DTGRX     ((u32)0x08)         // Data Toggle Status, for OUT transfer
+#define USBEPnCSR_NAKRX     ((u32)0x10)         // NAK Status, for OUT transfer
+#define USBEPnCSR_STLRX     ((u32)0x20)         // STALL Status, for OUT transfer
 
 // USBEPnIER
-#define EPnIER_OTRXIE   ((u32)0x001)        // OUT Token Received Interrupt Enable
-#define EPnIER_ODRXIE   ((u32)0x002)        // OUT Data Received Interrupt Enable
-#define EPnIER_ODOVIE   ((u32)0x004)        // OUT Data Buffer Overrun Interrupt Enable
-#define EPnIER_ITRXIE   ((u32)0x008)        // IN Token Received Interrupt Enable
-#define EPnIER_IDTXIE   ((u32)0x010)        // IN Data Transmitted Interrupt Enable
-#define EPnIER_NAKIE    ((u32)0x020)        // NAK Transmitted Interrupt Enable
-#define EPnIER_STLIE    ((u32)0x040)        // STALL Transmitted Interrupt Enable
-#define EPnIER_UERIE    ((u32)0x080)        // USB Error Interrupt Enable
-#define EPnIER_STRXIE   ((u32)0x100)        // SETUP Token Received Interrupt Enable
-#define EPnIER_SDRXIE   ((u32)0x200)        // SETUP Data Received Interrupt Enable
-#define EPnIER_SDERIE   ((u32)0x400)        // SETUP Data Error Interrupt Enable
-#define EPnIER_ZLRXIE   ((u32)0x800)        // Zero Length Data Received Interrupt Enable
+#define USBEPnIER_OTRXIE    ((u32)0x001)        // OUT Token Received Interrupt Enable
+#define USBEPnIER_ODRXIE    ((u32)0x002)        // OUT Data Received Interrupt Enable
+#define USBEPnIER_ODOVIE    ((u32)0x004)        // OUT Data Buffer Overrun Interrupt Enable
+#define USBEPnIER_ITRXIE    ((u32)0x008)        // IN Token Received Interrupt Enable
+#define USBEPnIER_IDTXIE    ((u32)0x010)        // IN Data Transmitted Interrupt Enable
+#define USBEPnIER_NAKIE     ((u32)0x020)        // NAK Transmitted Interrupt Enable
+#define USBEPnIER_STLIE     ((u32)0x040)        // STALL Transmitted Interrupt Enable
+#define USBEPnIER_UERIE     ((u32)0x080)        // USB Error Interrupt Enable
+#define USBEPnIER_STRXIE    ((u32)0x100)        // SETUP Token Received Interrupt Enable
+#define USBEPnIER_SDRXIE    ((u32)0x200)        // SETUP Data Received Interrupt Enable
+#define USBEPnIER_SDERIE    ((u32)0x400)        // SETUP Data Error Interrupt Enable
+#define USBEPnIER_ZLRXIE    ((u32)0x800)        // Zero Length Data Received Interrupt Enable
 
 // USBEPnISR
-#define EPnISR_OTRXIF   ((u32)0x001)        // OUT Token Received Interrupt Flag
-#define EPnISR_ODRXIF   ((u32)0x002)        // OUT Data Received Interrupt Flag
-#define EPnISR_ODOVIF   ((u32)0x004)        // OUT Data Buffer Overrun Interrupt Flag
-#define EPnISR_ITRXIF   ((u32)0x008)        // IN Token Received Interrupt Flag
-#define EPnISR_IDTXIF   ((u32)0x010)        // IN Data Transmitted Interrupt Flag
-#define EPnISR_NAKIF    ((u32)0x020)        // NAK Transmitted Interrupt Flag
-#define EPnISR_STLIF    ((u32)0x040)        // STALL Transmitted Interrupt Flag
-#define EPnISR_UERIF    ((u32)0x080)        // USB Error Interrupt Flag
-#define EPnISR_STRXIF   ((u32)0x100)        // SETUP Token Received Interrupt Flag
-#define EPnISR_SDRXIF   ((u32)0x200)        // SETUP Data Received Interrupt Flag
-#define EPnISR_SDERIF   ((u32)0x400)        // SETUP Data Error Interrupt Flag
-#define EPnISR_ZLRXIF   ((u32)0x800)        // Zero Length Data Received Interrupt Flag
+#define USBEPnISR_OTRXIF    ((u32)0x001)        // OUT Token Received Interrupt Flag
+#define USBEPnISR_ODRXIF    ((u32)0x002)        // OUT Data Received Interrupt Flag
+#define USBEPnISR_ODOVIF    ((u32)0x004)        // OUT Data Buffer Overrun Interrupt Flag
+#define USBEPnISR_ITRXIF    ((u32)0x008)        // IN Token Received Interrupt Flag
+#define USBEPnISR_IDTXIF    ((u32)0x010)        // IN Data Transmitted Interrupt Flag
+#define USBEPnISR_NAKIF     ((u32)0x020)        // NAK Transmitted Interrupt Flag
+#define USBEPnISR_STLIF     ((u32)0x040)        // STALL Transmitted Interrupt Flag
+#define USBEPnISR_UERIF     ((u32)0x080)        // USB Error Interrupt Flag
+#define USBEPnISR_STRXIF    ((u32)0x100)        // SETUP Token Received Interrupt Flag
+#define USBEPnISR_SDRXIF    ((u32)0x200)        // SETUP Data Received Interrupt Flag
+#define USBEPnISR_SDERIF    ((u32)0x400)        // SETUP Data Error Interrupt Flag
+#define USBEPnISR_ZLRXIF    ((u32)0x800)        // Zero Length Data Received Interrupt Flag
 
 // USBEPnTCR
-#define EPnTCR_TCNT     ((u32)0x1FF)        // Transfer Byte Count
+#define USBEPnTCR_TCNT      ((u32)0x1FF)        // Transfer Byte Count
 
 // USBEPnCFGR
-#define EPnCFGR_EPEN    ((u32)(1 << 31))    // Endpoint Enable
-#define EPnCFGR_EPTYPE  ((u32)(1 << 29))    // Transfer Type
-#define EPnCFGR_EPDIR   ((u32)(1 << 28))    // Transfer Direction
-#define EPnCFGR_EPADR   ((u32)(0xF << 24))  // Endpoint Address
-#define EPnCFGR_EPLEN   ((u32)(0x7F << 10)) // Buffer Length
-#define EPnCFGR_EPBUFA  ((u32)(0x3FF))      // Endpoint Buffer Address
+#define USBEPnCFGR_EPEN     ((u32)1 << 31)      // Endpoint Enable
+#define USBEPnCFGR_EPTYPE   ((u32)1 << 29)      // Transfer Type
+#define USBEPnCFGR_EPDIR    ((u32)1 << 28)      // Transfer Direction
+#define USBEPnCFGR_EPADR    ((u32)0xF << 24)    // Endpoint Address
+#define USBEPnCFGR_EPLEN    ((u32)0x7F << 10)   // Buffer Length
+#define USBEPnCFGR_EPBUFA   ((u32)0x3FF)        // Endpoint Buffer Address
 
 // USBCSR
 STRUCT_REGISTER_START {
@@ -715,34 +667,6 @@ STRUCT_REGISTER_START {
 } STRUCT_REGISTER_END USBEP0CFGR_reg;
 STRUCT_SIZE_ASSERT(USBEP0CFGR_reg, 4);
 
-// USBEPnIER
-STRUCT_REGISTER_START {
-    u32 OTRXIE      : 1;    //!< OUT Token Received Interrupt Enable
-    u32 ODRXIE      : 1;    //!< OUT Data Received Interrupt Enable
-    u32 ODOVIE      : 1;    //!< OUT Data Buffer Overrun Interrupt Enable
-    u32 ITRXIE      : 1;    //!< IN Token Received Interrupt Enable
-    u32 IDTXIE      : 1;    //!< IN Data Transmitted Interrupt Enable
-    u32 NAKIE       : 1;    //!< NAK Transmitted Interrupt Enable
-    u32 STLIE       : 1;    //!< STALL Transmitted Interrupt Enable
-    u32 UERIE       : 1;    //!< USB Error Interrupt Enable
-    u32             : 24;
-} STRUCT_REGISTER_END USBEPnIER_reg;
-STRUCT_SIZE_ASSERT(USBEPnIER_reg, 4);
-
-// USBEPnISR
-STRUCT_REGISTER_START {
-    u32 OTRXIF      : 1;    //!< OUT Token Received Interrupt Flag
-    u32 ODRXIF      : 1;    //!< OUT Data Received Interrupt Flag
-    u32 ODOVIF      : 1;    //!< OUT Data Buffer Overrun Interrupt Flag
-    u32 ITRXIF      : 1;    //!< IN Token Received Interrupt Flag
-    u32 IDTXIF      : 1;    //!< IN Data Transmitted Interrupt Flag
-    u32 NAKIF       : 1;    //!< NAK Transmitted Interrupt Flag
-    u32 STLIF       : 1;    //!< STALL Transmitted Interrupt Flag
-    u32 UERIF       : 1;    //!< USB Error Interrupt Flag
-    u32             : 24;
-} STRUCT_REGISTER_END USBEPnISR_reg;
-STRUCT_SIZE_ASSERT(USBEPnISR_reg, 4);
-
 // USBEPnCSR_1_3
 STRUCT_REGISTER_START {
     u32 DTGTX       : 1;    //!< Data Toggle Status, for IN transfer
@@ -771,7 +695,7 @@ STRUCT_REGISTER_START {
     u32 EPDIR       : 1;    //!< Transfer Direction
     u32 EPTYPE      : 1;    //!< Transfer Type
     u32             : 1;
-    u32 EPEN        : 1;    //!< Enable Control
+    u32 EPEN        : 1;    //!< Enable Enable Control
 } STRUCT_REGISTER_END USBEPnCFGR_1_3_reg;
 STRUCT_SIZE_ASSERT(USBEPnCFGR_1_3_reg, 4);
 
@@ -812,61 +736,129 @@ STRUCT_REGISTER_START {
 } STRUCT_REGISTER_END USBEPnCFGR_4_7_reg;
 STRUCT_SIZE_ASSERT(USBEPnCFGR_4_7_reg, 4);
 
+// USBEPnCSR
+STRUCT_REGISTER_START {
+    u32 DTGTX       : 1;    //!< Data Toggle Status, for IN transfer
+    u32 NAKTX       : 1;    //!< NAK Status, for IN transfer
+    u32 STLTX       : 1;    //!< STALL Status, for IN transfer
+    u32 DTGRX       : 1;    //!< Data Toggle Status, for OUT transfer
+    u32 NAKRX       : 1;    //!< NAK Status, for OUT transfer
+    u32 STLRX       : 1;    //!< STALL Status, for OUT transfer
+    u32             : 26;
+} STRUCT_REGISTER_END USBEPnCSR_reg;
+STRUCT_SIZE_ASSERT(USBEPnCSR_reg, 4);
+
+// USBEPnIER
+STRUCT_REGISTER_START {
+    u32 OTRXIE      : 1;    //!< OUT Token Received Interrupt Enable
+    u32 ODRXIE      : 1;    //!< OUT Data Received Interrupt Enable
+    u32 ODOVIE      : 1;    //!< OUT Data Buffer Overrun Interrupt Enable
+    u32 ITRXIE      : 1;    //!< IN Token Received Interrupt Enable
+    u32 IDTXIE      : 1;    //!< IN Data Transmitted Interrupt Enable
+    u32 NAKIE       : 1;    //!< NAK Transmitted Interrupt Enable
+    u32 STLIE       : 1;    //!< STALL Transmitted Interrupt Enable
+    u32 UERIE       : 1;    //!< USB Error Interrupt Enable
+    u32             : 24;
+} STRUCT_REGISTER_END USBEPnIER_reg;
+STRUCT_SIZE_ASSERT(USBEPnIER_reg, 4);
+
+// USBEPnISR
+STRUCT_REGISTER_START {
+    u32 OTRXIF      : 1;    //!< OUT Token Received Interrupt Flag
+    u32 ODRXIF      : 1;    //!< OUT Data Received Interrupt Flag
+    u32 ODOVIF      : 1;    //!< OUT Data Buffer Overrun Interrupt Flag
+    u32 ITRXIF      : 1;    //!< IN Token Received Interrupt Flag
+    u32 IDTXIF      : 1;    //!< IN Data Transmitted Interrupt Flag
+    u32 NAKIF       : 1;    //!< NAK Transmitted Interrupt Flag
+    u32 STLIF       : 1;    //!< STALL Transmitted Interrupt Flag
+    u32 UERIF       : 1;    //!< USB Error Interrupt Flag
+    u32             : 24;
+} STRUCT_REGISTER_END USBEPnISR_reg;
+STRUCT_SIZE_ASSERT(USBEPnISR_reg, 4);
+
+// USBEPnTCR
+STRUCT_REGISTER_START {
+    u32             : 32;
+} STRUCT_REGISTER_END USBEPnTCR_reg;
+STRUCT_SIZE_ASSERT(USBEPnTCR_reg, 4);
+
+// USBEPnCFGR
+STRUCT_REGISTER_START {
+    u32 EPBUFA      : 10;   //!< Endpoint Buffer Address
+    u32             : 22;
+} STRUCT_REGISTER_END USBEPnCFGR_reg;
+STRUCT_SIZE_ASSERT(USBEPnCFGR_reg, 4);
+
+typedef struct {
+    USBEPnCSR_reg   CSR;      //!< USB Endpoint n Control and Status
+    USBEPnIER_reg   IER;      //!< USB Endpoint n Interrupt Enable
+    USBEPnISR_reg   ISR;      //!< USB Endpoint n Interrupt Status
+    USBEPnTCR_reg   TCR;      //!< USB Endpoint n Transfer Count
+    USBEPnCFGR_reg  CFGR;     //!< USB Endpoint n Configuration
+} USBEP_common;
+
 // USB
 typedef struct {
-    USBCSR_reg   USBCSR;            //!< USB Control and Status
-    USBIER_reg   USBIER;            //!< USB Interrupt Enable
-    USBISR_reg   USBISR;            //!< USB Interrupt Status
-    const USBFCR_reg USBFCR;        //!< USB Frame Count
-    USBDEVAR_reg USBDEVAR;          //!< USB Device Address
+    USBCSR_reg      USBCSR;    //!< USB Control and Status
+    USBIER_reg      USBIER;    //!< USB Interrupt Enable
+    USBISR_reg      USBISR;    //!< USB Interrupt Status
+    USBFCR_reg      USBFCR;    //!< USB Frame Count
+    USBDEVAR_reg    USBDEVA;   //!< USB Device Address
 
-    USBEP0CSR_reg  USBEP0CSR;       //!< USB Endpoint 0 Control and Status
-    USBEP0IER_reg  USBEP0IER;       //!< USB Endpoint 0 Interrupt Enable
-    USBEP0ISR_reg  USBEP0ISR;       //!< USB Endpoint 0 Interrupt Status
-    USBEP0TCR_reg  USBEP0TCR;       //!< USB Endpoint 0 Transfer Count
-    USBEP0CFGR_reg USBEP0CFGR;      //!< USB Endpoint 0 Configuration
+    union {
+        struct {
+            USBEP0CSR_reg       USBEP0CSR;      //!< USB Endpoint 0 Control and Status
+            USBEP0IER_reg       USBEP0IER;      //!< USB Endpoint 0 Interrupt Enable
+            USBEP0ISR_reg       USBEP0ISR;      //!< USB Endpoint 0 Interrupt Status
+            USBEP0TCR_reg       USBEP0TCR;      //!< USB Endpoint 0 Transfer Count
+            USBEP0CFGR_reg      USBEP0CFGR;     //!< USB Endpoint 0 Configuration
 
-    USBEPnCSR_1_3_reg  USBEP1CSR;   //!< USB Endpoint 1 Control and Status
-    USBEPnIER_reg      USBEP1IER;   //!< USB Endpoint 1 Interrupt Enable
-    USBEPnISR_reg      USBEP1ISR;   //!< USB Endpoint 1 Interrupt Status
-    USBEPnTCR_1_3_reg  USBEP1TCR;   //!< USB Endpoint 1 Transfer Count
-    USBEPnCFGR_1_3_reg USBEP1CFGR;  //!< USB Endpoint 1 Configuration
+            USBEPnCSR_1_3_reg   USBEP1CSR;      //!< USB Endpoint 1 Control and Status
+            USBEPnIER_reg       USBEP1IER;      //!< USB Endpoint 1 Interrupt Enable
+            USBEPnISR_reg       USBEP1ISR;      //!< USB Endpoint 1 Interrupt Status
+            USBEPnTCR_1_3_reg   USBEP1TCR;      //!< USB Endpoint 1 Transfer Count
+            USBEPnCFGR_1_3_reg  USBEP1CFGR;     //!< USB Endpoint 1 Configuration
 
-    USBEPnCSR_1_3_reg  USBEP2CSR;   //!< USB Endpoint 2 Control and Status
-    USBEPnIER_reg      USBEP2IER;   //!< USB Endpoint 2 Interrupt Enable
-    USBEPnISR_reg      USBEP2ISR;   //!< USB Endpoint 2 Interrupt Status
-    USBEPnTCR_1_3_reg  USBEP2TCR;   //!< USB Endpoint 2 Transfer Count
-    USBEPnCFGR_1_3_reg USBEP2CFGR;  //!< USB Endpoint 2 Configuration
+            USBEPnCSR_1_3_reg   USBEP2CSR;      //!< USB Endpoint 2 Control and Status
+            USBEPnIER_reg       USBEP2IER;      //!< USB Endpoint 2 Interrupt Enable
+            USBEPnISR_reg       USBEP2ISR;      //!< USB Endpoint 2 Interrupt Status
+            USBEPnTCR_1_3_reg   USBEP2TCR;      //!< USB Endpoint 2 Transfer Count
+            USBEPnCFGR_1_3_reg  USBEP2CFGR;     //!< USB Endpoint 2 Configuration
 
-    USBEPnCSR_1_3_reg  USBEP3CSR;   //!< USB Endpoint 3 Control and Status
-    USBEPnIER_reg      USBEP3IER;   //!< USB Endpoint 3 Interrupt Enable
-    USBEPnISR_reg      USBEP3ISR;   //!< USB Endpoint 3 Interrupt Status
-    USBEPnTCR_1_3_reg  USBEP3TCR;   //!< USB Endpoint 3 Transfer Count
-    USBEPnCFGR_1_3_reg USBEP3CFGR;  //!< USB Endpoint 3 Configuration
+            USBEPnCSR_1_3_reg   USBEP3CSR;      //!< USB Endpoint 3 Control and Status
+            USBEPnIER_reg       USBEP3IER;      //!< USB Endpoint 3 Interrupt Enable
+            USBEPnISR_reg       USBEP3ISR;      //!< USB Endpoint 3 Interrupt Status
+            USBEPnTCR_1_3_reg   USBEP3TCR;      //!< USB Endpoint 3 Transfer Count
+            USBEPnCFGR_1_3_reg  USBEP3CFGR;     //!< USB Endpoint 3 Configuration
 
-    USBEPnCSR_4_7_reg  USBEP4CSR;   //!< USB Endpoint 4 Control and Status
-    USBEPnIER_reg      USBEP4IER;   //!< USB Endpoint 4 Interrupt Enable
-    USBEPnISR_reg      USBEP4ISR;   //!< USB Endpoint 4 Interrupt Status
-    USBEPnTCR_4_7_reg  USBEP4TCR;   //!< USB Endpoint 4 Transfer Count
-    USBEPnCFGR_4_7_reg USBEP4CFGR;  //!< USB Endpoint 4 Configuration
+            USBEPnCSR_4_7_reg   USBEP4CSR;      //!< USB Endpoint 4 Control and Status
+            USBEPnIER_reg       USBEP4IER;      //!< USB Endpoint 4 Interrupt Enable
+            USBEPnISR_reg       USBEP4ISR;      //!< USB Endpoint 4 Interrupt Status
+            USBEPnTCR_4_7_reg   USBEP4TCR;      //!< USB Endpoint 4 Transfer Count
+            USBEPnCFGR_4_7_reg  USBEP4CFGR;     //!< USB Endpoint 4 Configuration
 
-    USBEPnCSR_4_7_reg  USBEP5CSR;   //!< USB Endpoint 5 Control and Status
-    USBEPnIER_reg      USBEP5IER;   //!< USB Endpoint 5 Interrupt Enable
-    USBEPnISR_reg      USBEP5ISR;   //!< USB Endpoint 5 Interrupt Status
-    USBEPnTCR_4_7_reg  USBEP5TCR;   //!< USB Endpoint 5 Transfer Count
-    USBEPnCFGR_4_7_reg USBEP5CFGR;  //!< USB Endpoint 5 Configuration
+            USBEPnCSR_4_7_reg   USBEP5CSR;      //!< USB Endpoint 5 Control and Status
+            USBEPnIER_reg       USBEP5IER;      //!< USB Endpoint 5 Interrupt Enable
+            USBEPnISR_reg       USBEP5ISR;      //!< USB Endpoint 5 Interrupt Status
+            USBEPnTCR_4_7_reg   USBEP5TCR;      //!< USB Endpoint 5 Transfer Count
+            USBEPnCFGR_4_7_reg  USBEP5CFGR;     //!< USB Endpoint 5 Configuration
 
-    USBEPnCSR_4_7_reg  USBEP6CSR;   //!< USB Endpoint 6 Control and Status
-    USBEPnIER_reg      USBEP6IER;   //!< USB Endpoint 6 Interrupt Enable
-    USBEPnISR_reg      USBEP6ISR;   //!< USB Endpoint 6 Interrupt Status
-    USBEPnTCR_4_7_reg  USBEP6TCR;   //!< USB Endpoint 6 Transfer Count
-    USBEPnCFGR_4_7_reg USBEP6CFGR;  //!< USB Endpoint 6 Configuration
+            USBEPnCSR_4_7_reg   USBEP6CSR;      //!< USB Endpoint 6 Control and Status
+            USBEPnIER_reg       USBEP6IER;      //!< USB Endpoint 6 Interrupt Enable
+            USBEPnISR_reg       USBEP6ISR;      //!< USB Endpoint 6 Interrupt Status
+            USBEPnTCR_4_7_reg   USBEP6TCR;      //!< USB Endpoint 6 Transfer Count
+            USBEPnCFGR_4_7_reg  USBEP6CFGR;     //!< USB Endpoint 6 Configuration
 
-    USBEPnCSR_4_7_reg  USBEP7CSR;   //!< USB Endpoint 7 Control and Status
-    USBEPnIER_reg      USBEP7IER;   //!< USB Endpoint 7 Interrupt Enable
-    USBEPnISR_reg      USBEP7ISR;   //!< USB Endpoint 7 Interrupt Status
-    USBEPnTCR_4_7_reg  USBEP7TCR;   //!< USB Endpoint 7 Transfer Count
-    USBEPnCFGR_4_7_reg USBEP7CFGR;  //!< USB Endpoint 7 Configuration
+            USBEPnCSR_4_7_reg   USBEP7CSR;      //!< USB Endpoint 7 Control and Status
+            USBEPnIER_reg       USBEP7IER;      //!< USB Endpoint 7 Interrupt Enable
+            USBEPnISR_reg       USBEP7ISR;      //!< USB Endpoint 7 Interrupt Status
+            USBEPnTCR_4_7_reg   USBEP7TCR;      //!< USB Endpoint 7 Transfer Count
+            USBEPnCFGR_4_7_reg  USBEP7CFGR;     //!< USB Endpoint 7 Configuration
+        };
+
+        // Common endpoint reigsters
+        USBEP_common    USBEP[8];   //!< USB Endpoint common registers.
+    };
 } USB_map;
 STRUCT_SIZE_ASSERT(USB_map, 0xB4);
 
@@ -927,7 +919,7 @@ STRUCT_SIZE_ASSERT(USB_map, 0xB4);
 //STRUCT_REG_CHECK(USB, USBEP7CFGR);
 
 // Analog To Digital Converter
-// ////////////////////////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 
 
 #endif // HT32F165x_REG_H
