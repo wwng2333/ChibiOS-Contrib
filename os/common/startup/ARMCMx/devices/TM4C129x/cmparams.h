@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2014..2016 Marco Veeneman
+    Copyright (C) 2014..2017 Marco Veeneman
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -99,6 +99,7 @@ typedef int IRQn_Type;
 #include "inc/hw_ssi.h"
 #include "inc/hw_udma.h"
 #include "inc/hw_pwm.h"
+#include "inc/hw_adc.h"
 
 #if CORTEX_NUM_VECTORS != ((((NUM_INTERRUPTS - 16) + 7) / 8) * 8)
 #error "TivaWare NUM_INTERRUPTS mismatch"
