@@ -122,38 +122,45 @@ OSAL_IRQ_HANDLER(HT32_USB_IRQ_VECTOR) {
 
     // Start of Frame Interrupt
     if(isr & USBISR_SOFIF){
+        // Start of Frame callback
+        _usb_isr_invoke_sof_cb(usbp);
         usb_clear_int_flags(USBISR_SOFIF);
     }
 
     // Suspend Interrupt
     if(isr & USBISR_SUSPIF){
         usb_clear_int_flags(USBISR_SUSPIF);
+        // Suspend routine and event callback
+        _usb_suspend(usbp);
     }
 
     // Reset Interrupt
     if(isr & USBISR_URSTIF){
+        // Reset routine and event callback
+        _usb_reset(usbp);
         usb_clear_int_flags(USBISR_URSTIF);
-        usb_lld_reset(usbp);
     }
 
     // Resume Interrupt
     if(isr & USBISR_RSMIF){
-
+        // Resume/Wakeup routine and callback
+        _usb_wakeup(usbp);
+        usb_clear_int_flags(USBISR_RSMIF);
     }
 
     // EP0 Interrupt
     if(isr & USBISR_EP0IF){
         u32 episr = usb_get_ep_int_flags(EP_0);
-        usb_clear_int_flags(USBISR_EP0IF);
 
         // SETUP Token Received
         if(episr & USBEPnISR_STRXIF){
             usb_clear_ep_int_flags(EP_0, USBEPnISR_STRXIF);
-
         }
 
         // SETUP Data Received
         if(episr & USBEPnISR_SDRXIF){
+            // SETIP callback
+            _usb_isr_invoke_setup_cb(usbp, 0);
             usb_clear_ep_int_flags(EP_0, USBEPnISR_SDRXIF);
 //            usb_lld_read_setup(usbp, 0, );
         }
@@ -161,25 +168,25 @@ OSAL_IRQ_HANDLER(HT32_USB_IRQ_VECTOR) {
         // OUT Token Received
         if(episr & USBEPnISR_OTRXIF){
             usb_clear_ep_int_flags(EP_0, USBEPnISR_OTRXIF);
-
         }
 
         // OUT Data Received
         if(episr & USBEPnISR_ODRXIF){
+            // OUT callback
+            _usb_isr_invoke_out_cb(usbp, 0);
             usb_clear_ep_int_flags(EP_0, USBEPnISR_ODRXIF);
-
         }
 
         // IN Token Received
         if(episr & USBEPnISR_ITRXIF){
             usb_clear_ep_int_flags(EP_0, USBEPnISR_ITRXIF);
-
         }
 
         // IN Data Transmitted
         if(episr & USBEPnISR_IDTXIF){
+            // IN callback
+            _usb_isr_invoke_in_cb(usbp, 0);
             usb_clear_ep_int_flags(EP_0, USBEPnISR_IDTXIF);
-
         }
 
         // STALL Transmitted
@@ -187,6 +194,8 @@ OSAL_IRQ_HANDLER(HT32_USB_IRQ_VECTOR) {
             usb_clear_ep_int_flags(EP_0, USBEPnISR_STLIF);
 
         }
+
+        usb_clear_int_flags(USBISR_EP0IF);
     }
 
     // EP 1-7 Interrupt
@@ -195,37 +204,36 @@ OSAL_IRQ_HANDLER(HT32_USB_IRQ_VECTOR) {
         // EPn Interrupt
         if(isr & mask){
             u32 episr = usb_get_ep_int_flags(i);
-            usb_clear_int_flags(mask);
 
             // OUT Token Received
             if(episr & USBEPnISR_OTRXIF){
                 usb_clear_ep_int_flags(i, USBEPnISR_OTRXIF);
-
             }
 
             // OUT Data Received
             if(episr & USBEPnISR_ODRXIF){
+                // OUT callback
+                _usb_isr_invoke_out_cb(usbp, i);
                 usb_clear_ep_int_flags(i, USBEPnISR_ODRXIF);
-
             }
 
             // IN Token Received
             if(episr & USBEPnISR_ITRXIF){
                 usb_clear_ep_int_flags(i, USBEPnISR_ITRXIF);
-
             }
 
             // IN Data Transmitted
             if(episr & USBEPnISR_IDTXIF){
-                usb_clear_ep_int_flags(i, USBEPnISR_IDTXIF);
-
+                // IN callback
+                _usb_isr_invoke_in_cb(usbp, i);
             }
 
             // STALL Transmitted
             if(episr & USBEPnISR_STLIF){
                 usb_clear_ep_int_flags(i, USBEPnISR_STLIF);
-
             }
+
+            usb_clear_int_flags(mask);
         }
         mask = mask << 1;
     }
