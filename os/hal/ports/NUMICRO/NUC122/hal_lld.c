@@ -79,6 +79,8 @@ void hal_lld_init(void)
 
   /* Switch to PLL as clock source*/
   CLK->CLKSEL0 = (2 << CLK_CLKSEL0_HCLK_S_Pos) | (7 << CLK_CLKSEL0_STCLK_S_Pos);
+
+  LOCKREG();
 }
 
 /**
