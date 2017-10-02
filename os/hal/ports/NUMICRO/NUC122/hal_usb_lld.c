@@ -250,12 +250,14 @@ void usb_lld_start(USBDriver *usbp) {
     if (&USBD1 == usbp) {
       uint16_t delay;
       /* Enable USB Clock */
+      UNLOCKREG();
       CLK->APBCLK |= CLK_APBCLK_USBD_EN_Msk;
 
       /* Reset USB */
       SYS->IPRSTC2 |= SYS_IPRSTC2_USBD_RST_Msk;
       for (delay=0x1000; delay > 0; delay--);
       SYS->IPRSTC2 &= ~SYS_IPRSTC2_USBD_RST_Msk;
+      LOCKREG();
 
       usbConnectBus(usbp);
       USBD->ATTR = (USBD_ATTR_BYTEM_Msk | USBD_ATTR_PWRDN_Msk |

@@ -231,6 +231,7 @@ void sd_lld_start(SerialDriver *sdp, const SerialConfig *config) {
   if (sdp->state == SD_STOP) {
 #if NUC122_SERIAL_USE_UART0 == TRUE
     if (&SD1 == sdp) {
+      UNLOCKREG();
       /* Use internal 22.1184 MHz as UART clocksource */
       CLK->CLKSEL1 &= ~(CLK_CLKSEL1_UART_S_Msk);
       CLK->CLKSEL1 |= (0x03 << CLK_CLKSEL1_UART_S_Pos);
@@ -239,6 +240,7 @@ void sd_lld_start(SerialDriver *sdp, const SerialConfig *config) {
       /* Reset IP */
       SYS->IPRSTC2 |= SYS_IPRSTC2_UART0_RST_Msk;
       SYS->IPRSTC2 &= ~(SYS_IPRSTC2_UART0_RST_Msk);
+      LOCKREG();
 
       configure_uart(sdp->uart,  config);
 
@@ -250,6 +252,7 @@ void sd_lld_start(SerialDriver *sdp, const SerialConfig *config) {
 #endif
 #if NUC122_SERIAL_USE_UART1 == TRUE
     if (&SD2 == sdp) {
+      UNLOCKREG();
       /* Use internal 22.1184 MHz as UART clocksource */
       CLK->CLKSEL1 &= ~(CLK_CLKSEL1_UART_S_Msk);
       CLK->CLKSEL1 |= (0x03 << CLK_CLKSEL1_UART_S_Pos);
@@ -258,6 +261,7 @@ void sd_lld_start(SerialDriver *sdp, const SerialConfig *config) {
       /* Reset IP */
       SYS->IPRSTC2 |= SYS_IPRSTC2_UART1_RST_Msk;
       SYS->IPRSTC2 &= ~(SYS_IPRSTC2_UART1_RST_Msk);
+      LOCKREG();
 
       configure_uart(sdp->uart,  config);
       /* configure pins */
