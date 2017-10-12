@@ -75,11 +75,22 @@
 #define NUC122_USB_USB0_IRQ_PRIORITY        2
 #endif
 
+/**
+ * @brief   Host wake-up procedure duration.
+ */
+#if !defined(USB_HOST_WAKEUP_DURATION) || defined(__DOXYGEN__)
+#define USB_HOST_WAKEUP_DURATION            2
+#endif
+
 /** @} */
 
 /*===========================================================================*/
 /* Derived constants and error checks.                                       */
 /*===========================================================================*/
+
+#if (USB_HOST_WAKEUP_DURATION < 2) || (USB_HOST_WAKEUP_DURATION > 15)
+#error "invalid USB_HOST_WAKEUP_DURATION setting, it must be between 2 and 15"
+#endif
 
 /*===========================================================================*/
 /* Driver data structures and types.                                         */
@@ -349,6 +360,18 @@ struct USBDriver {
  * @api
  */
 #define usb_lld_disconnect_bus(usbp) (USBD->ATTR &= ~USBD_ATTR_USB_EN_Msk)
+
+/**
+ * @brief   Start of host wake-up procedure.
+ *
+ * @notapi
+ */
+#define usb_lld_wakeup_host(usbp)                                           \
+  do{                                                                       \
+    USBD->ATTR |= USBD_ATTR_RWAKEUP_Msk;                                    \
+    osalThreadSleepMilliseconds(USB_HOST_WAKEUP_DURATION);                  \
+    USBD->ATTR &= ~USBD_ATTR_RWAKEUP_Msk;                                   \
+  } while (false)
 
 /*===========================================================================*/
 /* External declarations.                                                    */
