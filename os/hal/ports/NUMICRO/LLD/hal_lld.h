@@ -35,7 +35,14 @@
  * @name    Platform identification
  * @{
  */
-#define PLATFORM_NAME           "Numicro NUC122"
+#if defined(__DOXYGEN__)
+#define PLATFORM_NAME           "NuMicro NUC1xx"
+#elif defined(NUC122Zxxxx) || defined(NUC122Lxxxx) || defined(NUC122Sxxxx)
+#define PLATFORM_NAME           "NuMicro NUC122"
+#elif defined(NUC123ZxxANx) || defined(NUC123LxxANx) || defined(NUC123SxxANx) || \
+      defined(NUC123ZxxAEx) || defined(NUC123LxxAEx) || defined(NUC123SxxAEx)
+#define PLATFORM_NAME           "NuMicro NUC123"
+#endif
 
 /**
  * @brief  Internal Clock Sources
