@@ -5304,8 +5304,23 @@ typedef struct
 #define USBD_INTSTS_SETUP_Pos        31                                  /*!< USBD_T::INTSTS: SETUP Position */
 #define USBD_INTSTS_SETUP_Msk        (1ul << USBD_INTSTS_SETUP_Pos)      /*!< USBD_T::INTSTS: SETUP Mask */
 
-#define USBD_INTSTS_EPEVT_Pos        16                                  /*!< USBD_T::INTSTS: EPEVT Position */
-#define USBD_INTSTS_EPEVT_Msk        (0xFFul << USBD_INTSTS_EPEVT_Pos)   /*!< USBD_T::INTSTS: EPEVT Mask */
+#define USBD_INTSTS_EPEVT5_Pos       21                                  /*!< USBD_T::INTSTS: EPEVT5 Position */
+#define USBD_INTSTS_EPEVT5_Msk       (0x1ul << USBD_INTSTS_EPEVT5_Pos)   /*!< USBD_T::INTSTS: EPEVT5 Mask     */
+
+#define USBD_INTSTS_EPEVT4_Pos       20                                  /*!< USBD_T::INTSTS: EPEVT4 Position */
+#define USBD_INTSTS_EPEVT4_Msk       (0x1ul << USBD_INTSTS_EPEVT4_Pos)   /*!< USBD_T::INTSTS: EPEVT4 Mask     */
+
+#define USBD_INTSTS_EPEVT3_Pos       19                                  /*!< USBD_T::INTSTS: EPEVT3 Position */
+#define USBD_INTSTS_EPEVT3_Msk       (0x1ul << USBD_INTSTS_EPEVT3_Pos)   /*!< USBD_T::INTSTS: EPEVT3 Mask     */
+
+#define USBD_INTSTS_EPEVT2_Pos       18                                  /*!< USBD_T::INTSTS: EPEVT2 Position */
+#define USBD_INTSTS_EPEVT2_Msk       (0x1ul << USBD_INTSTS_EPEVT2_Pos)   /*!< USBD_T::INTSTS: EPEVT2 Mask     */
+
+#define USBD_INTSTS_EPEVT1_Pos       17                                  /*!< USBD_T::INTSTS: EPEVT1 Position */
+#define USBD_INTSTS_EPEVT1_Msk       (0x1ul << USBD_INTSTS_EPEVT1_Pos)   /*!< USBD_T::INTSTS: EPEVT1 Mask     */
+
+#define USBD_INTSTS_EPEVT0_Pos       16                                  /*!< USBD_T::INTSTS: EPEVT0 Position */
+#define USBD_INTSTS_EPEVT0_Msk       (0x1ul << USBD_INTSTS_EPEVT0_Pos)   /*!< USBD_T::INTSTS: EPEVT0 Mask     */
 
 #define USBD_INTSTS_WAKEUP_STS_Pos   3                                   /*!< USBD_T::INTSTS: WAKEUP_STS Position */
 #define USBD_INTSTS_WAKEUP_STS_Msk   (1ul << USBD_INTSTS_WAKEUP_STS_Pos) /*!< USBD_T::INTSTS: WAKEUP_STS Mask */

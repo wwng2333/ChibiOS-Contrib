@@ -158,6 +158,7 @@ static void serve_endpoint_irq(USBDriver *usbp,
       default:
           osalDbgAssert(FALSE, "not supported");
       }
+      USBD->INTSTS = 1 << (USBD_INTSTS_EPEVT0_Pos + hwEp);
     }
   }
 }
@@ -197,8 +198,7 @@ static void serve_usb_irq(USBDriver *usbp) {
 
   if (intsts & USBD_INTSTS_USB_STS_Msk) {
     /* check endpoints first */
-    serve_endpoint_irq(usbp, (intsts & USBD_INTSTS_EPEVT_Msk) >> USBD_INTSTS_EPEVT_Pos, epsts);
-    USBD->INTSTS = intsts & USBD_INTSTS_EPEVT_Msk;
+    serve_endpoint_irq(usbp, intsts >> USBD_INTSTS_EPEVT0_Pos, epsts);
     /* then handle setup packets */
     if (intsts & USBD_INTSTS_SETUP_Msk) {
       USBD->INTSTS |= USBD_INTSTS_SETUP_Msk;
