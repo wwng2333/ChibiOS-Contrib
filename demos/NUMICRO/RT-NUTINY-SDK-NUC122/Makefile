@@ -102,7 +102,7 @@ include $(CHIBIOS)/os/common/ports/ARMCMx/compilers/GCC/mk/port_v6m.mk
 include $(CHIBIOS)/test/rt/test.mk
 
 # Define linker script file here
-LDSCRIPT= $(STARTUPLD)/NUC122SD2.ld
+LDSCRIPT= $(STARTUPLD)/NUC1xxxD2xx.ld
 
 # C sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.

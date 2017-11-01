@@ -15,7 +15,7 @@
 */
 
 /*
- * NUC122SC1 memory setup.
+ * NUC1xxxC1xx memory setup.
  */
 MEMORY
 {
