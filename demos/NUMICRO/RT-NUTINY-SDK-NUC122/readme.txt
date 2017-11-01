@@ -8,7 +8,7 @@ The demo runs on a Nuvoton NUTINY-SDK-NUC122 board.
 
 ** The Demo **
 
-The demo shows how to blink the LED on pin 4 of the board.
+The demo shows how to blink the LED on pin 10 of the board.
 
 ** Build Procedure **
 

@@ -62,7 +62,15 @@ void _pal_lld_init(const PALConfig *config) {
   IOPORT1->PMD = config->ioport1_pmd;
   IOPORT2->PMD = config->ioport2_pmd;
   IOPORT3->PMD = config->ioport3_pmd;
+#if NUMICRO_HAS_GPIOD
   IOPORT4->PMD = config->ioport4_pmd;
+#endif
+#if NUMICRO_HAS_GPIOE
+  IOPORT5->PMD = config->ioport5_pmd;
+#endif
+#if NUMICRO_HAS_GPIOF
+  IOPORT6->PMD = config->ioport6_pmd;
+#endif
 }
 
 /**

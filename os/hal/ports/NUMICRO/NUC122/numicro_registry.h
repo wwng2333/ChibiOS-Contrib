@@ -38,38 +38,38 @@
  * @{
  */
 /*===========================================================================*/
-/* NUC122SC1AN/NUC122SD2AN                                                   */
+/* NUC122                                                                    */
 /*===========================================================================*/
-#if defined(NUC122SC1) || defined(NUC122SD2) || defined(__DOXYGEN__)
+#if defined(NUC122Zxxxx) || defined(NUC122Lxxxx) || defined(NUC122Sxxxx) || defined(__DOXYGEN__)
 
-/* ADC attributes.*/
-#define NUMICRO_HAS_ADC0            FALSE
+/* GPIO attributes */
+#define NUMICRO_HAS_GPIOD           TRUE
+#define NUMICRO_HAS_GPIOE           FALSE
+#define NUMICRO_HAS_GPIOF           FALSE
 
 /* EXT attributes.*/
 #define NUMICRO_PORTAB_IRQ_VECTOR    Vector50
 #define NUMICRO_PORTCD_IRQ_VECTOR    Vector54
 
-/* I2C attributes.*/
-#define NUMICRO_HAS_I2C0            TRUE
-#define NUMICRO_I2C0_IRQ_VECTOR     Vector8C
-
 /* Serial attributes.*/
 #define NUMICRO_HAS_SERIAL0         TRUE
 #define NUMICRO_SERIAL0_IRQ_VECTOR  Vector70
+
+#if defined(NUC122Lxxxx) || defined(NUC122Sxxxx)
 #define NUMICRO_HAS_SERIAL1         TRUE
 #define NUMICRO_SERIAL1_IRQ_VECTOR  Vector74
-
-/* SPI attributes.*/
-#define NUMICRO_HAS_SPI0            TRUE
-#define NUMICRO_SPI0_IRQ_VECTOR     Vector78
-#define NUMICRO_HAS_SPI1            TRUE
-#define NUMICRO_SPI1_IRQ_VECTOR     Vector7C
+#endif
 
 /* USB attributes.*/
 #define NUMICRO_HAS_USB             TRUE
 #define NUMICRO_USB_IRQ_VECTOR      Vector9C
 
-#endif /* NUC122SC1 */
+/**
+ * @brief   Maximum endpoint address.
+ */
+#define USB_MAX_ENDPOINTS                   6
+
+#endif /* NUC122 */
 
 /** @} */
 

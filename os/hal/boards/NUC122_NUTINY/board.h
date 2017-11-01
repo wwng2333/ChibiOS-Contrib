@@ -24,7 +24,7 @@
 /*
  * MCU type
  */
-#define NUC122SD2
+#define NUC122Sxxxx
 
 /* Board oscillators-related settings. */
 

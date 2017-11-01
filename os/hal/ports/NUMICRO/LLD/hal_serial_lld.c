@@ -16,7 +16,7 @@
 
 /**
  * @file    hal_serial_lld.c
- * @brief   NUC122 serial subsystem low level driver source.
+ * @brief   NUMICRO serial subsystem low level driver source.
  *
  * @addtogroup SERIAL
  * @{
@@ -36,11 +36,11 @@
 /*===========================================================================*/
 
 /** @brief UART0 serial driver identifier.*/
-#if (NUC122_SERIAL_USE_UART0 == TRUE) || defined(__DOXYGEN__)
+#if (NUMICRO_SERIAL_USE_UART0 == TRUE) || defined(__DOXYGEN__)
 SerialDriver SD1;
 #endif
 /** @brief UART1 serial driver identifier.*/
-#if (NUC122_SERIAL_USE_UART1 == TRUE) || defined(__DOXYGEN__)
+#if (NUMICRO_SERIAL_USE_UART1 == TRUE) || defined(__DOXYGEN__)
 SerialDriver SD2;
 #endif
 
@@ -80,14 +80,14 @@ static void send_byte(SerialDriver *sdp) {
 /* Driver interrupt handlers.                                                */
 /*===========================================================================*/
 
-#if NUC122_SERIAL_USE_UART0 == TRUE
+#if NUMICRO_SERIAL_USE_UART0 == TRUE
 static void notify1(io_queue_t *qp) {
   (void)qp;
   send_byte(&SD1);
 }
 #endif
 
-#if NUC122_SERIAL_USE_UART1 == TRUE
+#if NUMICRO_SERIAL_USE_UART1 == TRUE
 static void notify2(io_queue_t *qp) {
   (void)qp;
   send_byte(&SD2);
@@ -123,7 +123,7 @@ static void serve_uart_irq(SerialDriver *sdp) {
   }
 }
 
-#if NUC122_SERIAL_USE_UART0 == TRUE
+#if NUMICRO_SERIAL_USE_UART0 == TRUE
 OSAL_IRQ_HANDLER(NUMICRO_SERIAL0_IRQ_VECTOR) {
   OSAL_IRQ_PROLOGUE();
   serve_uart_irq(&SD1);
@@ -131,7 +131,7 @@ OSAL_IRQ_HANDLER(NUMICRO_SERIAL0_IRQ_VECTOR) {
 }
 #endif
 
-#if NUC122_SERIAL_USE_UART1 == TRUE
+#if NUMICRO_SERIAL_USE_UART1 == TRUE
 OSAL_IRQ_HANDLER(NUMICRO_SERIAL1_IRQ_VECTOR) {
   OSAL_IRQ_PROLOGUE();
   serve_uart_irq(&SD2);
@@ -151,11 +151,11 @@ OSAL_IRQ_HANDLER(NUMICRO_SERIAL1_IRQ_VECTOR) {
  */
 void sd_lld_init(void) {
 
-#if NUC122_SERIAL_USE_UART0 == TRUE
+#if NUMICRO_SERIAL_USE_UART0 == TRUE
   sdObjectInit(&SD1, NULL, notify1);
   SD1.uart = UART0;
 #endif
-#if NUC122_SERIAL_USE_UART1 == TRUE
+#if NUMICRO_SERIAL_USE_UART1 == TRUE
   sdObjectInit(&SD2, NULL, notify2);
   SD2.uart = UART1;
 #endif
@@ -229,7 +229,7 @@ void sd_lld_start(SerialDriver *sdp, const SerialConfig *config) {
 
 
   if (sdp->state == SD_STOP) {
-#if NUC122_SERIAL_USE_UART0 == TRUE
+#if NUMICRO_SERIAL_USE_UART0 == TRUE
     if (&SD1 == sdp) {
       UNLOCKREG();
       /* Use internal 22.1184 MHz as UART clocksource */
@@ -247,10 +247,10 @@ void sd_lld_start(SerialDriver *sdp, const SerialConfig *config) {
       /* configure pins */
       SYS->GPB_MFP = SYS->GPB_MFP | (0x0F);
 
-      nvicEnableVector(UART0_IRQn, NUC122_SERIAL_UART0_PRIORITY);
+      nvicEnableVector(UART0_IRQn, NUMICRO_SERIAL_UART0_PRIORITY);
     }
 #endif
-#if NUC122_SERIAL_USE_UART1 == TRUE
+#if NUMICRO_SERIAL_USE_UART1 == TRUE
     if (&SD2 == sdp) {
       UNLOCKREG();
       /* Use internal 22.1184 MHz as UART clocksource */
@@ -267,7 +267,7 @@ void sd_lld_start(SerialDriver *sdp, const SerialConfig *config) {
       /* configure pins */
       SYS->GPB_MFP = SYS->GPB_MFP | (0xF0);
 
-      nvicEnableVector(UART1_IRQn, NUC122_SERIAL_UART1_PRIORITY);
+      nvicEnableVector(UART1_IRQn, NUMICRO_SERIAL_UART1_PRIORITY);
     }
 #endif
   }
@@ -287,14 +287,14 @@ void sd_lld_start(SerialDriver *sdp, const SerialConfig *config) {
 void sd_lld_stop(SerialDriver *sdp) {
 
   if (sdp->state == SD_READY) {
-#if NUC122_SERIAL_USE_UART0 == TRUE
+#if NUMICRO_SERIAL_USE_UART0 == TRUE
     if (&SD1 == sdp) {
       /* Disable UART clock */
       CLK->APBCLK &= ~(CLK_APBCLK_UART0_EN_Msk);
       nvicDisableVector(UART0_IRQn);
     }
 #endif
-#if NUC122_SERIAL_USE_UART1 == TRUE
+#if NUMICRO_SERIAL_USE_UART1 == TRUE
     if (&SD2 == sdp) {
       /* Disable UART clock */
       CLK->APBCLK &= ~(CLK_APBCLK_UART1_EN_Msk);

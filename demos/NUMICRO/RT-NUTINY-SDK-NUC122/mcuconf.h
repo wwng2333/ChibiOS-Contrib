@@ -17,14 +17,12 @@
 #ifndef _MCUCONF_H_
 #define _MCUCONF_H_
 
-#define NUC122_MCUCONF
-
 /*
  * HAL driver system settings.
  */
 
 /* Select the MCU clocking mode below by enabling the appropriate block. */
 
-#define NUC122_SERIAL_USE_UART0             TRUE
+#define NUMICRO_SERIAL_USE_UART0             TRUE
 
 #endif /* _MCUCONF_H_ */

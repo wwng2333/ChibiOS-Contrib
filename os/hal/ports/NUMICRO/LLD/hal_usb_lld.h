@@ -16,7 +16,7 @@
 
 /**
  * @file    hal_usb_lld.h
- * @brief   NUC122 USB subsystem low level driver header.
+ * @brief   NUMICRO USB subsystem low level driver header.
  *
  * @addtogroup USB
  * @{
@@ -27,14 +27,11 @@
 
 #if (HAL_USE_USB == TRUE) || defined(__DOXYGEN__)
 
+#include "numicro_registry.h"
+
 /*===========================================================================*/
 /* Driver constants.                                                         */
 /*===========================================================================*/
-
-/**
- * @brief   Maximum endpoint address.
- */
-#define USB_MAX_ENDPOINTS                   6
 
 /**
  * @brief   Status stage handling method.
@@ -56,7 +53,7 @@
 /*===========================================================================*/
 
 /**
- * @name    NUC122 configuration options
+ * @name    NUMICRO configuration options
  * @{
  */
 /**
@@ -64,15 +61,15 @@
  * @details If set to @p TRUE the support for USB1 is included.
  * @note    The default is @p FALSE.
  */
-#if !defined(NUC122_USB_USE_USB0) || defined(__DOXYGEN__)
-#define NUC122_USB_USE_USB0                  FALSE
+#if !defined(NUMICRO_USB_USE_USB0) || defined(__DOXYGEN__)
+#define NUMICRO_USB_USE_USB0                  FALSE
 #endif
 
 /**
  * @brief   USB interrupt priority level setting.
  */
-#if !defined(NUC122_USB_USB0_IRQ_PRIORITY) || defined(__DOXYGEN__)
-#define NUC122_USB_USB0_IRQ_PRIORITY        2
+#if !defined(NUMICRO_USB_USB0_IRQ_PRIORITY) || defined(__DOXYGEN__)
+#define NUMICRO_USB_USB0_IRQ_PRIORITY        2
 #endif
 
 /**
@@ -377,7 +374,7 @@ struct USBDriver {
 /* External declarations.                                                    */
 /*===========================================================================*/
 
-#if (NUC122_USB_USE_USB0 == TRUE) && !defined(__DOXYGEN__)
+#if (NUMICRO_USB_USE_USB0 == TRUE) && !defined(__DOXYGEN__)
 extern USBDriver USBD1;
 #endif
 

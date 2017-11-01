@@ -15,8 +15,8 @@
 */
 
 /**
- * @file    NUMICRO/NUC122/hal_lld.c
- * @brief   NUC122 HAL Driver subsystem low level driver source.
+ * @file    NUMICRO/LLD/hal_lld.c
+ * @brief   NUC1xx HAL Driver subsystem low level driver source.
  *
  * @addtogroup HAL
  * @{
@@ -57,7 +57,7 @@ void hal_lld_init(void)
 {
   UNLOCKREG();
 
-  /* enable internal osc and low frequency osc*/
+  /* Wait until clock is stable after wakeup and enable internal osc */
   CLK->PWRCON = CLK_PWRCON_PD_WU_DLY_Msk | CLK_PWRCON_OSC22M_EN_Msk;
 
   while ((CLK->CLKSTATUS & CLK_CLKSTATUS_OSC22M_STB_Msk) == 0)
@@ -77,7 +77,7 @@ void hal_lld_init(void)
   while ((CLK->CLKSTATUS & CLK_CLKSTATUS_PLL_STB_Msk) == 0)
     ;
 
-  /* Switch to PLL as clock source*/
+  /* Switch to PLL as HCLK source and use the internal HSIRC as Systick clock */
   CLK->CLKSEL0 = (2 << CLK_CLKSEL0_HCLK_S_Pos) | (7 << CLK_CLKSEL0_STCLK_S_Pos);
 
   LOCKREG();

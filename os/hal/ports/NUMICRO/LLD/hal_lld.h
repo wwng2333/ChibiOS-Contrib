@@ -15,8 +15,8 @@
 */
 
 /**
- * @file    NUMICRO/NUC122/hal_lld.h
- * @brief   NUC122 HAL subsystem low level driver header.
+ * @file    NUMICRO/LLD/hal_lld.h
+ * @brief   NUC1xx HAL subsystem low level driver header.
  *
  * @addtogroup HAL
  * @{
@@ -40,8 +40,8 @@
 /**
  * @brief  Internal Clock Sources
  */
-#define NUC122_HSICLK								22118400		/**< High speed internal clock. */
-#define NUC122_LSICLK								10000				/**< Low speed internal clock.  */
+#define NUC1xx_HSICLK								22118400		/**< High speed internal clock. */
+#define NUC1xx_LSICLK								10000				/**< Low speed internal clock.  */
 
 /**
  * @}

@@ -96,7 +96,15 @@ typedef struct {
   uint32_t ioport1_pmd;
   uint32_t ioport2_pmd;
   uint32_t ioport3_pmd;
+#if NUMICRO_HAS_GPIOD
   uint32_t ioport4_pmd;
+#endif
+#if NUMICRO_HAS_GPIOE
+  uint32_t ioport5_pmd;
+#endif
+#if NUMICRO_HAS_GPIOF
+  uint32_t ioport6_pmd;
+#endif
 } PALConfig;
 
 /**
@@ -139,7 +147,15 @@ typedef uint8_t iopadid_t;
 #define IOPORT1         PA
 #define IOPORT2         PB
 #define IOPORT3         PC
+#if NUMICRO_HAS_GPIOD
 #define IOPORT4         PD
+#endif
+#if NUMICRO_HAS_GPIOE
+#define IOPORT5         PE
+#endif
+#if NUMICRO_HAS_GPIOF
+#define IOPORT6         PF
+#endif
 
 /*===========================================================================*/
 /* Implementation, some of the following macros could be implemented as      */

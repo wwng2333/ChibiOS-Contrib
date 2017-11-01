@@ -16,7 +16,7 @@
 
 /**
  * @file    hal_serial_lld.h
- * @brief   NUC122 serial subsystem low level driver header.
+ * @brief   NUMICRO serial subsystem low level driver header.
  *
  * @addtogroup SERIAL
  * @{
@@ -36,7 +36,7 @@
 /*===========================================================================*/
 
 /**
- * @name    NUC122 configuration options
+ * @name    NUMICRO configuration options
  * @{
  */
 /**
@@ -44,23 +44,23 @@
  * @details If set to @p TRUE the support for UART0 / UART1 is included.
  * @note    The default is @p FALSE.
  */
-#if !defined(NUC122_SERIAL_USE_UART0) || defined(__DOXYGEN__)
-#define NUC122_SERIAL_USE_UART0             FALSE
+#if !defined(NUMICRO_SERIAL_USE_UART0) || defined(__DOXYGEN__)
+#define NUMICRO_SERIAL_USE_UART0             FALSE
 #endif
 
-#if !defined(NUC122_SERIAL_USE_UART1) || defined(__DOXYGEN__)
-#define NUC122_SERIAL_USE_UART1             FALSE
+#if !defined(NUMICRO_SERIAL_USE_UART1) || defined(__DOXYGEN__)
+#define NUMICRO_SERIAL_USE_UART1             FALSE
 #endif
 
 /**
  * @brief   UART0/UART1 interrupt priority level setting.
  */
-#if !defined(NUC122_SERIAL_UART0_PRIORITY) || defined(__DOXYGEN__)
-#define NUC122_SERIAL_UART0_PRIORITY        3
+#if !defined(NUMICRO_SERIAL_UART0_PRIORITY) || defined(__DOXYGEN__)
+#define NUMICRO_SERIAL_UART0_PRIORITY        3
 #endif
 
-#if !defined(NUC122_SERIAL_UART1_PRIORITY) || defined(__DOXYGEN__)
-#define NUC122_SERIAL_UART1_PRIORITY        3
+#if !defined(NUMICRO_SERIAL_UART1_PRIORITY) || defined(__DOXYGEN__)
+#define NUMICRO_SERIAL_UART1_PRIORITY        3
 #endif
 
 /** @} */
@@ -74,7 +74,7 @@
 /*===========================================================================*/
 
 /**
- * @brief   NUC122 Serial Driver configuration structure.
+ * @brief   NUMICRO Serial Driver configuration structure.
  * @details An instance of this structure must be passed to @p sdStart()
  *          in order to configure and start a serial driver operations.
  * @note    This structure content is architecture dependent, each driver
@@ -115,10 +115,10 @@ typedef struct {
 /* External declarations.                                                    */
 /*===========================================================================*/
 
-#if (NUC122_SERIAL_USE_UART0 == TRUE) && !defined(__DOXYGEN__)
+#if (NUMICRO_SERIAL_USE_UART0 == TRUE) && !defined(__DOXYGEN__)
 extern SerialDriver SD1;
 #endif
-#if (NUC122_SERIAL_USE_UART1 == TRUE) && !defined(__DOXYGEN__)
+#if (NUMICRO_SERIAL_USE_UART1 == TRUE) && !defined(__DOXYGEN__)
 extern SerialDriver SD2;
 #endif
 

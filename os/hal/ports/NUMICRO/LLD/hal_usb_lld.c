@@ -16,7 +16,7 @@
 
 /**
  * @file    hal_usb_lld.c
- * @brief   NUC122 USB subsystem low level driver source.
+ * @brief   NUMICRO USB subsystem low level driver source.
  *
  * @addtogroup USB
  * @{
@@ -37,7 +37,7 @@
 /**
  * @brief   USB1 driver identifier.
  */
-#if (NUC122_USB_USE_USB0 == TRUE) || defined(__DOXYGEN__)
+#if (NUMICRO_USB_USE_USB0 == TRUE) || defined(__DOXYGEN__)
 USBDriver USBD1;
 #endif
 
@@ -230,7 +230,7 @@ OSAL_IRQ_HANDLER(NUMICRO_USB_IRQ_VECTOR) {
  */
 void usb_lld_init(void) {
 
-#if NUC122_USB_USE_USB0 == TRUE
+#if NUMICRO_USB_USE_USB0 == TRUE
   /* Driver initialization.*/
   usbObjectInit(&USBD1);
 #endif
@@ -246,7 +246,7 @@ void usb_lld_init(void) {
 void usb_lld_start(USBDriver *usbp) {
   if (usbp->state == USB_STOP) {
     /* Enables the peripheral.*/
-#if NUC122_USB_USE_USB0 == TRUE
+#if NUMICRO_USB_USE_USB0 == TRUE
     if (&USBD1 == usbp) {
       uint16_t delay;
       /* Enable USB Clock */
@@ -271,7 +271,7 @@ void usb_lld_start(USBDriver *usbp) {
 
       USBD->INTSTS = USBD->INTSTS;
 
-      nvicEnableVector(USBD_IRQn, NUC122_USB_USB0_IRQ_PRIORITY);
+      nvicEnableVector(USBD_IRQn, NUMICRO_USB_USB0_IRQ_PRIORITY);
 
       USBD->INTEN = (USBD_INTEN_WAKEUP_EN_Msk |
                      USBD_INTEN_WAKEUP_IE_Msk |
@@ -294,7 +294,7 @@ void usb_lld_stop(USBDriver *usbp) {
   if (usbp->state == USB_READY) {
     /* Resets the peripheral.*/
     /* Disables the peripheral.*/
-#if NUC122_USB_USE_USB0 == TRUE
+#if NUMICRO_USB_USE_USB0 == TRUE
     if (&USBD1 == usbp) {
 
     }
@@ -313,7 +313,7 @@ void usb_lld_reset(USBDriver *usbp) {
   /* Post reset initialization.*/
   /* EP0 initialization.*/
   usbp->epc[0] = &ep0config;
-  /* NUC122 has 512b SRAM for EP-buffers; the first 8b are reserved for setup packets */
+  /* NUC1xx have 512b SRAM for EP-buffers; the first 8b are reserved for setup packets */
   usbp->bufnext = 8;
   usbp->epnext = 0;
 

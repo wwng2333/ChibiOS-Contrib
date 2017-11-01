@@ -15,7 +15,7 @@
 */
 
 /**
- * @file    NUMICRO/NUC122/st_lld.c
+ * @file    NUMICRO/LLD/st_lld.c
  * @brief   ST Driver subsystem low level driver code.
  *
  * @addtogroup ST
@@ -82,7 +82,7 @@ void st_lld_init(void) {
 #if OSAL_ST_MODE == OSAL_ST_MODE_PERIODIC
   /* Periodic systick mode, the Cortex-Mx internal systick timer is used
      in this mode.*/
-  SysTick->LOAD = ((NUC122_HSICLK/2) / OSAL_ST_FREQUENCY) - 1;
+  SysTick->LOAD = ((NUC1xx_HSICLK/2) / OSAL_ST_FREQUENCY) - 1;
   SysTick->VAL = 0;
   SysTick->CTRL = (~SysTick_CTRL_CLKSOURCE_Msk) &
                   (SysTick_CTRL_ENABLE_Msk | SysTick_CTRL_TICKINT_Msk);
