@@ -247,7 +247,11 @@ void sd_lld_start(SerialDriver *sdp, const SerialConfig *config) {
       /* configure pins */
       SYS->GPB_MFP = SYS->GPB_MFP | (0x0F);
 
+#if NUMICRO_HAS_COMMON_SERIAL02_IRQ == TRUE
+      nvicEnableVector(UART02_IRQn, NUMICRO_SERIAL_UART0_PRIORITY);
+#else
       nvicEnableVector(UART0_IRQn, NUMICRO_SERIAL_UART0_PRIORITY);
+#endif
     }
 #endif
 #if NUMICRO_SERIAL_USE_UART1 == TRUE
@@ -291,7 +295,11 @@ void sd_lld_stop(SerialDriver *sdp) {
     if (&SD1 == sdp) {
       /* Disable UART clock */
       CLK->APBCLK &= ~(CLK_APBCLK_UART0_EN_Msk);
+#if NUMICRO_HAS_COMMON_SERIAL02_IRQ == TRUE
+      nvicDisableVector(UART02_IRQn);
+#else
       nvicDisableVector(UART0_IRQn);
+#endif
     }
 #endif
 #if NUMICRO_SERIAL_USE_UART1 == TRUE

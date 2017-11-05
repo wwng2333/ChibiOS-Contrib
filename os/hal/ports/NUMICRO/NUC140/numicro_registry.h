@@ -15,8 +15,8 @@
 */
 
 /**
- * @file    NUC123/numicro_registry.h
- * @brief   NUC123 capabilities registry.
+ * @file    NUC140/numicro_registry.h
+ * @brief   NUC140 capabilities registry.
  *
  * @addtogroup HAL
  * @{
@@ -25,44 +25,52 @@
 #ifndef NUMICRO_REGISTRY_H_
 #define NUMICRO_REGISTRY_H_
 
-#if !defined(NUC123) || defined(__DOXYGEN__)
-#define NUC123
-#endif
-
 /*===========================================================================*/
 /* Platform capabilities.                                                    */
 /*===========================================================================*/
 
-/*
- * @name    NUC123 capabilities
+/**
+ * @name    NUC140 capabilities
  * @{
  */
+
+#if !defined(NUC140) || defined(__DOXYGEN__)
+#define NUC140
+#endif
 /*===========================================================================*/
-/* NUC123                                                                    */
+/* NUC140                                                                    */
 /*===========================================================================*/
-#if defined(NUC123ZxxANx) || defined(NUC123LxxANx) || defined(NUC123SxxANx) || \
-    defined(NUC123ZxxAEx) || defined(NUC123LxxAEx) || defined(NUC123SxxAEx) || \
+#if defined(NUC140Lxxxx) || defined(NUC140Rxxxx) || defined(NUC140Vxxxx) || \
     defined(__DOXYGEN__)
 
 /* GPIO attributes */
+#if defined(NUC140Lxxxx) || defined(NUC140Rxxxx)
 #define NUMICRO_HAS_GPIOD           TRUE
 #define NUMICRO_HAS_GPIOE           FALSE
-#define NUMICRO_HAS_GPIOF           TRUE
+#define NUMICRO_HAS_GPIOF           FALSE
+#elif defined(NUC140Vxxxx)
+#define NUMICRO_HAS_GPIOD           TRUE
+#define NUMICRO_HAS_GPIOE           TRUE
+#define NUMICRO_HAS_GPIOF           FALSE
+#endif
 
 /* EXT attributes.*/
 #define NUMICRO_PORTAB_IRQ_VECTOR    Vector50
-#define NUMICRO_PORTCDF_IRQ_VECTOR   Vector54
+#define NUMICRO_PORTCDE_IRQ_VECTOR   Vector54
 
 /* Serial attributes.*/
 #define NUMICRO_HAS_SERIAL0         TRUE
 #define NUMICRO_SERIAL0_IRQ_VECTOR  Vector70
 
-#define NUMICRO_HAS_COMMON_SERIAL02_IRQ FALSE
+#define NUMICRO_HAS_COMMON_SERIAL02_IRQ TRUE
 
-#if defined(NUC123LxxANx) || defined(NUC123SxxANx) || \
-    defined(NUC123LxxAEx) || defined(NUC123SxxAEx)
 #define NUMICRO_HAS_SERIAL1         TRUE
 #define NUMICRO_SERIAL1_IRQ_VECTOR  Vector74
+
+#if defined(NUC140Rxxxx) || defined(NUC140Vxxxx)
+/* not yet implemented - has much less features than Serial0/1 */
+#define NUMICRO_HAS_SERIAL2         TRUE
+/* shares the interrupt with Serial0 */
 #endif
 
 /* USB attributes.*/
@@ -72,9 +80,9 @@
 /**
  * @brief   Maximum endpoint address.
  */
-#define USB_MAX_ENDPOINTS                   8
+#define USB_MAX_ENDPOINTS                   6
 
-#endif /* NUC123 */
+#endif /* NUC140 */
 
 /** @} */
 

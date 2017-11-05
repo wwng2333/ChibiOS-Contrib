@@ -55,6 +55,8 @@
 #define NUMICRO_HAS_SERIAL0         TRUE
 #define NUMICRO_SERIAL0_IRQ_VECTOR  Vector70
 
+#define NUMICRO_HAS_COMMON_SERIAL02_IRQ FALSE
+
 #if defined(NUC122Lxxxx) || defined(NUC122Sxxxx)
 #define NUMICRO_HAS_SERIAL1         TRUE
 #define NUMICRO_SERIAL1_IRQ_VECTOR  Vector74

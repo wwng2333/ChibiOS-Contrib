@@ -146,7 +146,7 @@ typedef enum IRQn
 
 
 #include "core_cm0.h"                   /* Cortex-M0 processor and core peripherals               */
-#include "system_NUC100Series.h"        /* NUC100 System                                          */
+//#include "system_NUC100Series.h"        /* NUC100 System                                          */
 
 #if defined ( __CC_ARM   )
 #pragma anon_unions
@@ -12012,8 +12012,23 @@ typedef struct
 #define USBD_INTSTS_SETUP_Pos        31                                  /*!< USBD_T::INTSTS: SETUP Position */
 #define USBD_INTSTS_SETUP_Msk        (1ul << USBD_INTSTS_SETUP_Pos)      /*!< USBD_T::INTSTS: SETUP Mask */
 
-#define USBD_INTSTS_EPEVT_Pos        16                                  /*!< USBD_T::INTSTS: EPEVT Position */
-#define USBD_INTSTS_EPEVT_Msk        (0x3Ful << USBD_INTSTS_EPEVT_Pos)   /*!< USBD_T::INTSTS: EPEVT Mask */
+#define USBD_INTSTS_EPEVT5_Pos       21                                  /*!< USBD_T::INTSTS: EPEVT5 Position */
+#define USBD_INTSTS_EPEVT5_Msk       (0x1ul << USBD_INTSTS_EPEVT5_Pos)   /*!< USBD_T::INTSTS: EPEVT5 Mask     */
+
+#define USBD_INTSTS_EPEVT4_Pos       20                                  /*!< USBD_T::INTSTS: EPEVT4 Position */
+#define USBD_INTSTS_EPEVT4_Msk       (0x1ul << USBD_INTSTS_EPEVT4_Pos)   /*!< USBD_T::INTSTS: EPEVT4 Mask     */
+
+#define USBD_INTSTS_EPEVT3_Pos       19                                  /*!< USBD_T::INTSTS: EPEVT3 Position */
+#define USBD_INTSTS_EPEVT3_Msk       (0x1ul << USBD_INTSTS_EPEVT3_Pos)   /*!< USBD_T::INTSTS: EPEVT3 Mask     */
+
+#define USBD_INTSTS_EPEVT2_Pos       18                                  /*!< USBD_T::INTSTS: EPEVT2 Position */
+#define USBD_INTSTS_EPEVT2_Msk       (0x1ul << USBD_INTSTS_EPEVT2_Pos)   /*!< USBD_T::INTSTS: EPEVT2 Mask     */
+
+#define USBD_INTSTS_EPEVT1_Pos       17                                  /*!< USBD_T::INTSTS: EPEVT1 Position */
+#define USBD_INTSTS_EPEVT1_Msk       (0x1ul << USBD_INTSTS_EPEVT1_Pos)   /*!< USBD_T::INTSTS: EPEVT1 Mask     */
+
+#define USBD_INTSTS_EPEVT0_Pos       16                                  /*!< USBD_T::INTSTS: EPEVT0 Position */
+#define USBD_INTSTS_EPEVT0_Msk       (0x1ul << USBD_INTSTS_EPEVT0_Pos)   /*!< USBD_T::INTSTS: EPEVT0 Mask     */
 
 #define USBD_INTSTS_WAKEUP_STS_Pos   3                                   /*!< USBD_T::INTSTS: WAKEUP_STS Position */
 #define USBD_INTSTS_WAKEUP_STS_Msk   (1ul << USBD_INTSTS_WAKEUP_STS_Pos) /*!< USBD_T::INTSTS: WAKEUP_STS Mask */
@@ -12592,8 +12607,8 @@ typedef struct
 #define UNLOCKREG(x)        do{*((__IO uint32_t *)(GCR_BASE + 0x100)) = 0x59;*((__IO uint32_t *)(GCR_BASE + 0x100)) = 0x16;*((__IO uint32_t *)(GCR_BASE + 0x100)) = 0x88;}while(*((__IO uint32_t *)(GCR_BASE + 0x100))==0)
 #define LOCKREG(x)          *((__IO uint32_t *)(GCR_BASE + 0x100)) = 0x00
 
-#define REGCOPY(dest, src)  *((uint32_t *)&(dest)) = *((uint32_t *)&(src))
-#define CLEAR(dest)         *((uint32_t *)&(dest)) = 0
+//#define REGCOPY(dest, src)  *((uint32_t *)&(dest)) = *((uint32_t *)&(src))
+//#define CLEAR(dest)         *((uint32_t *)&(dest)) = 0
 
 //=============================================================================
 /** @addtogroup IO_ROUTINE I/O routines
@@ -12601,16 +12616,16 @@ typedef struct
   @{
  */
 
-typedef volatile unsigned char  vu8;        ///< Define 8-bit unsigned volatile data type
-typedef volatile unsigned short vu16;       ///< Define 16-bit unsigned volatile data type
-typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile data type
+//typedef volatile unsigned char  vu8;        ///< Define 8-bit unsigned volatile data type
+//typedef volatile unsigned short vu16;       ///< Define 16-bit unsigned volatile data type
+//typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile data type
 
 /**
   * @brief Get a 8-bit unsigned value from specified address
   * @param[in] addr Address to get 8-bit data from
   * @return  8-bit unsigned value stored in specified address
   */
-#define M8(addr)  (*((vu8  *) (addr)))
+//#define M8(addr)  (*((vu8  *) (addr)))
 
 /**
   * @brief Get a 16-bit unsigned value from specified address
@@ -12618,7 +12633,7 @@ typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile
   * @return  16-bit unsigned value stored in specified address
   * @note The input address must be 16-bit aligned
   */
-#define M16(addr) (*((vu16 *) (addr)))
+//#define M16(addr) (*((vu16 *) (addr)))
 
 /**
   * @brief Get a 32-bit unsigned value from specified address
@@ -12626,7 +12641,7 @@ typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile
   * @return  32-bit unsigned value stored in specified address
   * @note The input address must be 32-bit aligned
   */
-#define M32(addr) (*((vu32 *) (addr)))
+//#define M32(addr) (*((vu32 *) (addr)))
 
 /**
   * @brief Set a 32-bit unsigned value to specified I/O port
@@ -12635,7 +12650,7 @@ typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile
   * @return  None
   * @note The output port must be 32-bit aligned
   */
-#define outpw(port,value)     *((volatile unsigned int *)(port)) = value
+//#define outpw(port,value)     *((volatile unsigned int *)(port)) = value
 
 /**
   * @brief Get a 32-bit unsigned value from specified I/O port
@@ -12643,7 +12658,7 @@ typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile
   * @return  32-bit unsigned value stored in specified I/O port
   * @note The input port must be 32-bit aligned
   */
-#define inpw(port)            (*((volatile unsigned int *)(port)))
+//#define inpw(port)            (*((volatile unsigned int *)(port)))
 
 /**
   * @brief Set a 16-bit unsigned value to specified I/O port
@@ -12652,7 +12667,7 @@ typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile
   * @return  None
   * @note The output port must be 16-bit aligned
   */
-#define outps(port,value)     *((volatile unsigned short *)(port)) = value
+//#define outps(port,value)     *((volatile unsigned short *)(port)) = value
 
 /**
   * @brief Get a 16-bit unsigned value from specified I/O port
@@ -12660,7 +12675,7 @@ typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile
   * @return  16-bit unsigned value stored in specified I/O port
   * @note The input port must be 16-bit aligned
   */
-#define inps(port)            (*((volatile unsigned short *)(port)))
+//#define inps(port)            (*((volatile unsigned short *)(port)))
 
 /**
   * @brief Set a 8-bit unsigned value to specified I/O port
@@ -12668,14 +12683,14 @@ typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile
   * @param[in] value Value to write to I/O port
   * @return  None
   */
-#define outpb(port,value)     *((volatile unsigned char *)(port)) = value
+//#define outpb(port,value)     *((volatile unsigned char *)(port)) = value
 
 /**
   * @brief Get a 8-bit unsigned value from specified I/O port
   * @param[in] port Port address to get 8-bit data from
   * @return  8-bit unsigned value stored in specified I/O port
   */
-#define inpb(port)            (*((volatile unsigned char *)(port)))
+//#define inpb(port)            (*((volatile unsigned char *)(port)))
 
 /**
   * @brief Set a 32-bit unsigned value to specified I/O port
@@ -12684,7 +12699,7 @@ typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile
   * @return  None
   * @note The output port must be 32-bit aligned
   */
-#define outp32(port,value)    *((volatile unsigned int *)(port)) = value
+//#define outp32(port,value)    *((volatile unsigned int *)(port)) = value
 
 /**
   * @brief Get a 32-bit unsigned value from specified I/O port
@@ -12692,7 +12707,7 @@ typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile
   * @return  32-bit unsigned value stored in specified I/O port
   * @note The input port must be 32-bit aligned
   */
-#define inp32(port)           (*((volatile unsigned int *)(port)))
+//#define inp32(port)           (*((volatile unsigned int *)(port)))
 
 /**
   * @brief Set a 16-bit unsigned value to specified I/O port
@@ -12701,7 +12716,7 @@ typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile
   * @return  None
   * @note The output port must be 16-bit aligned
   */
-#define outp16(port,value)    *((volatile unsigned short *)(port)) = value
+//#define outp16(port,value)    *((volatile unsigned short *)(port)) = value
 
 /**
   * @brief Get a 16-bit unsigned value from specified I/O port
@@ -12709,7 +12724,7 @@ typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile
   * @return  16-bit unsigned value stored in specified I/O port
   * @note The input port must be 16-bit aligned
   */
-#define inp16(port)           (*((volatile unsigned short *)(port)))
+//#define inp16(port)           (*((volatile unsigned short *)(port)))
 
 /**
   * @brief Set a 8-bit unsigned value to specified I/O port
@@ -12717,14 +12732,14 @@ typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile
   * @param[in] value Value to write to I/O port
   * @return  None
   */
-#define outp8(port,value)     *((volatile unsigned char *)(port)) = value
+//#define outp8(port,value)     *((volatile unsigned char *)(port)) = value
 
 /**
   * @brief Get a 8-bit unsigned value from specified I/O port
   * @param[in] port Port address to get 8-bit data from
   * @return  8-bit unsigned value stored in specified I/O port
   */
-#define inp8(port)            (*((volatile unsigned char *)(port)))
+//#define inp8(port)            (*((volatile unsigned char *)(port)))
 
 /*@}*/ /* end of group IO_ROUTINE */
 
@@ -12737,61 +12752,61 @@ typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile
 */
 
 
-#define E_SUCCESS   0
-#ifndef NULL
-#define NULL        0
-#endif
-
-#define TRUE        1
-#define FALSE       0
-
-#define ENABLE     1
-#define DISABLE    0
+//#define E_SUCCESS   0
+//#ifndef NULL
+//#define NULL        0
+//#endif
+//
+//#define TRUE        1
+//#define FALSE       0
+//
+//#define ENABLE     1
+//#define DISABLE    0
 
 /* Define one bit mask */
-#define BIT0    0x00000001
-#define BIT1    0x00000002
-#define BIT2    0x00000004
-#define BIT3    0x00000008
-#define BIT4    0x00000010
-#define BIT5    0x00000020
-#define BIT6    0x00000040
-#define BIT7    0x00000080
-#define BIT8    0x00000100
-#define BIT9    0x00000200
-#define BIT10   0x00000400
-#define BIT11   0x00000800
-#define BIT12   0x00001000
-#define BIT13   0x00002000
-#define BIT14   0x00004000
-#define BIT15   0x00008000
-#define BIT16   0x00010000
-#define BIT17   0x00020000
-#define BIT18   0x00040000
-#define BIT19   0x00080000
-#define BIT20   0x00100000
-#define BIT21   0x00200000
-#define BIT22   0x00400000
-#define BIT23   0x00800000
-#define BIT24   0x01000000
-#define BIT25   0x02000000
-#define BIT26   0x04000000
-#define BIT27   0x08000000
-#define BIT28   0x10000000
-#define BIT29   0x20000000
-#define BIT30   0x40000000
-#define BIT31   0x80000000
+//#define BIT0    0x00000001
+//#define BIT1    0x00000002
+//#define BIT2    0x00000004
+//#define BIT3    0x00000008
+//#define BIT4    0x00000010
+//#define BIT5    0x00000020
+//#define BIT6    0x00000040
+//#define BIT7    0x00000080
+//#define BIT8    0x00000100
+//#define BIT9    0x00000200
+//#define BIT10   0x00000400
+//#define BIT11   0x00000800
+//#define BIT12   0x00001000
+//#define BIT13   0x00002000
+//#define BIT14   0x00004000
+//#define BIT15   0x00008000
+//#define BIT16   0x00010000
+//#define BIT17   0x00020000
+//#define BIT18   0x00040000
+//#define BIT19   0x00080000
+//#define BIT20   0x00100000
+//#define BIT21   0x00200000
+//#define BIT22   0x00400000
+//#define BIT23   0x00800000
+//#define BIT24   0x01000000
+//#define BIT25   0x02000000
+//#define BIT26   0x04000000
+//#define BIT27   0x08000000
+//#define BIT28   0x10000000
+//#define BIT29   0x20000000
+//#define BIT30   0x40000000
+//#define BIT31   0x80000000
 
 /* Byte Mask Definitions */
-#define BYTE0_Msk               (0x000000FF)
-#define BYTE1_Msk               (0x0000FF00)
-#define BYTE2_Msk               (0x00FF0000)
-#define BYTE3_Msk               (0xFF000000)
-
-#define _GET_BYTE0(u32Param)    ((u32Param & BYTE0_Msk)      )  /*!< Extract Byte 0 (Bit  0~ 7) from parameter u32Param */
-#define _GET_BYTE1(u32Param)    ((u32Param & BYTE1_Msk) >>  8)  /*!< Extract Byte 1 (Bit  8~15) from parameter u32Param */
-#define _GET_BYTE2(u32Param)    ((u32Param & BYTE2_Msk) >> 16)  /*!< Extract Byte 2 (Bit 16~23) from parameter u32Param */
-#define _GET_BYTE3(u32Param)    ((u32Param & BYTE3_Msk) >> 24)  /*!< Extract Byte 3 (Bit 24~31) from parameter u32Param */
+//#define BYTE0_Msk               (0x000000FF)
+//#define BYTE1_Msk               (0x0000FF00)
+//#define BYTE2_Msk               (0x00FF0000)
+//#define BYTE3_Msk               (0xFF000000)
+//
+//#define _GET_BYTE0(u32Param)    ((u32Param & BYTE0_Msk)      )  /*!< Extract Byte 0 (Bit  0~ 7) from parameter u32Param */
+//#define _GET_BYTE1(u32Param)    ((u32Param & BYTE1_Msk) >>  8)  /*!< Extract Byte 1 (Bit  8~15) from parameter u32Param */
+//#define _GET_BYTE2(u32Param)    ((u32Param & BYTE2_Msk) >> 16)  /*!< Extract Byte 2 (Bit 16~23) from parameter u32Param */
+//#define _GET_BYTE3(u32Param)    ((u32Param & BYTE3_Msk) >> 24)  /*!< Extract Byte 3 (Bit 24~31) from parameter u32Param */
 
 /*@}*/ /* end of group legacy_Constants */
 
@@ -12801,26 +12816,26 @@ typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile
 /******************************************************************************/
 /*                         Peripheral header files                            */
 /******************************************************************************/
-#include "SYS.h"
-#include "ADC.h"
-#include "FMC.h"
-#include "GPIO.h"
-#include "I2C.h"
-#include "PWM.h"
-#include "SPI.h"
-#include "CRC.h"
-#include "TIMER.h"
-#include "WDT.h"
-#include "WWDT.h"
-#include "RTC.h"
-#include "UART.h"
-#include "I2S.h"
-#include "USBD.h"
-#include "PDMA.h"
-#include "SC.h"
-#include "PS2.h"
-#include "CLK.h"
-#include "ACMP.h"
+//#include "SYS.h"
+//#include "ADC.h"
+//#include "FMC.h"
+//#include "GPIO.h"
+//#include "I2C.h"
+//#include "PWM.h"
+//#include "SPI.h"
+//#include "CRC.h"
+//#include "TIMER.h"
+//#include "WDT.h"
+//#include "WWDT.h"
+//#include "RTC.h"
+//#include "UART.h"
+//#include "I2S.h"
+//#include "USBD.h"
+//#include "PDMA.h"
+//#include "SC.h"
+//#include "PS2.h"
+//#include "CLK.h"
+//#include "ACMP.h"
 #endif
 
 
