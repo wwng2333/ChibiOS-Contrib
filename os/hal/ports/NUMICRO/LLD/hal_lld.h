@@ -83,6 +83,7 @@
 extern "C" {
 #endif
   void hal_lld_init(void);
+  void numicro_clock_init(void);
 #ifdef __cplusplus
 }
 #endif

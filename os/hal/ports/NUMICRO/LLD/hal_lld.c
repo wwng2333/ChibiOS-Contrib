@@ -36,6 +36,31 @@
 /* Driver local variables and types.                                         */
 /*===========================================================================*/
 
+#ifndef PWRCON_VAL_OSC_XTL
+
+#ifdef NUMICRO_CLK_PLL_48MHz_XTL12M
+/* configure clock with external 12M crystal for 48MHz*/
+#define PWRCON_VAL_OSC_XTL (CLK_PWRCON_OSC22M_EN_Msk | CLK_PWRCON_XTL12M_EN_Msk)
+#define PLLCON_FB_DV 30
+#define PLLCON_IN_DV 0
+#define PLLCON_OUT_DV 3
+#define PLLCON_VAL (PLLCON_FB_DV << CLK_PLLCON_FB_DV_Pos) | \
+  (PLLCON_IN_DV << CLK_PLLCON_IN_DV_Pos) | \
+  (PLLCON_OUT_DV << CLK_PLLCON_OUT_DV_Pos)
+#else
+/* configure clock with internal 22.184MHz oscillator for ~48.06MHz */
+#define PWRCON_VAL_OSC_XTL CLK_PWRCON_OSC22M_EN_Msk
+#define PLLCON_FB_DV 111
+#define PLLCON_IN_DV 11
+#define PLLCON_OUT_DV 3
+#define PLLCON_VAL (PLLCON_FB_DV << CLK_PLLCON_FB_DV_Pos) | \
+  (PLLCON_IN_DV << CLK_PLLCON_IN_DV_Pos) | \
+  (PLLCON_OUT_DV << CLK_PLLCON_OUT_DV_Pos) | \
+  CLK_PLLCON_PLL_SRC_Msk
+#endif
+
+#endif
+
 /*===========================================================================*/
 /* Driver local functions.                                                   */
 /*===========================================================================*/
@@ -55,32 +80,43 @@
  */
 void hal_lld_init(void)
 {
+}
+
+void numicro_clock_init(void)
+{
+#ifndef NUMICRO_NO_CLK_INIT
   UNLOCKREG();
 
-  /* Wait until clock is stable after wakeup and enable internal osc */
-  CLK->PWRCON = CLK_PWRCON_PD_WU_DLY_Msk | CLK_PWRCON_OSC22M_EN_Msk;
+  /* enable clock sources */
+  CLK->PWRCON = CLK_PWRCON_PD_WU_DLY_Msk | PWRCON_VAL_OSC_XTL;
 
-  while ((CLK->CLKSTATUS & CLK_CLKSTATUS_OSC22M_STB_Msk) == 0)
-    ;
+  /* wait until clocks are stable */
+  if ((PWRCON_VAL_OSC_XTL & CLK_PWRCON_OSC10K_EN_Msk) != 0)
+    while ((CLK->CLKSTATUS & CLK_CLKSTATUS_OSC10K_STB_Msk) == 0)
+      ;
+  if ((PWRCON_VAL_OSC_XTL & CLK_PWRCON_OSC22M_EN_Msk) != 0)
+    while ((CLK->CLKSTATUS & CLK_CLKSTATUS_OSC22M_STB_Msk) == 0)
+      ;
+#ifdef CLK_PWRCON_XTL32K_EN_Msk
+  if ((PWRCON_VAL_OSC_XTL & CLK_PWRCON_XTL32K_EN_Msk) != 0)
+    while ((CLK->CLKSTATUS & CLK_CLKSTATUS_XTL32K_STB_Msk) == 0)
+      ;
+#endif
+  if ((PWRCON_VAL_OSC_XTL & CLK_PWRCON_XTL12M_EN_Msk) != 0)
+    while ((CLK->CLKSTATUS & CLK_CLKSTATUS_XTL12M_STB_Msk) == 0)
+      ;
 
   /* configure the PLL */
-  /* page 108/109 of NUC122 Technical Reference Manual */
-  /* PLL =~ 239.98464Mhz */
-  CLK->PLLCON = (215 << CLK_PLLCON_FB_DV_Pos) | (8 <<CLK_PLLCON_IN_DV_Pos) | (1<<CLK_PLLCON_OUT_DV_Pos) | CLK_PLLCON_PLL_SRC_Msk;
-
-  /* HCLK =~ 59.99616 MHz, USB_CLK =~ 47.996928 MHz */
-  CLK->CLKDIV = (3 << CLK_CLKDIV_HCLK_N_Pos) | (4 << CLK_CLKDIV_USB_N_Pos);
-
-  /* enable pll */
-  CLK->PLLCON &= ~(CLK_PLLCON_OE_Msk | CLK_PLLCON_PD_Msk);
+  CLK->PLLCON = PLLCON_VAL;
 
   while ((CLK->CLKSTATUS & CLK_CLKSTATUS_PLL_STB_Msk) == 0)
     ;
 
-  /* Switch to PLL as HCLK source and use the internal HSIRC as Systick clock */
-  CLK->CLKSEL0 = (2 << CLK_CLKSEL0_HCLK_S_Pos) | (7 << CLK_CLKSEL0_STCLK_S_Pos);
+  /* Switch to internal HIRC as HCLK and Systick clock */
+  CLK->CLKSEL0 = (7 << CLK_CLKSEL0_HCLK_S_Pos) | (7 << CLK_CLKSEL0_STCLK_S_Pos);
 
   LOCKREG();
+#endif
 }
 
 /**

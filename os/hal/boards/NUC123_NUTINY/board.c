@@ -41,6 +41,11 @@ const PALConfig pal_default_config =
  */
 void __early_init(void)
 {
+#if (defined(NUC123ZxxANx) || defined(NUC123LxxANx) || defined(NUC123SxxANx)) && \
+    defined(NUMICRO_CLK_PLL_48MHz_XTL12M)
+  SYS->GPF_MFP |= 0x03; /* configure F0/F1 for XT1_OUT/XT1_IN */
+#endif
+  numicro_clock_init();
 }
 
 /**
