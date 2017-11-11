@@ -71,7 +71,7 @@ static void send_byte(SerialDriver *sdp) {
       return;
     }
 
-    u->DATA = b;
+    u->THR = b;
     u->IER |= UART_IER_THRE_IEN_Msk;
   }
 }
@@ -101,7 +101,7 @@ static void serve_uart_irq(SerialDriver *sdp) {
     osalSysLockFromISR();
     if (iqIsEmptyI(&sdp->iqueue))
       chnAddFlagsI(sdp, CHN_INPUT_AVAILABLE);
-    if (iqPutI(&sdp->iqueue, u->DATA) < Q_OK)
+    if (iqPutI(&sdp->iqueue, u->RBR) < Q_OK)
       chnAddFlagsI(sdp, SD_OVERRUN_ERROR);
     osalSysUnlockFromISR();
   }
@@ -118,7 +118,7 @@ static void serve_uart_irq(SerialDriver *sdp) {
       osalSysUnlockFromISR();
     }
     else {
-      u->DATA = b;
+      u->THR = b;
     }
   }
 }

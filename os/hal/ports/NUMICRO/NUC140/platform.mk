@@ -10,7 +10,7 @@ ifneq ($(findstring HAL_USE_PAL TRUE,$(HALCONF)),)
 PLATFORMSRC += ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/LLD/hal_pal_lld.c
 endif
 ifneq ($(findstring HAL_USE_SERIAL TRUE,$(HALCONF)),)
-PLATFORMSRC += ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/LLD/hal_serial_lld.c
+PLATFORMSRC += ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/LLD/UARTv1/hal_serial_lld.c
 endif
 ifneq ($(findstring HAL_USE_USB TRUE,$(HALCONF)),)
 PLATFORMSRC += ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/LLD/hal_usb_lld.c
@@ -19,7 +19,7 @@ else
 PLATFORMSRC  = ${CHIBIOS}/os/hal/ports/common/ARMCMx/nvic.c \
                ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/LLD/hal_lld.c \
                ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/LLD/hal_pal_lld.c \
-               ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/LLD/hal_serial_lld.c \
+               ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/LLD/UARTv1/hal_serial_lld.c \
                ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/LLD/hal_st_lld.c \
                ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/LLD/hal_usb_lld.c
 endif
@@ -27,6 +27,7 @@ endif
 # Required include directories
 PLATFORMINC = ${CHIBIOS}/os/hal/ports/common/ARMCMx \
               ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/NUC140 \
-              ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/LLD
+              ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/LLD \
+              ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/LLD/UARTv1
 
 
