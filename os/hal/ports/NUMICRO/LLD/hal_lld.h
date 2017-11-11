@@ -44,6 +44,8 @@
 #define PLATFORM_NAME           "NuMicro NUC123"
 #elif defined(NUC140Lxxxx) || defined(NUC140Rxxxx) || defined(NUC140Vxxxx)
 #define PLATFORM_NAME           "NuMicro NUC140"
+#elif defined(NANO120Lxxxx) || defined(NANO120Sxxxx) || defined(NANO120Kxxxx)
+#define PLATFORM_NAME           "NuMicro NANO120"
 #endif
 
 /**

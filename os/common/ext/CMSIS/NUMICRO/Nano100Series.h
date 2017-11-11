@@ -138,7 +138,7 @@ typedef enum IRQn {
 
 
 #include "core_cm0.h"                       /* Cortex-M0 processor and core peripherals           */
-#include "system_Nano100Series.h"           /* Nano100 Series System include file                  */
+//#include "system_Nano100Series.h"           /* Nano100 Series System include file                  */
 #include <stdint.h>
 
 /******************************************************************************/
@@ -11827,64 +11827,67 @@ typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile
   @{
 */
 
-#ifndef NULL
-#define NULL           (0)      ///< NULL pointer
-#endif
-
-#define TRUE           (1)      ///< Boolean true, define to use in API parameters or return value
-#define FALSE          (0)      ///< Boolean false, define to use in API parameters or return value
-
-#define ENABLE         (1)      ///< Enable, define to use in API parameters
-#define DISABLE        (0)      ///< Disable, define to use in API parameters
+//#ifndef NULL
+//#define NULL           (0)      ///< NULL pointer
+//#endif
+//
+//#define TRUE           (1)      ///< Boolean true, define to use in API parameters or return value
+//#define FALSE          (0)      ///< Boolean false, define to use in API parameters or return value
+//
+//#define ENABLE         (1)      ///< Enable, define to use in API parameters
+//#define DISABLE        (0)      ///< Disable, define to use in API parameters
 
 /* Define one bit mask */
-#define BIT0     (0x00000001)       ///< Bit 0 mask of an 32 bit integer
-#define BIT1     (0x00000002)       ///< Bit 1 mask of an 32 bit integer
-#define BIT2     (0x00000004)       ///< Bit 2 mask of an 32 bit integer
-#define BIT3     (0x00000008)       ///< Bit 3 mask of an 32 bit integer
-#define BIT4     (0x00000010)       ///< Bit 4 mask of an 32 bit integer
-#define BIT5     (0x00000020)       ///< Bit 5 mask of an 32 bit integer
-#define BIT6     (0x00000040)       ///< Bit 6 mask of an 32 bit integer
-#define BIT7     (0x00000080)       ///< Bit 7 mask of an 32 bit integer
-#define BIT8     (0x00000100)       ///< Bit 8 mask of an 32 bit integer
-#define BIT9     (0x00000200)       ///< Bit 9 mask of an 32 bit integer
-#define BIT10    (0x00000400)       ///< Bit 10 mask of an 32 bit integer
-#define BIT11    (0x00000800)       ///< Bit 11 mask of an 32 bit integer
-#define BIT12    (0x00001000)       ///< Bit 12 mask of an 32 bit integer
-#define BIT13    (0x00002000)       ///< Bit 13 mask of an 32 bit integer
-#define BIT14    (0x00004000)       ///< Bit 14 mask of an 32 bit integer
-#define BIT15    (0x00008000)       ///< Bit 15 mask of an 32 bit integer
-#define BIT16    (0x00010000)       ///< Bit 16 mask of an 32 bit integer
-#define BIT17    (0x00020000)       ///< Bit 17 mask of an 32 bit integer
-#define BIT18    (0x00040000)       ///< Bit 18 mask of an 32 bit integer
-#define BIT19    (0x00080000)       ///< Bit 19 mask of an 32 bit integer
-#define BIT20    (0x00100000)       ///< Bit 20 mask of an 32 bit integer
-#define BIT21    (0x00200000)       ///< Bit 21 mask of an 32 bit integer
-#define BIT22    (0x00400000)       ///< Bit 22 mask of an 32 bit integer
-#define BIT23    (0x00800000)       ///< Bit 23 mask of an 32 bit integer
-#define BIT24    (0x01000000)       ///< Bit 24 mask of an 32 bit integer
-#define BIT25    (0x02000000)       ///< Bit 25 mask of an 32 bit integer
-#define BIT26    (0x04000000)       ///< Bit 26 mask of an 32 bit integer
-#define BIT27    (0x08000000)       ///< Bit 27 mask of an 32 bit integer
-#define BIT28    (0x10000000)       ///< Bit 28 mask of an 32 bit integer
-#define BIT29    (0x20000000)       ///< Bit 29 mask of an 32 bit integer
-#define BIT30    (0x40000000)       ///< Bit 30 mask of an 32 bit integer
-#define BIT31    (0x80000000)       ///< Bit 31 mask of an 32 bit integer
+//#define BIT0     (0x00000001)       ///< Bit 0 mask of an 32 bit integer
+//#define BIT1     (0x00000002)       ///< Bit 1 mask of an 32 bit integer
+//#define BIT2     (0x00000004)       ///< Bit 2 mask of an 32 bit integer
+//#define BIT3     (0x00000008)       ///< Bit 3 mask of an 32 bit integer
+//#define BIT4     (0x00000010)       ///< Bit 4 mask of an 32 bit integer
+//#define BIT5     (0x00000020)       ///< Bit 5 mask of an 32 bit integer
+//#define BIT6     (0x00000040)       ///< Bit 6 mask of an 32 bit integer
+//#define BIT7     (0x00000080)       ///< Bit 7 mask of an 32 bit integer
+//#define BIT8     (0x00000100)       ///< Bit 8 mask of an 32 bit integer
+//#define BIT9     (0x00000200)       ///< Bit 9 mask of an 32 bit integer
+//#define BIT10    (0x00000400)       ///< Bit 10 mask of an 32 bit integer
+//#define BIT11    (0x00000800)       ///< Bit 11 mask of an 32 bit integer
+//#define BIT12    (0x00001000)       ///< Bit 12 mask of an 32 bit integer
+//#define BIT13    (0x00002000)       ///< Bit 13 mask of an 32 bit integer
+//#define BIT14    (0x00004000)       ///< Bit 14 mask of an 32 bit integer
+//#define BIT15    (0x00008000)       ///< Bit 15 mask of an 32 bit integer
+//#define BIT16    (0x00010000)       ///< Bit 16 mask of an 32 bit integer
+//#define BIT17    (0x00020000)       ///< Bit 17 mask of an 32 bit integer
+//#define BIT18    (0x00040000)       ///< Bit 18 mask of an 32 bit integer
+//#define BIT19    (0x00080000)       ///< Bit 19 mask of an 32 bit integer
+//#define BIT20    (0x00100000)       ///< Bit 20 mask of an 32 bit integer
+//#define BIT21    (0x00200000)       ///< Bit 21 mask of an 32 bit integer
+//#define BIT22    (0x00400000)       ///< Bit 22 mask of an 32 bit integer
+//#define BIT23    (0x00800000)       ///< Bit 23 mask of an 32 bit integer
+//#define BIT24    (0x01000000)       ///< Bit 24 mask of an 32 bit integer
+//#define BIT25    (0x02000000)       ///< Bit 25 mask of an 32 bit integer
+//#define BIT26    (0x04000000)       ///< Bit 26 mask of an 32 bit integer
+//#define BIT27    (0x08000000)       ///< Bit 27 mask of an 32 bit integer
+//#define BIT28    (0x10000000)       ///< Bit 28 mask of an 32 bit integer
+//#define BIT29    (0x20000000)       ///< Bit 29 mask of an 32 bit integer
+//#define BIT30    (0x40000000)       ///< Bit 30 mask of an 32 bit integer
+//#define BIT31    (0x80000000)       ///< Bit 31 mask of an 32 bit integer
 
 /* Byte Mask Definitions */
-#define BYTE0_Msk              (0x000000FF)         ///< Mask to get bit0~bit7 from a 32 bit integer
-#define BYTE1_Msk              (0x0000FF00)         ///< Mask to get bit8~bit15 from a 32 bit integer
-#define BYTE2_Msk              (0x00FF0000)         ///< Mask to get bit16~bit23 from a 32 bit integer
-#define BYTE3_Msk              (0xFF000000)         ///< Mask to get bit24~bit31 from a 32 bit integer
-
-#define GET_BYTE0(u32Param)    ((u32Param & BYTE0_Msk)      )  /*!< Extract Byte 0 (Bit  0~ 7) from parameter u32Param */
-#define GET_BYTE1(u32Param)    ((u32Param & BYTE1_Msk) >>  8)  /*!< Extract Byte 1 (Bit  8~15) from parameter u32Param */
-#define GET_BYTE2(u32Param)    ((u32Param & BYTE2_Msk) >> 16)  /*!< Extract Byte 2 (Bit 16~23) from parameter u32Param */
-#define GET_BYTE3(u32Param)    ((u32Param & BYTE3_Msk) >> 24)  /*!< Extract Byte 3 (Bit 24~31) from parameter u32Param */
+//#define BYTE0_Msk              (0x000000FF)         ///< Mask to get bit0~bit7 from a 32 bit integer
+//#define BYTE1_Msk              (0x0000FF00)         ///< Mask to get bit8~bit15 from a 32 bit integer
+//#define BYTE2_Msk              (0x00FF0000)         ///< Mask to get bit16~bit23 from a 32 bit integer
+//#define BYTE3_Msk              (0xFF000000)         ///< Mask to get bit24~bit31 from a 32 bit integer
+//
+//#define GET_BYTE0(u32Param)    ((u32Param & BYTE0_Msk)      )  /*!< Extract Byte 0 (Bit  0~ 7) from parameter u32Param */
+//#define GET_BYTE1(u32Param)    ((u32Param & BYTE1_Msk) >>  8)  /*!< Extract Byte 1 (Bit  8~15) from parameter u32Param */
+//#define GET_BYTE2(u32Param)    ((u32Param & BYTE2_Msk) >> 16)  /*!< Extract Byte 2 (Bit 16~23) from parameter u32Param */
+//#define GET_BYTE3(u32Param)    ((u32Param & BYTE3_Msk) >> 24)  /*!< Extract Byte 3 (Bit 24~31) from parameter u32Param */
 
 /*@}*/ /* end of group NANO100_legacy_Constants */
 
 /*@}*/ /* end of group NANO100_Definitions */
+
+#define UNLOCKREG()        do{*((__IO uint32_t *)(SYS_BASE + 0x100)) = 0x59;*((__IO uint32_t *)(SYS_BASE + 0x100)) = 0x16;*((__IO uint32_t *)(SYS_BASE + 0x100)) = 0x88;}while(*((__IO uint32_t *)(SYS_BASE + 0x100))==0)
+#define LOCKREG()          *((__IO uint32_t *)(SYS_BASE + 0x100)) = 0x00
 
 #ifdef __cplusplus
 }
@@ -11894,28 +11897,28 @@ typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile
 /******************************************************************************/
 /*                         Peripheral header files                            */
 /******************************************************************************/
-#include "sys.h"
-#include "clk.h"
-#include "adc.h"
-#include "dac.h"
-#include "fmc.h"
-#include "ebi.h"
-#include "gpio.h"
-#include "i2c.h"
-#include "crc.h"
-#include "pdma.h"
-#include "pwm.h"
-#include "rtc.h"
-#include "sc.h"
-#include "scuart.h"
-#include "spi.h"
-#include "timer.h"
-#include "uart.h"
-#include "usbd.h"
-#include "wdt.h"
-#include "wwdt.h"
-#include "i2s.h"
-#include "lcd.h"
+//#include "sys.h"
+//#include "clk.h"
+//#include "adc.h"
+//#include "dac.h"
+//#include "fmc.h"
+//#include "ebi.h"
+//#include "gpio.h"
+//#include "i2c.h"
+//#include "crc.h"
+//#include "pdma.h"
+//#include "pwm.h"
+//#include "rtc.h"
+//#include "sc.h"
+//#include "scuart.h"
+//#include "spi.h"
+//#include "timer.h"
+//#include "uart.h"
+//#include "usbd.h"
+//#include "wdt.h"
+//#include "wwdt.h"
+//#include "i2s.h"
+//#include "lcd.h"
 
 #endif  // __NANO100SERIES_H__
 
