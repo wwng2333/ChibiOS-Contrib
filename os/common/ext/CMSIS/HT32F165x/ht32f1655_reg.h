@@ -5,17 +5,17 @@
 
 // Peripherals
 // ////////////////////////////////////////////////////////////////////////////////////////////////
-//#define GPIO_A          0
-//#define GPIO_B          1
-//#define GPIO_C          2
-//#define GPIO_D          3
-//#define GPIO_E          4
+#define GPIO_A          0
+#define GPIO_B          1
+#define GPIO_C          2
+#define GPIO_D          3
+#define GPIO_E          4
 
-//#define CLOCK_PA        TYPE_AHB | (1 << 16)
-//#define CLOCK_PB        TYPE_AHB | (1 << 17)
-//#define CLOCK_PC        TYPE_AHB | (1 << 18)
-//#define CLOCK_PD        TYPE_AHB | (1 << 19)
-//#define CLOCK_PE        TYPE_AHB | (1 << 20)
+#define CLOCK_PA        TYPE_AHB | (1 << 16)
+#define CLOCK_PB        TYPE_AHB | (1 << 17)
+#define CLOCK_PC        TYPE_AHB | (1 << 18)
+#define CLOCK_PD        TYPE_AHB | (1 << 19)
+#define CLOCK_PE        TYPE_AHB | (1 << 20)
 
 // Clock Control Unit
 // ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -472,20 +472,29 @@ typedef struct {
     ESSR1_reg ESSR1;
     u8 _pad1[0x18];
 
-    GPxCFGLR_reg GPACFGLR;
-    GPxCFGHR_reg GPACFGHR;
+    union {
+        struct {
+            GPxCFGLR_reg GPACFGLR;
+            GPxCFGHR_reg GPACFGHR;
 
-    GPxCFGLR_reg GPBCFGLR;
-    GPxCFGHR_reg GPBCFGHR;
+            GPxCFGLR_reg GPBCFGLR;
+            GPxCFGHR_reg GPBCFGHR;
 
-    GPxCFGLR_reg GPCCFGLR;
-    GPxCFGHR_reg GPCCFGHR;
+            GPxCFGLR_reg GPCCFGLR;
+            GPxCFGHR_reg GPCCFGHR;
 
-    GPxCFGLR_reg GPDCFGLR;
-    GPxCFGHR_reg GPDCFGHR;
+            GPxCFGLR_reg GPDCFGLR;
+            GPxCFGHR_reg GPDCFGHR;
 
-    GPxCFGLR_reg GPECFGLR;
-    GPxCFGHR_reg GPECFGHR;
+            GPxCFGLR_reg GPECFGLR;
+            GPxCFGHR_reg GPECFGHR;
+        };
+        
+        struct {
+            GPxCFGLR_reg LR;
+            GPxCFGHR_reg HR;
+        } GPnCFG[5];
+    };
 } AFIO_map;
 STRUCT_SIZE_ASSERT(AFIO_map, 0x48);
 

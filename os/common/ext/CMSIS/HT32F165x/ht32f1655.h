@@ -24,7 +24,6 @@
 #define _HT32F1655_H_
 
 #include "ht32f165x.h"
-#include "ht32f1655_reg.h"
 
 #define HT32F1654
 #define HT32_FLASH_SIZE      0x20000 // 128k
@@ -73,12 +72,15 @@
 #define GPIO_D_BASE             ((uint32_t)0x400B6000)
 #define GPIO_E_BASE             ((uint32_t)0x400B8000)
 
+// Registers Headers
+#include "ht32f1655_reg.h"
+
 /****************************************************************/
 /*                 Peripheral declaration                       */
 /****************************************************************/
-//#define USART0                  ((USART_map *)  USART0_BASE)
+#define USART0                  ((USART_map *)  USART0_BASE)
 //#define UART0                   ((UART_map *)   UART0_BASE)
-#define SPI0                    ((SPI0_map *)   SPI0_BASE)
+#define SPI0                    ((SPI_map *)    SPI0_BASE)
 //#define ADC                     ((ADC_map *)    ADC_BASE)
 //#define CMP                     ((CMP_map *)    CMP_BASE)
 //#define OPA                     ((OPA_map *)    OPA_BASE)
@@ -88,17 +90,17 @@
 //#define MCTM0                   ((MCTM_map *)   MCTM0_BASE)
 //#define MCTM1                   ((MCTM_map *)   MCTM1_BASE)
 
-//#define USART1                  ((USART_map *)  USART1_BASE)
+#define USART1                  ((USART_map *)  USART1_BASE)
 //#define UART1                   ((UART_map *)   UART1_BASE)
 //#define SCI                     ((SCI_map *)    SCI_BASE)
 #define SPI1                    ((SPI_map *)    SPI1_BASE)
 //#define I2C0                    ((I2C_map *)    I2C0_BASE)
 //#define I2C1                    ((I2C_map *)    I2C1_BASE)
-#define WDT                     ((WDT_map *)    WDT_BASE)
+//#define WDT                     ((WDT_map *)    WDT_BASE)
 //#define RTC                     ((RTC_map *)    RTC_BASE)
 #define PWRCU                   ((PWRCU_map *)  PWRCU_BASE)
-#define GPTM0                   ((GPTM_map *)   GPTM0_BASE)
-#define GPTM1                   ((GPTM_map *)   GPTM1_BASE)
+//#define GPTM0                   ((GPTM_map *)   GPTM0_BASE)
+//#define GPTM1                   ((GPTM_map *)   GPTM1_BASE)
 //#define BFTM0                   ((BFTM_map *)   BFTM0_BASE)
 //#define BFTM1                   ((BFTM_map *)   BFTM1_BASE)
 
@@ -109,10 +111,10 @@
 //#define PDMA                    ((PDMA_map *)   PDMA_BASE)
 //#define EBI                     ((EBI_map *)    EBI_BASE)
 #define USB                     ((USB_map *)    USB_BASE)
-#define GPIO_A                  ((GPIO_map *)   GPIO_A_BASE)
-#define GPIO_B                  ((GPIO_map *)   GPIO_B_BASE)
-#define GPIO_C                  ((GPIO_map *)   GPIO_C_BASE)
-#define GPIO_D                  ((GPIO_map *)   GPIO_D_BASE)
-#define GPIO_E                  ((GPIO_map *)   GPIO_E_BASE)
+//#define GPIO_A                  ((GPIO_map *)   GPIO_A_BASE)
+//#define GPIO_B                  ((GPIO_map *)   GPIO_B_BASE)
+//#define GPIO_C                  ((GPIO_map *)   GPIO_C_BASE)
+//#define GPIO_D                  ((GPIO_map *)   GPIO_D_BASE)
+//#define GPIO_E                  ((GPIO_map *)   GPIO_E_BASE)
 
 #endif
