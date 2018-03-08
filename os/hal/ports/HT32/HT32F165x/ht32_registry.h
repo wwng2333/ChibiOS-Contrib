@@ -15,8 +15,8 @@
 */
 
 /**
- * @file    HT32F1655/ht32_registry.h
- * @brief   HT32F1655 capabilities registry.
+ * @file    HT32F165x/ht32_registry.h
+ * @brief   HT32F165x capabilities registry.
  *
  * @addtogroup HAL
  * @{
@@ -28,19 +28,19 @@
 /**
  * @brief   Sub-family identifier.
  */
-#if !defined(HT32F1655) || defined(__DOXYGEN__)
-#define HT32F1655
+#if defined(HT32F1653) || defined(HT32F1654) || \
+    defined(HT32F1655) || defined(HT32F1656) || \
+    defined(__DOXYGEN__)
+#define HT32F165x
+#else
+#error unknown/unsupported HT32 microcontroller
 #endif
-
-/*===========================================================================*/
-/* Common features.                                                          */
-/*===========================================================================*/
 
 /*===========================================================================*/
 /* Platform capabilities.                                                    */
 /*===========================================================================*/
 
-#if defined(HT32F1655) || defined(__DOXYGEN__)
+#if defined(HT32F165x) || defined(__DOXYGEN__)
 
 /**
  * @brief   Maximum system and core clock (f_SYS) frequency.
@@ -58,9 +58,20 @@
 #define HT32_FLASHCLK_MAX       25000000L
 
 /**
- * @name    HT32F1655 attributes
+ * @name    HT32F165x attributes
  * @{
  */
+
+/* GPIO attributes.*/
+#if defined(HT32F1655) || defined(HT32F1656)
+#define HT32_NUM_GPIO               5
+#else
+#define HT32_NUM_GPIO               4
+#endif
+#define HT32_GPIO_INDEX_BITS        13
+#define HT32_CCR_PAEN               CKCU_AHBCCR_PAEN
+
+#define HT32_GPIO_CLOCK_ENABLE_REG  (CKCU->AHBCCR)
 
 /* SPI attributes.*/
 #define HT32_HAS_SPI0               TRUE
@@ -83,10 +94,13 @@
 #define HT32_USB_IRQ_VECTOR         Vector114
 #define HT32_USB0_IS_USBOTG         FALSE
 #define HT32_HAS_USB_CLOCK_RECOVERY FALSE
+
+#define HT32_CCR_USBEN_REG (CKCU->AHBCCR)
+#define HT32_CCR_USBEN (CKCU_AHBCCR_USBEN)
  
 /** @} */
 
-#endif /* defined(HT32F1655) */
+#endif /* defined(HT32F165x) */
 
 #endif /* HT32_REGISTRY_H */
 
