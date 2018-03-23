@@ -358,6 +358,16 @@ struct USBDriver {
      USB->CSR &= ~USBCSR_DPPUEN;                                            \
    } while (FALSE)
 
+/**
+ * @brief   Start of host wake-up procedure.
+ *
+ * @notapi
+ */
+#define usb_lld_wakeup_host(usbp)                                           \
+  do {                                                                      \
+    USB->CSR |= USBCSR_GENRSM;                                              \
+  } while (FALSE)
+
 
 /*===========================================================================*/
 /* External declarations.                                                    */
