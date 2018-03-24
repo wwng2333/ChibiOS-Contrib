@@ -73,6 +73,12 @@
 
 #define HT32_GPIO_CLOCK_ENABLE_REG  (CKCU->AHBCCR)
 
+/* I2C attributes.*/
+#define HT32_HAS_I2C0               TRUE
+#define HT32_I2C0_IRQ_VECTOR        VectorEC
+#define HT32_HAS_I2C1               TRUE
+#define HT32_I2C1_IRQ_VECTOR        VectorF0
+
 /* SPI attributes.*/
 #define HT32_HAS_SPI0               TRUE
 #define HT32_SPI0_IRQ_VECTOR        VectorF4

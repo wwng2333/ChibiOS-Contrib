@@ -95,6 +95,44 @@ typedef struct {
 
 // Motor Control Timers
 // /////////////////////////////////////////////////////////////////////////////
+typedef struct {
+  __IO uint32_t CNTCFR;
+  __IO uint32_t MDCFR;
+  __IO uint32_t TRCFR;
+       uint32_t RESERVED0[1];
+  __IO uint32_t CTR;
+       uint32_t RESERVED1[3];
+  __IO uint32_t CHnICFR[4];
+       uint32_t RESERVED2[4];
+  __IO uint32_t CHnOCFR[4];
+  __IO uint32_t CHCTR;
+       uint32_t RESERVED3[5];
+  __IO uint32_t CHPOLR;
+  __IO uint32_t CHBRKCFR;
+  __IO uint32_t CHBRKCTR;
+  __IO uint32_t DICTR;
+  __IO uint32_t EVGR;
+  __IO uint32_t INTSR;
+  __IO uint32_t CNTR;
+  __IO uint32_t PSCR;
+  __IO uint32_t CRR;
+  __IO uint32_t REPR;
+  __IO uint32_t CHnCCR[4];
+  __IO uint32_t CHnACR[4];
+} TM_TypeDef;
+#define TM_CNTCFR_CMSEL_MASK (3U << 16)
+#define TM_CNTCFR_CMSEL_MODE_3 (3U << 16)
+#define TM_CNTCFR_CMSEL_MODE_2 (2U << 16)
+#define TM_CNTCFR_CMSEL_MODE_1 (1U << 16)
+#define TM_CNTCFR_CMSEL_MODE_0 (0U << 16)
+#define TM_CTR_CHCCDS (1U << 16)
+#define TM_CTR_COMUS (1U << 9)
+#define TM_CTR_COMPRE (1U << 8)
+#define TM_CTR_CRBE (1U << 1)
+#define TM_CTR_TME (1U << 0)
+#define TM_CHnOCFR_CHnPRE (1U << 4)
+#define TM_CHnOCFR_REFnCE (1U << 3)
+#define TM_CHnOCFR_CHnOM(n) ((((n)>>0)&7)|((((n)>>3)&1)<<8))
 
 // Operational Amplifier
 // Comparator
@@ -186,8 +224,8 @@ typedef struct {
 #define CKCU_AHBCCR_CKREFEN (1U << 11)
 #define CKCU_AHBCCR_USBEN (1U << 10)
 #define CKCU_APBCFGR_ADCDIV_MASK (7U << 16)
-#define CKCU_APBPRSTR0_I2SEN (1U << 25)
-#define CKCU_APBPRSTR0_SCIEN (1U << 24)
+#define CKCU_APBCCR0_I2SEN (1U << 25)
+#define CKCU_APBCCR0_SCIEN (1U << 24)
 #define CKCU_APBCCR0_EXTIEN (1U << 15)
 #define CKCU_APBCCR0_AFIOEN (1U << 14)
 #define CKCU_APBCCR0_UR1EN (1U << 11)
@@ -201,14 +239,14 @@ typedef struct {
 #define CKCU_APBCCR1_ADCEN (1U << 24)
 #define CKCU_APBCCR1_OPA1EN (1U << 23)
 #define CKCU_APBCCR1_OPA0EN (1U << 22)
-#define CKCU_APBCCR1_BFTM1RST (1U << 17)
-#define CKCU_APBCCR1_BFTM0RST (1U << 16)
-#define CKCU_APBCCR1_GPTM1RST (1U << 9)
-#define CKCU_APBCCR1_GPTM0RST (1U << 8)
+#define CKCU_APBCCR1_BFTM1EN (1U << 17)
+#define CKCU_APBCCR1_BFTM0EN (1U << 16)
+#define CKCU_APBCCR1_GPTM1EN (1U << 9)
+#define CKCU_APBCCR1_GPTM0EN (1U << 8)
 #define CKCU_APBCCR1_BKPREN (1U << 6)
-#define CKCU_APBCCR1_WDTRST (1U << 4)
-#define CKCU_APBCCR1_MCTM1RST (1U << 1)
-#define CKCU_APBCCR1_MCTM0RST (1U << 0)
+#define CKCU_APBCCR1_WDTREN (1U << 4)
+#define CKCU_APBCCR1_MCTM1EN (1U << 1)
+#define CKCU_APBCCR1_MCTM0EN (1U << 0)
 #define CKCU_CSTR_CKSWST_MASK (3U << 30)
 #define CKCU_CSTR_HSIST_MASK (7U << 24)
 #define CKCU_CSTR_HSEST_MASK (3U << 16)
@@ -297,7 +335,7 @@ typedef struct {
   __IO uint32_t IER;             /*!< 0x00C         Interrupt Enable Register                               */
   __IO uint32_t SR;              /*!< 0x010         Status Register                                         */
   __IO uint32_t TPR;             /*!< 0x014         Timing Parameter Register                               */
-  __IO uint32_t ICR;             /*!< 0x018         IrDA COntrol Register                                   */
+  __IO uint32_t ICR;             /*!< 0x018         IrDA Control Register                                   */
   __IO uint32_t RCR;             /*!< 0x01C         RS485 Control Register                                  */
   __IO uint32_t SCR;             /*!< 0x020         Synchronous Control Register                            */
   __IO uint32_t DLR;             /*!< 0x024         Divisor Latch Register                                  */
@@ -310,6 +348,59 @@ typedef struct {
 
 // I2C
 // /////////////////////////////////////////////////////////////////////////////
+typedef struct {
+  __IO uint32_t CR;
+  __IO uint32_t IER;
+  __IO uint32_t ADDR;
+  __IO uint32_t SR;
+  __IO uint32_t SHPGR;
+  __IO uint32_t SLPGR;
+  __IO uint32_t DR;
+  __IO uint32_t TAR;
+  __IO uint32_t ADDMR;
+  __IO uint32_t ADDSR;
+  __IO uint32_t TOUT;
+} I2C_TypeDef;
+#define I2C_CR_SEQ_FILTER_MASK (3U << 14)
+#define I2C_CR_SEQ_FILTER_2_PCLK (2U << 14)
+#define I2C_CR_SEQ_FILTER_1_PCLK (1U << 14)
+#define I2C_CR_SEQ_FILTER_DISABLE (0U << 14)
+#define I2C_CR_COMB_FILTER_En (1U << 13)
+#define I2C_CR_ENTOUT (1U << 12)
+#define I2C_CR_DMANACK (1U << 10)
+#define I2C_CR_RXDMAE (1U << 9)
+#define I2C_CR_TXDMAE (1U << 8)
+#define I2C_CR_ADRM (1U << 7)
+#define I2C_CR_I2CEN (1U << 3)
+#define I2C_CR_GCEN (1U << 2)
+#define I2C_CR_STOP (1U << 1)
+#define I2C_CR_AA (1U << 0)
+#define I2C_IER_RXBFIE (1U << 18)
+#define I2C_IER_TXDEIE (1U << 17)
+#define I2C_IER_RXDNEIE (1U << 16)
+#define I2C_IER_TOUTIE (1U << 11)
+#define I2C_IER_BUSERRIE (1U << 10)
+#define I2C_IER_RXNACKIE (1U << 9)
+#define I2C_IER_ARBLOSIE (1U << 8)
+#define I2C_IER_GCSIE (1U << 3)
+#define I2C_IER_ADRSIE (1U << 2)
+#define I2C_IER_STOIE (1U << 1)
+#define I2C_IER_STAIE (1U << 0)
+#define I2C_SR_TXNRX (1U << 21)
+#define I2C_SR_MASTER (1U << 20)
+#define I2C_SR_BUSBUSY (1U << 19)
+#define I2C_SR_RXBF (1U << 18)
+#define I2C_SR_TXDE (1U << 17)
+#define I2C_SR_RXDNE (1U << 16)
+#define I2C_SR_TOUTF (1U << 11)
+#define I2C_SR_BUSERR (1U << 10)
+#define I2C_SR_RXNACK (1U << 9)
+#define I2C_SR_ARBLOS (1U << 8)
+#define I2C_SR_GCS (1U << 3)
+#define I2C_SR_ADRS (1U << 2)
+#define I2C_SR_STO (1U << 1)
+#define I2C_SR_STA (1U << 0)
+#define I2C_TAR_RWD (1U << 10)
 
 // Inter-IC Sound
 // /////////////////////////////////////////////////////////////////////////////
@@ -451,6 +542,22 @@ typedef struct {
   __IO uint32_t FSR;             /*!< 0x01C         FIFO Status Register                                    */
   __IO uint32_t FTOCR;           /*!< 0x020         FIFO Time Out Counter Register                          */
 } SPI_TypeDef;
+#define SPI_CR0_GUADTEN (1U << 7)
+#define SPI_CR0_DUALEN (1U << 6)
+#define SPI_CR0_SSELC (1U << 4)
+#define SPI_CR0_SELOEN (1U << 3)
+#define SPI_CR0_SPIEN (1U << 0)
+#define SPI_CR1_MODE (1U << 14)
+#define SPI_CR1_SELM (1U << 13)
+#define SPI_CR1_FIRSTBIT (1U << 12)
+#define SPI_CR1_SELAP (1U << 11)
+#define SPI_CR1_FORMAT_MASK (7U << 8)
+#define SPI_IER_RXBNEIEN (1U << 2)
+#define SPI_IER_TXBEIEN (1U << 0)
+#define SPI_SR_RXBNE (1U << 2)
+#define SPI_SR_TXE (1U << 1)
+#define SPI_SR_TXBE (1U << 0)
+#define SPI_FCR_FIFOEN (1U << 10)
 // General Purpose I/O
 // /////////////////////////////////////////////////////////////////////////////
 typedef struct {

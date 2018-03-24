@@ -188,8 +188,8 @@ typedef enum IRQn
 #define AFIO                    ((AFIO_TypeDef *)   AFIO_BASE)
 #define EXTI                    ((EXTI_TypeDef *)   EXTI_BASE)
 #define I2S                     ((I2S_TypeDef *)    I2S_BASE)
-#define MCTM0                   ((MCTM_TypeDef *)   MCTM0_BASE)
-#define MCTM1                   ((MCTM_TypeDef *)   MCTM1_BASE)
+#define MCTM0                   ((TM_TypeDef *)     MCTM0_BASE)
+#define MCTM1                   ((TM_TypeDef *)     MCTM1_BASE)
 
 #define USART1                  ((USART_TypeDef *)  USART1_BASE)
 #define UART1                   ((UART_TypeDef *)   UART1_BASE)
@@ -200,8 +200,8 @@ typedef enum IRQn
 #define WDT                     ((WDT_TypeDef *)    WDT_BASE)
 #define RTC                     ((RTC_TypeDef *)    RTC_BASE)
 #define PWRCU                   ((PWRCU_TypeDef *)  PWRCU_BASE)
-#define GPTM0                   ((GPTM_TypeDef *)   GPTM0_BASE)
-#define GPTM1                   ((GPTM_TypeDef *)   GPTM1_BASE)
+#define GPTM0                   ((TM_TypeDef *)     GPTM0_BASE)
+#define GPTM1                   ((TM_TypeDef *)     GPTM1_BASE)
 #define BFTM0                   ((BFTM_TypeDef *)   BFTM0_BASE)
 #define BFTM1                   ((BFTM_TypeDef *)   BFTM1_BASE)
 
