@@ -357,6 +357,7 @@ typedef struct {
 #define TM_CHnOCFR_CHnPRE (1U << 4)
 #define TM_CHnOCFR_REFnCE (1U << 3)
 #define TM_CHnOCFR_CHnOM(n) ((((n)>>0)&7)|((((n)>>3)&1)<<8))
+#define TM_CHBRKCTR_CHMOE (1U << 4)
 
 // Real Time Clock
 // /////////////////////////////////////////////////////////////////////////////
