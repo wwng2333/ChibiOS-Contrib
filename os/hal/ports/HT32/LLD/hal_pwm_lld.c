@@ -138,6 +138,10 @@ void pwm_lld_start(PWMDriver *pwmp) {
   pwmp->TM->CNTR = 0;
   pwmp->TM->CTR = TM_CTR_TME;
   pwmp->TM->CHCTR = 0;
+#if (HT32_PWM_USE_MCTM0 == TRUE) || (HT32_PWM_USE_MCTM1 == TRUE)
+  if (pwmp->TM == MCTM0 || pwmp->TM == MCTM1)
+    pwmp->TM->CHBRKCTR = TM_CHBRKCTR_CHMOE;
+#endif
   for (size_t channel = 0; channel < PWM_CHANNELS; channel++) {
     switch (pwmp->config->channels[channel].mode & PWM_OUTPUT_MASK) {
     case PWM_OUTPUT_DISABLED:
