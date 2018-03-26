@@ -31,7 +31,7 @@
     #error "Unknown HT32 device"
 #endif
 
-#if defined(HT32F1655_6) || defined(HT32F1653_4)
+#if defined(HT32F1653_4) || defined(HT32F1655_6)
     #define HT32
     #define HT32F165x
 #endif
@@ -149,8 +149,8 @@ typedef enum IRQn
 #define SPI0_BASE               ((uint32_t)0x40004000)
 #define ADC_BASE                ((uint32_t)0x40010000)
 #if defined(HT32F1655_6)
-#define CMP_BASE                ((uint32_t)0x40018000)
-#define OPA_BASE                ((uint32_t)0x40018000)
+#define OPACMP0_BASE            ((uint32_t)0x40018000)
+#define OPACMP1_BASE            ((uint32_t)0x40018100)
 #endif
 #define AFIO_BASE               ((uint32_t)0x40022000)
 #define EXTI_BASE               ((uint32_t)0x40024000)
@@ -166,7 +166,7 @@ typedef enum IRQn
 #define I2C1_BASE               ((uint32_t)0x40049000)
 #if defined(HT32F1653_4)
 #define CMP0_BASE               ((uint32_t)0x40058000)
-#define CMP1_BASE               ((uint32_t)0x40058000)
+#define CMP1_BASE               ((uint32_t)0x40058100)
 #endif
 #define WDT_BASE                ((uint32_t)0x40068000)
 #define RTC_BASE                ((uint32_t)0x4006A000)
@@ -199,11 +199,13 @@ typedef enum IRQn
 /*                 Peripheral declaration                       */
 /****************************************************************/
 #define USART0                  ((USART_TypeDef *)  USART0_BASE)
-#define UART0                   ((UART_TypeDef *)   UART0_BASE)
+#define UART0                   ((USART_TypeDef *)  UART0_BASE)
 #define SPI0                    ((SPI_TypeDef *)    SPI0_BASE)
 #define ADC                     ((ADC_TypeDef *)    ADC_BASE)
-#define CMP                     ((CMP_TypeDef *)    CMP_BASE)
-#define OPA                     ((OPA_TypeDef *)    OPA_BASE)
+#if defined(HT32F1655_6)
+#define OPACMP0                 ((OPACMP_TypeDef *) OPACMP0_BASE)
+#define OPACMP1                 ((OPACMP_TypeDef *) OPACMP1_BASE)
+#endif
 #define AFIO                    ((AFIO_TypeDef *)   AFIO_BASE)
 #define EXTI                    ((EXTI_TypeDef *)   EXTI_BASE)
 #define I2S                     ((I2S_TypeDef *)    I2S_BASE)
@@ -211,11 +213,15 @@ typedef enum IRQn
 #define MCTM1                   ((TM_TypeDef *)     MCTM1_BASE)
 
 #define USART1                  ((USART_TypeDef *)  USART1_BASE)
-#define UART1                   ((UART_TypeDef *)   UART1_BASE)
+#define UART1                   ((USART_TypeDef *)  UART1_BASE)
 #define SCI                     ((SCI_TypeDef *)    SCI_BASE)
 #define SPI1                    ((SPI_TypeDef *)    SPI1_BASE)
 #define I2C0                    ((I2C_TypeDef *)    I2C0_BASE)
 #define I2C1                    ((I2C_TypeDef *)    I2C1_BASE)
+#if defined(HT32F1653_4)
+#define CMP0                    ((CMP_TypeDef *)    CMP0_BASE)
+#define CMP1                    ((CMP_TypeDef *)    CMP1_BASE)
+#endif
 #define WDT                     ((WDT_TypeDef *)    WDT_BASE)
 #define RTC                     ((RTC_TypeDef *)    RTC_BASE)
 #define PWRCU                   ((PWRCU_TypeDef *)  PWRCU_BASE)
