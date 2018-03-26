@@ -1,15 +1,6 @@
 #ifndef HT32F165x_REG_H
 #define HT32F165x_REG_H
 
-#if defined(HT32F1655) || defined(HT32F1656)
-#define HT32F1655_6
-#elif defined(HT32F1653) || defined(HT32F1654)
-#define HT32F1653_4
-#endif
-#if defined(HT32F1655_6) || defined(HT32F1653_4)
-#define HT32F165x
-#endif
-
 // Constants
 // /////////////////////////////////////////////////////////////////////////////
 #define AFIO_DEFAULT    0
@@ -75,6 +66,15 @@ typedef struct {
 #endif
 } FMC_TypeDef;
 
+#define FMC_OCMR_CMD_MASK (0xF << 0)
+#define FMC_OCMR_CMD_IDLE (0x0 << 0)
+#define FMC_OCMR_CMD_WORD_PROGRAM (0x4 << 0)
+#define FMC_OCMR_CMD_PAGE_ERASE (0x8 << 0)
+#define FMC_OCMR_CMD_MASS_ERASE (0xA << 0)
+#define FMC_OPCR_OPM_MASK (0xF << 1)
+#define FMC_OPCR_OPM_IDLE (0x6 << 1)
+#define FMC_OPCR_OPM_COMMIT (0xA << 1)
+#define FMC_OPCR_OPM_FINISHED (0xE << 1)
 #define FMC_CFCR_CE (1U << 12)
 #define FMC_CFCR_WAIT_MASK (7U << 0)
 #define FMC_CFCR_WAIT_0 (1U)
@@ -120,6 +120,7 @@ typedef struct {
   __IO uint32_t CHnCCR[4];
   __IO uint32_t CHnACR[4];
 } TM_TypeDef;
+
 #define TM_CNTCFR_CMSEL_MASK (3U << 16)
 #define TM_CNTCFR_CMSEL_MODE_3 (3U << 16)
 #define TM_CNTCFR_CMSEL_MODE_2 (2U << 16)
@@ -247,10 +248,10 @@ typedef struct {
 #define CKCU_APBCCR1_WDTREN (1U << 4)
 #define CKCU_APBCCR1_MCTM1EN (1U << 1)
 #define CKCU_APBCCR1_MCTM0EN (1U << 0)
-#define CKCU_CSTR_CKSWST_MASK (3U << 30)
-#define CKCU_CSTR_HSIST_MASK (7U << 24)
-#define CKCU_CSTR_HSEST_MASK (3U << 16)
-#define CKCU_CSTR_PLLST_MASK (0xfU << 8)
+#define CKCU_CKST_CKSWST_MASK (3U << 30)
+#define CKCU_CKST_HSIST_MASK (7U << 24)
+#define CKCU_CKST_HSEST_MASK (3U << 16)
+#define CKCU_CKST_PLLST_MASK (0xfU << 8)
 #define CKCU_LPCR_USBSLEEP (1U << 8)
 #define CKCU_LPCR_BKISO (1U << 0)
 
@@ -304,44 +305,82 @@ typedef struct {
 // USART
 // /////////////////////////////////////////////////////////////////////////////
 typedef struct {
-#if defined(HT32F165x)
   union {
-  __IO uint32_t DR;              /*!< 0x000         Data Register                                           */
-  __IO uint32_t RBR;             /*!< 0x000         Receive Buffer Register                                 */
-  __IO uint32_t TBR;             /*!< 0x000         Transmit Holding Register                               */
+  __IO uint32_t RBR;             //!< 0x000         Receive Buffer Register
+  __IO uint32_t TBR;             //!< 0x000         Transmit Holding Register
+  __IO uint32_t DR;              //!< 0x000         Data Register
   };
-  __IO uint32_t IER;             /*!< 0x004         Interrupt Enable Register                               */
-  __IO uint32_t IIR;             /*!< 0x008         Interrupt Identification Register/FIFO Control Register */
-  __IO uint32_t FCR;             /*!< 0x00C         FIFO Control Register                                   */
-  __IO uint32_t LCR;             /*!< 0x010         Line Control Register                                   */
-  __IO uint32_t MCR;             /*!< 0x014         Modem Control Register                                  */
-  union {
-  __IO uint32_t LSR;             /*!< 0x018         Line Status Register                                    */
-  __IO uint32_t SR;              /*!< 0x018         Line Status Register                                    */
-  };
-  __IO uint32_t MSR;             /*!< 0x01C         Modem Status Register                                   */
-  __IO uint32_t TPR;             /*!< 0x020         Timing Parameter Register                               */
-  __IO uint32_t MDR;             /*!< 0x024         Mode Register                                           */
-  __IO uint32_t ICR;             /*!< 0x028         IrDA Register                                           */
-  __IO uint32_t RCR;             /*!< 0x02C         RS485 Control Register                                  */
-  __IO uint32_t SCR;             /*!< 0x030         Synchronous Control Register                            */
-  __IO uint32_t FSR;             /*!< 0x034         FIFO Status Register                                    */
-  __IO uint32_t DLR;             /*!< 0x038         Divisor Latch Register                                  */
-  __IO uint32_t DTR;             /*!< 0x040         Debug/Test Register                                     */
+  __IO uint32_t IER;             //!< 0x004         Interrupt Enable Register
+  __IO uint32_t IIR;             //!< 0x008         Interrupt Identification Register/FIFO Control Register
+  __IO uint32_t FCR;             //!< 0x00C         FIFO Control Register
+  __IO uint32_t LCR;             //!< 0x010         Line Control Register
+#if defined(HT32F1655_6)
+  __IO uint32_t MODCR;           //!< 0x014         Modem Control Register
 #else
-  __IO uint32_t DR;              /*!< 0x000         Data Register                                           */
-  __IO uint32_t CR;              /*!< 0x004         Control Register                                        */
-  __IO uint32_t FCR;             /*!< 0x008         FIFO Control Register                                   */
-  __IO uint32_t IER;             /*!< 0x00C         Interrupt Enable Register                               */
-  __IO uint32_t SR;              /*!< 0x010         Status Register                                         */
-  __IO uint32_t TPR;             /*!< 0x014         Timing Parameter Register                               */
-  __IO uint32_t ICR;             /*!< 0x018         IrDA Control Register                                   */
-  __IO uint32_t RCR;             /*!< 0x01C         RS485 Control Register                                  */
-  __IO uint32_t SCR;             /*!< 0x020         Synchronous Control Register                            */
-  __IO uint32_t DLR;             /*!< 0x024         Divisor Latch Register                                  */
-  __IO uint32_t DTR;             /*!< 0x048         Debug/Test Register                                     */
+       uint32_t RESERVED0;       //!< 0x014         Reserved
 #endif
+  __IO uint32_t LSR;             //!< 0x018         Line Status Register
+#if defined(HT32F1655_6)
+  __IO uint32_t MODSR;           //!< 0x01C         Modem Status Register
+#else
+       uint32_t RESERVED1;       //!< 0x01C         Reserved
+#endif
+  __IO uint32_t TPR;             //!< 0x020         Timing Parameter Register
+  __IO uint32_t MDR;             //!< 0x024         Mode Register
+#if defined(HT32F1655_6)
+  __IO uint32_t IrDACR;          //!< 0x028         IrDA Control Register
+  __IO uint32_t RS485CR;         //!< 0x02C         RS485 Control Register
+  __IO uint32_t SYNCR;           //!< 0x030         Synchronous Control Register
+#else
+       uint32_t RESERVED2[3];    //!< 0x028 ~ 0x030 Reserved
+#endif
+  __IO uint32_t FSR;             //!< 0x034         FIFO Status Register
+  __IO uint32_t DLR;             //!< 0x038         Divisor Latch Register
+       uint32_t RESERVED3;       //!< 0x03C         Reserved
+  __IO uint32_t DEGTSTR;         //!< 0x040         Debug/Test Register
 } USART_TypeDef;
+
+#define USART_FCR_FME (1 << 0)
+#define USART_FCR_RFR (1 << 1)
+#define USART_FCR_TFR (1 << 2)
+#define USART_FCR_TFTL_MASK     (0x3 << 4)
+#define USART_FCR_TFTL_0BYTE    (0x0 << 4)
+#define USART_FCR_TFTL_2BYTE    (0x1 << 4)
+#define USART_FCR_TFTL_4BYTE    (0x2 << 4)
+#define USART_FCR_TFTL_8BYTE    (0x3 << 4)
+#define USART_FCR_RFTL_MASK     (0x3 << 6)
+#define USART_FCR_RFTL_1BYTE    (0x0 << 6)
+#define USART_FCR_RFTL_4BYTE    (0x1 << 6)
+#define USART_FCR_RFTL_8BYTE    (0x2 << 6)
+#define USART_FCR_RFTL_14BYTE   (0x3 << 6)
+#define USART_FCR_URTXEN (1 << 8)
+#define USART_FCR_URRXEN (1 << 9)
+#define USART_LCR_WLS_MASK (0x3 << 0)
+#define USART_LCR_WLS_7BIT (0x0 << 0)
+#define USART_LCR_WLS_8BIT (0x1 << 0)
+#define USART_LCR_WLS_9BIT (0x2 << 0)
+#define USART_LCR_NSB (1 << 2)
+#define USART_LCR_PBE (1 << 3)
+#define USART_LCR_EPE (1 << 4)
+#define USART_LCR_SPE (1 << 5)
+#define USART_LCR_BCB (1 << 6)
+#define USART_LSR_RFDR (1 << 0)
+#define USART_LSR_OEI (1 << 1)
+#define USART_LSR_PEI (1 << 2)
+#define USART_LSR_FEI (1 << 3)
+#define USART_LSR_BII (1 << 4)
+#define USART_LSR_TXFEMPT (1 << 5)
+#define USART_LSR_TXEMPT (1 << 6)
+#define USART_LSR_ERRRX (1 << 7)
+#define USART_LSR_RSADDEF (1 << 8)
+#define USART_MDR_MODE_MASK         (0x3 << 0)
+#define USART_MDR_MODE_NORMAL       (0x0 << 0)
+#define USART_MDR_MODE_IRDA         (0x1 << 0)
+#define USART_MDR_MODE_RS485        (0x2 << 0)
+#define USART_MDR_MODE_SYNCHRONOUS  (0x3 << 0)
+#define USART_MDR_TRSM (1 << 2)
+#define USART_MDR_TXDMAEN (1 << 4)
+#define USART_MDR_RXDMAEN (1 << 5)
 
 // UART
 // /////////////////////////////////////////////////////////////////////////////
@@ -349,18 +388,19 @@ typedef struct {
 // I2C
 // /////////////////////////////////////////////////////////////////////////////
 typedef struct {
-  __IO uint32_t CR;
-  __IO uint32_t IER;
-  __IO uint32_t ADDR;
-  __IO uint32_t SR;
-  __IO uint32_t SHPGR;
-  __IO uint32_t SLPGR;
-  __IO uint32_t DR;
-  __IO uint32_t TAR;
-  __IO uint32_t ADDMR;
-  __IO uint32_t ADDSR;
-  __IO uint32_t TOUT;
+  __IO uint32_t CR;             //!< 0x000          Control Register
+  __IO uint32_t IER;            //!< 0x004          Interrupt Enable Register
+  __IO uint32_t ADDR;           //!< 0x008          Address Register
+  __IO uint32_t SR;             //!< 0x00C          Status Register
+  __IO uint32_t SHPGR;          //!< 0x010          SCL High Period Generation Register
+  __IO uint32_t SLPGR;          //!< 0x014          SCL Low Period Generation Register
+  __IO uint32_t DR;             //!< 0x018          Data Register
+  __IO uint32_t TAR;            //!< 0x01C          Target Register
+  __IO uint32_t ADDMR;          //!< 0x020          Address Mask Register
+  __IO uint32_t ADDSR;          //!< 0x024          Address Snoop Register
+  __IO uint32_t TOUT;           //!< 0x028          Timeout Register
 } I2C_TypeDef;
+
 #define I2C_CR_SEQ_FILTER_MASK (3U << 14)
 #define I2C_CR_SEQ_FILTER_2_PCLK (2U << 14)
 #define I2C_CR_SEQ_FILTER_1_PCLK (1U << 14)
@@ -458,9 +498,9 @@ typedef struct {
 #define USBISR_EPnIF        (0xFF00)       // Endpoint Interrupt Mask
 
 // USBFCR
-#define USBFCR_FRNUM       (0x7FF)        // Frame Number
-#define USBFCR_SOFLCK      (1U << 16)     // Start-of-Frame Lock Flag
-#define USBFCR_LSOF        (0x3U << 17)   // Lost Start-of-Frame Number
+#define USBFCR_FRNUM        (0x7FF)        // Frame Number
+#define USBFCR_SOFLCK       (1U << 16)     // Start-of-Frame Lock Flag
+#define USBFCR_LSOF         (0x3U << 17)   // Lost Start-of-Frame Number
 
 // USBEPnCSR
 #define USBEPnCSR_DTGTX     (0x01)         // Data Toggle Status, for IN transfer
@@ -528,7 +568,6 @@ typedef struct {
 // Analog To Digital Converter 
 // /////////////////////////////////////////////////////////////////////////////
 
-
 // SPI
 // /////////////////////////////////////////////////////////////////////////////
 typedef struct {
@@ -542,6 +581,7 @@ typedef struct {
   __IO uint32_t FSR;             /*!< 0x01C         FIFO Status Register                                    */
   __IO uint32_t FTOCR;           /*!< 0x020         FIFO Time Out Counter Register                          */
 } SPI_TypeDef;
+
 #define SPI_CR0_GUADTEN (1U << 7)
 #define SPI_CR0_DUALEN (1U << 6)
 #define SPI_CR0_SSELC (1U << 4)
@@ -552,12 +592,19 @@ typedef struct {
 #define SPI_CR1_FIRSTBIT (1U << 12)
 #define SPI_CR1_SELAP (1U << 11)
 #define SPI_CR1_FORMAT_MASK (7U << 8)
+#define SPI_CR1_FORMAT_MODE0 (0x1U << 8)
+#define SPI_CR1_FORMAT_MODE1 (0x2U << 8)
+#define SPI_CR1_FORMAT_MODE2 (0x6U << 8)
+#define SPI_CR1_FORMAT_MODE3 (0x5U << 8)
 #define SPI_IER_RXBNEIEN (1U << 2)
 #define SPI_IER_TXBEIEN (1U << 0)
 #define SPI_SR_RXBNE (1U << 2)
 #define SPI_SR_TXE (1U << 1)
 #define SPI_SR_TXBE (1U << 0)
 #define SPI_FCR_FIFOEN (1U << 10)
+#define SPI_FSR_TXFS_MASK (0xfU << 0)
+#define SPI_FSR_RXFS_MASK (0xfU << 4)
+
 // General Purpose I/O
 // /////////////////////////////////////////////////////////////////////////////
 typedef struct {
@@ -573,6 +620,7 @@ typedef struct {
   __IO uint32_t SRR;             /*!< 0x024         Output Set and Reset Control Register                   */
   __IO uint32_t RR;              /*!< 0x028         Output Reset Control Register                           */
 } GPIO_TypeDef;
+
 // Alternate Function Input/Output
 // /////////////////////////////////////////////////////////////////////////////
 typedef struct {
@@ -593,4 +641,5 @@ typedef struct {
     };
   };
 } AFIO_TypeDef;
+
 #endif // HT32F165x_REG_H
