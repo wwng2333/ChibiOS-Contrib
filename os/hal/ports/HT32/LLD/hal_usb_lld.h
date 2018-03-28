@@ -17,7 +17,7 @@
 
 /**
  * @file    hal_usb_lld.h
- * @brief   PLATFORM USB subsystem low level driver header.
+ * @brief   HT32 USB subsystem low level driver header.
  *
  * @addtogroup USB
  * @{
@@ -45,7 +45,7 @@
 /**
  * @brief   The address can be changed immediately upon packet reception.
  */
-#define USB_SET_ADDRESS_MODE                USB_LATE_SET_ADDRESS
+#define USB_SET_ADDRESS_MODE                USB_EARLY_SET_ADDRESS
 
 /**
  * @brief   Method for set address acknowledge.
@@ -57,7 +57,7 @@
 /*===========================================================================*/
 
 /**
- * @name    PLATFORM configuration options
+ * @name    HT32 configuration options
  * @{
  */
 /**
@@ -101,6 +101,7 @@ typedef struct {
   thread_reference_t            thread;
 #endif
     /* End of the mandatory fields.*/
+  uint16_t                      txlastpktlen;
 } USBInEndpointState;
 
 /**
@@ -126,6 +127,7 @@ typedef struct {
   thread_reference_t            thread;
 #endif
   /* End of the mandatory fields.*/
+  uint16_t                      rxpkts;
 } USBOutEndpointState;
 
 /**
@@ -302,6 +304,7 @@ struct USBDriver {
   USB_DRIVER_EXT_FIELDS
 #endif
   /* End of the mandatory fields.*/
+  uint16_t                      epmem_next;
 };
 
 /*===========================================================================*/
@@ -316,7 +319,7 @@ struct USBDriver {
  *
  * @notapi
  */
-#define usb_lld_get_frame_number(usbp) 0
+#define usb_lld_get_frame_number(usbp) (USB->FCR & USBFCR_FRNUM)
 
 /**
  * @brief   Returns the exact size of a receive transaction.
@@ -340,14 +343,31 @@ struct USBDriver {
  *
  * @api
  */
-#define usb_lld_connect_bus(usbp)
+#define usb_lld_connect_bus(usbp)                                           \
+  do {                                                                      \
+    USB->CSR |= USBCSR_DPPUEN;                                              \
+  } while (FALSE)
 
 /**
  * @brief   Disconnect the USB device.
  *
  * @api
  */
-#define usb_lld_disconnect_bus(usbp)
+#define usb_lld_disconnect_bus(usbp)                                        \
+   do {                                                                     \
+     USB->CSR &= ~USBCSR_DPPUEN;                                            \
+   } while (FALSE)
+
+/**
+ * @brief   Start of host wake-up procedure.
+ *
+ * @notapi
+ */
+#define usb_lld_wakeup_host(usbp)                                           \
+  do {                                                                      \
+    USB->CSR |= USBCSR_GENRSM;                                              \
+  } while (FALSE)
+
 
 /*===========================================================================*/
 /* External declarations.                                                    */
@@ -370,8 +390,6 @@ extern "C" {
   usbepstatus_t usb_lld_get_status_in(USBDriver *usbp, usbep_t ep);
   usbepstatus_t usb_lld_get_status_out(USBDriver *usbp, usbep_t ep);
   void usb_lld_read_setup(USBDriver *usbp, usbep_t ep, uint8_t *buf);
-  void usb_lld_prepare_receive(USBDriver *usbp, usbep_t ep);
-  void usb_lld_prepare_transmit(USBDriver *usbp, usbep_t ep);
   void usb_lld_start_out(USBDriver *usbp, usbep_t ep);
   void usb_lld_start_in(USBDriver *usbp, usbep_t ep);
   void usb_lld_stall_out(USBDriver *usbp, usbep_t ep);

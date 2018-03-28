@@ -16,7 +16,7 @@
 
 /**
  * @file    hal_lld.h
- * @brief   PLATFORM HAL subsystem low level driver header.
+ * @brief   HT32 HAL subsystem low level driver header.
  *
  * @addtogroup HAL
  * @{
@@ -75,6 +75,7 @@
 extern "C" {
 #endif
   void hal_lld_init(void);
+  void ht32_clock_init(void);
 #ifdef __cplusplus
 }
 #endif

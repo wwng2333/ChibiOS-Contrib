@@ -16,7 +16,7 @@
 
 /**
  * @file    hal_spi_lld.h
- * @brief   PLATFORM SPI subsystem low level driver header.
+ * @brief   HT32 SPI subsystem low level driver header.
  *
  * @addtogroup SPI
  * @{
@@ -36,16 +36,19 @@
 /*===========================================================================*/
 
 /**
- * @name    PLATFORM configuration options
+ * @name    HT32 configuration options
  * @{
  */
 /**
- * @brief   SPI1 driver enable switch.
- * @details If set to @p TRUE the support for SPI1 is included.
+ * @brief   SPI0 driver enable switch.
+ * @details If set to @p TRUE the support for SPI0 is included.
  * @note    The default is @p FALSE.
  */
-#if !defined(PLATFORM_SPI_USE_SPI1) || defined(__DOXYGEN__)
-#define PLATFORM_SPI_USE_SPI1                  FALSE
+#if !defined(HT32_SPI_USE_SPI0) || defined(__DOXYGEN__)
+#define HT32_SPI_USE_SPI0                  FALSE
+#endif
+#if !defined(HT32_SPI_USE_SPI1) || defined(__DOXYGEN__)
+#define HT32_SPI_USE_SPI1                  FALSE
 #endif
 /** @} */
 
@@ -81,6 +84,9 @@ typedef struct {
    */
   spicallback_t             end_cb;
   /* End of the mandatory fields.*/
+  uint32_t                  cr0;
+  uint32_t                  cr1;
+  uint32_t                  cpr;
 } SPIConfig;
 
 /**
@@ -113,6 +119,10 @@ struct SPIDriver {
   SPI_DRIVER_EXT_FIELDS
 #endif
   /* End of the mandatory fields.*/
+  SPI_TypeDef *SPI;
+  uint8_t *rxptr;
+  const uint8_t *txptr;
+  size_t rxcnt, txcnt;
 };
 
 /*===========================================================================*/
@@ -123,7 +133,10 @@ struct SPIDriver {
 /* External declarations.                                                    */
 /*===========================================================================*/
 
-#if (PLATFORM_SPI_USE_SPI1 == TRUE) && !defined(__DOXYGEN__)
+#if (HT32_SPI_USE_SPI0 == TRUE) && !defined(__DOXYGEN__)
+extern SPIDriver SPID0;
+#endif
+#if (HT32_SPI_USE_SPI1 == TRUE) && !defined(__DOXYGEN__)
 extern SPIDriver SPID1;
 #endif
 

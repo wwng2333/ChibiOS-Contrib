@@ -22,19 +22,19 @@
  */
 
 /*
- * HT32F1655 memory setup.
+ * HT32F1653 memory setup.
  */
 MEMORY
 {
   flash0   : org = 0x0000,         len = 0x160
-  flash1   : org = 0x0000 + 0x160, len = 128k - 0x0000 - 0x160
+  flash1   : org = 0x0000 + 0x160, len = 32k - 0x0000 - 0x160
   flash2   : org = 0x00000000, len = 0
   flash3   : org = 0x00000000, len = 0
   flash4   : org = 0x00000000, len = 0
   flash5   : org = 0x00000000, len = 0
   flash6   : org = 0x00000000, len = 0
   flash7   : org = 0x00000000, len = 0
-  ram0     : org = 0x20000000, len = 32k
+  ram0     : org = 0x20000000, len = 8k
   ram1     : org = 0x00000000, len = 0
   ram2     : org = 0x00000000, len = 0
   ram3     : org = 0x00000000, len = 0
