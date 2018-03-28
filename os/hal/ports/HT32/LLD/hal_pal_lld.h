@@ -31,6 +31,36 @@
 /* Unsupported modes and specific modes                                      */
 /*===========================================================================*/
 
+#undef PAL_MODE_RESET
+#undef PAL_MODE_UNCONNECTED
+#undef PAL_MODE_INPUT
+#undef PAL_MODE_INPUT_PULLUP
+#undef PAL_MODE_INPUT_PULLDOWN
+#undef PAL_MODE_INPUT_ANALOG
+#undef PAL_MODE_OUTPUT_PUSHPULL
+#undef PAL_MODE_OUTPUT_OPENDRAIN
+
+#define PAL_HT32_MODE_DIR           ( 1U <<  0)
+#define PAL_HT32_MODE_INE           ( 1U <<  1)
+#define PAL_HT32_MODE_PU            ( 1U <<  2)
+#define PAL_HT32_MODE_PD            ( 1U <<  3)
+#define PAL_HT32_MODE_OD            ( 1U <<  4)
+#define PAL_HT32_MODE_DRV           ( 1U <<  5)
+#define PAL_HT32_MODE_LOCK          ( 1U <<  6)
+#define PAL_HT32_MODE_AF_MASK       (15U <<  8)
+#define PAL_HT32_MODE_AFE           ( 1U << 15)
+#define PAL_HT32_MODE_AF(m)         (PAL_HT32_MODE_AFE | ((m) <<  8))
+
+//#define PAL_MODE_RESET              (0)
+#define PAL_MODE_UNCONNECTED        (PAL_HT32_MODE_LOCK)
+#define PAL_MODE_INPUT              (PAL_HT32_MODE_INE)
+#define PAL_MODE_INPUT_PULLUP       (PAL_HT32_MODE_PU|PAL_HT32_MODE_INE)
+#define PAL_MODE_INPUT_PULLDOWN     (PAL_HT32_MODE_PD|PAL_HT32_MODE_INE)
+#define PAL_MODE_INPUT_ANALOG       (PAL_HT32_MODE_AF(2))
+#define PAL_MODE_OUTPUT_PUSHPULL    (PAL_HT32_MODE_DIR)
+#define PAL_MODE_OUTPUT_OPENDRAIN   (PAL_HT32_MODE_OD|PAL_HT32_MODE_DIR)
+#define PAL_MODE_HT32_AF            PAL_HT32_MODE_AF
+
 /*===========================================================================*/
 /* I/O Ports Types and constants.                                            */
 /*===========================================================================*/
@@ -42,13 +72,13 @@
 /**
  * @brief   Width, in bits, of an I/O port.
  */
-#define PAL_IOPORTS_WIDTH           32U
+#define PAL_IOPORTS_WIDTH           16U
 
 /**
  * @brief   Whole port mask.
  * @details This macro specifies all the valid bits into a port.
  */
-#define PAL_WHOLE_PORT              ((ioportmask_t)0xFFFFFFFFU)
+#define PAL_WHOLE_PORT              ((ioportmask_t)0xFFFFU)
 /** @} */
 
 /**
@@ -67,7 +97,7 @@
  * @brief   Decodes a port identifier from a line identifier.
  */
 #define PAL_PORT(line)                                                      \
-  ((stm32_gpio_t *)(((uint32_t)(line)) & 0xFFFFFFF0U))
+  ((GPIO_TypeDef *)(((uint32_t)(line)) & 0xFFFFFFC0U))
 
 /**
  * @brief   Decodes a pad identifier from a line identifier.
@@ -90,24 +120,37 @@
  * @note    Implementations may extend this structure to contain more,
  *          architecture dependent, fields.
  */
-typedef struct {
+struct port_setup {
+	uint16_t DIR;
+	uint16_t INE;
+	uint16_t PU;
+	uint16_t PD;
+	uint16_t OD;
+	uint16_t DRV;
+	uint16_t LOCK;
+	uint16_t OUT;
+	uint32_t CFG[2];
+};
 
+typedef struct {
+  struct port_setup setup[HT32_NUM_GPIO];
+  uint32_t ESSR[2];
 } PALConfig;
 
 /**
  * @brief   Digital I/O port sized unsigned type.
  */
-typedef uint32_t ioportmask_t;
+typedef uint16_t ioportmask_t;
 
 /**
  * @brief   Digital I/O modes.
  */
-typedef uint32_t iomode_t;
+typedef uint16_t iomode_t;
 
 /**
  * @brief   Type of an I/O line.
  */
-typedef uint32_t ioline_t;
+typedef uintptr_t ioline_t;
 
 /**
  * @brief   Port Identifier.
@@ -115,32 +158,29 @@ typedef uint32_t ioline_t;
  *          any assumption about it, use the provided macros when populating
  *          variables of this type.
  */
-typedef uint32_t ioportid_t;
+typedef GPIO_TypeDef * ioportid_t;
 
 /*===========================================================================*/
 /* I/O Ports Identifiers.                                                    */
 /*===========================================================================*/
 
 /**
- * @brief   GPIO port A identifier.
+ * @brief   First I/O port identifier.
+ * @details Low level drivers can define multiple ports, it is suggested to
+ *          use this naming convention.
  */
-#define IOPORTA         GPIO_A
-/**
- * @brief   GPIO port B identifier.
- */
-#define IOPORTB         GPIO_B
-/**
- * @brief   GPIO port C identifier.
- */
-#define IOPORTC         GPIO_C
-/**
- * @brief   GPIO port D identifier.
- */
-#define IOPORTD         GPIO_D
-/**
- * @brief   GPIO port E identifier.
- */
-#define IOPORTE         GPIO_E
+#define HT32_PAL_ID(x)  ((ioportid_t)(GPIO_A_BASE + (x << HT32_GPIO_INDEX_BITS)))
+#define HT32_PAL_IDX(x) (((uintptr_t)(x) - GPIO_A_BASE) >> HT32_GPIO_INDEX_BITS)
+#define IOPORT1         HT32_PAL_ID(0)
+#define IOPORT2         HT32_PAL_ID(1)
+#define IOPORT3         HT32_PAL_ID(2)
+#define IOPORT4         HT32_PAL_ID(3)
+#define IOPORT5         HT32_PAL_ID(4)
+#define IOPORTA IOPORT1
+#define IOPORTB IOPORT2
+#define IOPORTC IOPORT3
+#define IOPORTD IOPORT4
+#define IOPORTE IOPORT5
 
 /*===========================================================================*/
 /* Implementation, some of the following macros could be implemented as      */
@@ -164,7 +204,7 @@ typedef uint32_t ioportid_t;
  *
  * @notapi
  */
-#define pal_lld_readport(port) 0U
+#define pal_lld_readport(port) (PAL_PORT(port)->DINR)
 
 /**
  * @brief   Reads the output latch.
@@ -176,7 +216,7 @@ typedef uint32_t ioportid_t;
  *
  * @notapi
  */
-#define pal_lld_readlatch(port) 0U
+#define pal_lld_readlatch(port) (PAL_PORT(port)->DOUTR)
 
 /**
  * @brief   Writes a bits mask on a I/O port.
@@ -188,8 +228,7 @@ typedef uint32_t ioportid_t;
  */
 #define pal_lld_writeport(port, bits)                                       \
   do {                                                                      \
-    (void)port;                                                             \
-    (void)bits;                                                             \
+    PAL_PORT(port)->DOUTR = (bits);                                         \
   } while (false)
 
 
@@ -206,8 +245,7 @@ typedef uint32_t ioportid_t;
  */
 #define pal_lld_setport(port, bits)                                         \
   do {                                                                      \
-    (void)port;                                                             \
-    (void)bits;                                                             \
+    PAL_PORT(port)->SRR = (bits);                                           \
   } while (false)
 
 
@@ -224,11 +262,11 @@ typedef uint32_t ioportid_t;
  */
 #define pal_lld_clearport(port, bits)                                       \
   do {                                                                      \
-    (void)port;                                                             \
-    (void)bits;                                                             \
+    PAL_PORT(port)->RR = (bits);                                            \
   } while (false)
 
 
+#if 0
 /**
  * @brief   Toggles a bits mask on a I/O port.
  * @note    The @ref PAL provides a default software implementation of this
@@ -283,6 +321,7 @@ typedef uint32_t ioportid_t;
     (void)offset;                                                           \
     (void)bits;                                                             \
   } while (false)
+#endif
 
 /**
  * @brief   Pads group mode setup.
@@ -300,6 +339,7 @@ typedef uint32_t ioportid_t;
 #define pal_lld_setgroupmode(port, mask, offset, mode)                      \
   _pal_lld_setgroupmode(port, mask << offset, mode)
 
+#if 0
 /**
  * @brief   Reads a logical state from an I/O pad.
  * @note    The @ref PAL provides a default software implementation of this
@@ -413,6 +453,7 @@ typedef uint32_t ioportid_t;
     (void)mode;                                                             \
   } while (false)
 
+#endif
 
 #if !defined(__DOXYGEN__)
 extern const PALConfig pal_default_config;

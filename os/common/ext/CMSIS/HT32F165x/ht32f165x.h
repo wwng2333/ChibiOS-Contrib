@@ -130,4 +130,97 @@ typedef enum IRQn
 
 #include "core_cm3.h"           /* Cortex-M3 processor and core peripherals */
 
+/****************************************************************/
+/*                  Peripheral memory map                       */
+/****************************************************************/
+#define USART0_BASE             ((uint32_t)0x40000000)
+#define UART0_BASE              ((uint32_t)0x40001000)
+#define SPI0_BASE               ((uint32_t)0x40004000)
+#define ADC_BASE                ((uint32_t)0x40010000)
+#define CMP_BASE                ((uint32_t)0x40018000)
+#define OPA_BASE                ((uint32_t)0x40018000)
+#define AFIO_BASE               ((uint32_t)0x40022000)
+#define EXTI_BASE               ((uint32_t)0x40024000)
+#define I2S_BASE                ((uint32_t)0x40026000)
+#define MCTM0_BASE              ((uint32_t)0x4002C000)
+#define MCTM1_BASE              ((uint32_t)0x4002D000)
+
+#define USART1_BASE             ((uint32_t)0x40040000)
+#define UART1_BASE              ((uint32_t)0x40041000)
+#define SCI_BASE                ((uint32_t)0x40043000)
+#define SPI1_BASE               ((uint32_t)0x40044000)
+#define I2C0_BASE               ((uint32_t)0x40048000)
+#define I2C1_BASE               ((uint32_t)0x40049000)
+#define WDT_BASE                ((uint32_t)0x40068000)
+#define RTC_BASE                ((uint32_t)0x4006A000)
+#define PWRCU_BASE              ((uint32_t)0x4006A000)
+#define GPTM0_BASE              ((uint32_t)0x4006E000)
+#define GPTM1_BASE              ((uint32_t)0x4006F000)
+#define BFTM0_BASE              ((uint32_t)0x40076000)
+#define BFTM1_BASE              ((uint32_t)0x40077000)
+
+#define FMC_BASE                ((uint32_t)0x40080000)
+#define CKCU_BASE               ((uint32_t)0x40088000)
+#define RSTCU_BASE              ((uint32_t)0x40088000)
+#define CRC_BASE                ((uint32_t)0x4008A000)
+#define PDMA_BASE               ((uint32_t)0x40090000)
+#define EBI_BASE                ((uint32_t)0x40098000)
+#define USB_BASE                ((uint32_t)0x400A8000)
+#define USB_SRAM_BASE           ((uint32_t)0x400AA000)
+#define GPIO_A_BASE             ((uint32_t)0x400B0000)
+#define GPIO_B_BASE             ((uint32_t)0x400B2000)
+#define GPIO_C_BASE             ((uint32_t)0x400B4000)
+#define GPIO_D_BASE             ((uint32_t)0x400B6000)
+#define GPIO_E_BASE             ((uint32_t)0x400B8000)
+
+// Registers Headers
+#include "ht32f165x_reg.h"
+
+/****************************************************************/
+/*                 Peripheral declaration                       */
+/****************************************************************/
+#define USART0                  ((USART_TypeDef *)  USART0_BASE)
+#define UART0                   ((UART_TypeDef *)   UART0_BASE)
+#define SPI0                    ((SPI_TypeDef *)    SPI0_BASE)
+#define ADC                     ((ADC_TypeDef *)    ADC_BASE)
+#define CMP                     ((CMP_TypeDef *)    CMP_BASE)
+#define OPA                     ((OPA_TypeDef *)    OPA_BASE)
+#define AFIO                    ((AFIO_TypeDef *)   AFIO_BASE)
+#define EXTI                    ((EXTI_TypeDef *)   EXTI_BASE)
+#define I2S                     ((I2S_TypeDef *)    I2S_BASE)
+#define MCTM0                   ((TM_TypeDef *)     MCTM0_BASE)
+#define MCTM1                   ((TM_TypeDef *)     MCTM1_BASE)
+
+#define USART1                  ((USART_TypeDef *)  USART1_BASE)
+#define UART1                   ((UART_TypeDef *)   UART1_BASE)
+#define SCI                     ((SCI_TypeDef *)    SCI_BASE)
+#define SPI1                    ((SPI_TypeDef *)    SPI1_BASE)
+#define I2C0                    ((I2C_TypeDef *)    I2C0_BASE)
+#define I2C1                    ((I2C_TypeDef *)    I2C1_BASE)
+#define WDT                     ((WDT_TypeDef *)    WDT_BASE)
+#define RTC                     ((RTC_TypeDef *)    RTC_BASE)
+#define PWRCU                   ((PWRCU_TypeDef *)  PWRCU_BASE)
+#define GPTM0                   ((TM_TypeDef *)     GPTM0_BASE)
+#define GPTM1                   ((TM_TypeDef *)     GPTM1_BASE)
+#define BFTM0                   ((BFTM_TypeDef *)   BFTM0_BASE)
+#define BFTM1                   ((BFTM_TypeDef *)   BFTM1_BASE)
+
+#define FMC                     ((FMC_TypeDef *)    FMC_BASE)
+#define CKCU                    ((CKCU_TypeDef *)   CKCU_BASE)
+#define RSTCU                   ((RSTCU_TypeDef *)  RSTCU_BASE)
+#define CRC                     ((CRC_TypeDef *)    CRC_BASE)
+#define PDMA                    ((PDMA_TypeDef *)   PDMA_BASE)
+#define EBI                     ((EBI_TypeDef *)    EBI_BASE)
+#define USB                     ((USB_TypeDef *)    USB_BASE)
+#define GPIOA                   ((GPIO_TypeDef *)   GPIO_A_BASE)
+#define GPIOB                   ((GPIO_TypeDef *)   GPIO_B_BASE)
+#define GPIOC                   ((GPIO_TypeDef *)   GPIO_C_BASE)
+#define GPIOD                   ((GPIO_TypeDef *)   GPIO_D_BASE)
+#define GPIOE                   ((GPIO_TypeDef *)   GPIO_E_BASE)
+#define GPIO_A GPIOA
+#define GPIO_B GPIOB
+#define GPIO_C GPIOC
+#define GPIO_D GPIOD
+#define GPIO_E GPIOE
+
 #endif

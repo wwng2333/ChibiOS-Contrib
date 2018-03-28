@@ -16,7 +16,7 @@
 
 /**
  * @file    hal_spi_lld.c
- * @brief   PLATFORM SPI subsystem low level driver source.
+ * @brief   HT32 SPI subsystem low level driver source.
  *
  * @addtogroup SPI
  * @{
@@ -35,9 +35,12 @@
 /*===========================================================================*/
 
 /**
- * @brief   SPI1 driver identifier.
+ * @brief   SPI0 driver identifier.
  */
-#if (PLATFORM_SPI_USE_SPI1 == TRUE) || defined(__DOXYGEN__)
+#if (HT32_SPI_USE_SPI0 == TRUE) || defined(__DOXYGEN__)
+SPIDriver SPID0;
+#endif
+#if (HT32_SPI_USE_SPI1 == TRUE) || defined(__DOXYGEN__)
 SPIDriver SPID1;
 #endif
 
@@ -49,9 +52,71 @@ SPIDriver SPID1;
 /* Driver local functions.                                                   */
 /*===========================================================================*/
 
+#if (HT32_SPI_USE_SPI0 == TRUE) || (HT32_SPI_USE_SPI1 == TRUE) || defined(__DOXYGEN__)
+static void spi_lld_rx(SPIDriver * const spip) {
+  uint32_t fd;
+  uint32_t sr;
+
+  while (spip->rxcnt) {
+    sr = spip->SPI->SR;
+    if ((sr & SPI_SR_RXBNE) == 0)
+      return;
+    fd = spip->SPI->DR;
+    if (spip->rxptr) {
+      *spip->rxptr++ = fd & 0xff;
+    }
+    spip->rxcnt--;
+  }
+}
+
+static void spi_lld_tx(SPIDriver * const spip) {
+  uint32_t fd;
+  uint32_t sr;
+
+  while (spip->txcnt) {
+    sr = spip->SPI->SR;
+    if ((sr & SPI_SR_TXBE) == 0)
+      return;
+    if (spip->txptr) {
+      fd = *spip->txptr++;
+    } else {
+      fd = '\xff';
+    }
+    spip->SPI->DR = fd;
+    spip->txcnt--;
+  }
+}
+
+static void spi_lld_handler(SPIDriver * const spip) {
+  uint32_t sr = spip->SPI->SR; // & ((1U<<8)|spip->SPI->IER);
+    spi_lld_rx(spip);
+    spi_lld_tx(spip);
+  if (spip->rxcnt == 0) {
+    spip->SPI->IER = 0;
+    _spi_isr_code(spip);
+  }
+}
+#endif
+
 /*===========================================================================*/
 /* Driver interrupt handlers.                                                */
 /*===========================================================================*/
+
+#if (HT32_SPI_USE_SPI0 == TRUE) || defined(__DOXYGEN__)
+OSAL_IRQ_HANDLER(HT32_SPI0_IRQ_VECTOR) {
+  OSAL_IRQ_PROLOGUE();
+  spi_lld_handler(&SPID0);
+  OSAL_IRQ_EPILOGUE();
+}
+#endif
+
+#if (HT32_SPI_USE_SPI1 == TRUE) || defined(__DOXYGEN__)
+OSAL_IRQ_HANDLER(HT32_SPI1_IRQ_VECTOR) {
+  OSAL_IRQ_PROLOGUE();
+  spi_lld_handler(&SPID1);
+  OSAL_IRQ_EPILOGUE();
+}
+#endif
 
 /*===========================================================================*/
 /* Driver exported functions.                                                */
@@ -64,9 +129,17 @@ SPIDriver SPID1;
  */
 void spi_lld_init(void) {
 
-#if PLATFORM_SPI_USE_SPI1 == TRUE
+#if HT32_SPI_USE_SPI0 == TRUE
+  /* Driver initialization.*/
+  spiObjectInit(&SPID0);
+  SPID0.SPI = SPI0;
+  CKCU->APBCCR0 |= CKCU_APBCCR0_SPI0EN;
+#endif
+#if HT32_SPI_USE_SPI1 == TRUE
   /* Driver initialization.*/
   spiObjectInit(&SPID1);
+  SPID1.SPI = SPI1;
+  CKCU->APBCCR0 |= CKCU_APBCCR0_SPI1EN;
 #endif
 }
 
@@ -81,14 +154,25 @@ void spi_lld_start(SPIDriver *spip) {
 
   if (spip->state == SPI_STOP) {
     /* Enables the peripheral.*/
-#if PLATFORM_SPI_USE_SPI1 == TRUE
+#if HT32_SPI_USE_SPI0 == TRUE
+    if (&SPID0 == spip) {
+      CKCU->APBCCR0 |= CKCU_APBCCR0_SPI0EN;
+      nvicEnableVector(SPI0_IRQn, HT32_SPI0_IRQ_PRIORITY);
+    }
+#endif
+#if HT32_SPI_USE_SPI1 == TRUE
     if (&SPID1 == spip) {
-
+      CKCU->APBCCR0 |= CKCU_APBCCR0_SPI1EN;
+      nvicEnableVector(SPI1_IRQn, HT32_SPI1_IRQ_PRIORITY);
     }
 #endif
   }
   /* Configures the peripheral.*/
 
+  spip->SPI->CR0 = spip->config->cr0;
+  spip->SPI->CR1 = spip->config->cr1;
+  spip->SPI->CPR = spip->config->cpr;
+  spip->SPI->FCR = 0; //SPI_FCR_FIFOEN | (1U << 4) | (1U << 0);
 }
 
 /**
@@ -102,9 +186,18 @@ void spi_lld_stop(SPIDriver *spip) {
 
   if (spip->state == SPI_READY) {
     /* Disables the peripheral.*/
-#if PLATFORM_SPI_USE_SPI1 == TRUE
+#if HT32_SPI_USE_SPI0 == TRUE
+    if (&SPID0 == spip) {
+      RSTCU->APBPRSTR0 = RSTCU_APBPRSTR0_SPI0RST;
+      //CKCU->APBCCR0 &= ~CKCU_APBCCR0_SPI0EN;
+      nvicDisableVector(SPI0_IRQn);
+    }
+#endif
+#if HT32_SPI_USE_SPI1 == TRUE
     if (&SPID1 == spip) {
-
+      RSTCU->APBPRSTR0 = RSTCU_APBPRSTR0_SPI1RST;
+      //CKCU->APBCCR0 &= ~CKCU_APBCCR0_SPI1EN;
+      nvicDisableVector(SPI1_IRQn);
     }
 #endif
   }
@@ -119,7 +212,7 @@ void spi_lld_stop(SPIDriver *spip) {
  */
 void spi_lld_select(SPIDriver *spip) {
 
-  (void)spip;
+  spip->SPI->CR0 |= SPI_CR0_SSELC;
 
 }
 
@@ -133,7 +226,7 @@ void spi_lld_select(SPIDriver *spip) {
  */
 void spi_lld_unselect(SPIDriver *spip) {
 
-  (void)spip;
+  spip->SPI->CR0 &= ~SPI_CR0_SSELC;
 
 }
 
@@ -150,8 +243,7 @@ void spi_lld_unselect(SPIDriver *spip) {
  */
 void spi_lld_ignore(SPIDriver *spip, size_t n) {
 
-  (void)spip;
-  (void)n;
+  spi_lld_exchange(spip, n, NULL, NULL);
 
 }
 
@@ -173,10 +265,10 @@ void spi_lld_ignore(SPIDriver *spip, size_t n) {
 void spi_lld_exchange(SPIDriver *spip, size_t n,
                       const void *txbuf, void *rxbuf) {
 
-  (void)spip;
-  (void)n;
-  (void)txbuf;
-  (void)rxbuf;
+  spip->txptr = txbuf;
+  spip->rxptr = rxbuf;
+  spip->rxcnt = spip->txcnt = n;
+  spip->SPI->IER = SPI_IER_RXBNEIEN|SPI_IER_TXBEIEN;
 
 }
 
@@ -195,9 +287,7 @@ void spi_lld_exchange(SPIDriver *spip, size_t n,
  */
 void spi_lld_send(SPIDriver *spip, size_t n, const void *txbuf) {
 
-  (void)spip;
-  (void)n;
-  (void)txbuf;
+  spi_lld_exchange(spip, n, txbuf, NULL);
 
 }
 
@@ -216,9 +306,7 @@ void spi_lld_send(SPIDriver *spip, size_t n, const void *txbuf) {
  */
 void spi_lld_receive(SPIDriver *spip, size_t n, void *rxbuf) {
 
-  (void)spip;
-  (void)n;
-  (void)rxbuf;
+  spi_lld_exchange(spip, n, NULL, rxbuf);
 
 }
 
