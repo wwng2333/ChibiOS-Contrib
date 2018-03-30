@@ -89,7 +89,7 @@ static void spi_lld_tx(SPIDriver * const spip) {
 }
 
 static void spi_lld_handler(SPIDriver * const spip) {
-    uint32_t sr = spip->SPI->SR; // & ((1U<<8)|spip->SPI->IER);
+    //uint32_t sr = spip->SPI->SR; // & ((1U<<8)|spip->SPI->IER);
     spi_lld_rx(spip);
     spi_lld_tx(spip);
     if (spip->rxcnt == 0) {
