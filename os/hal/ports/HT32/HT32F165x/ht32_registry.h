@@ -50,12 +50,12 @@
 /**
  * @brief   Maximum bus clock (f_BUS) frequency.
  */
-#define HT32_BUSCLK_MAX         50000000L
+#define HT32_BUSCLK_MAX         72000000L
 
 /**
  * @brief   Maximum flash clock (f_FLASH) frequency.
  */
-#define HT32_FLASHCLK_MAX       25000000L
+#define HT32_FLASHCLK_MAX       72000000L
 
 /**
  * @name    HT32F165x attributes
@@ -64,14 +64,12 @@
 
 /* GPIO attributes.*/
 #if defined(HT32F1655) || defined(HT32F1656)
-#define HT32_NUM_GPIO               5
+  #define HT32_NUM_GPIO             5
 #else
-#define HT32_NUM_GPIO               4
+  #define HT32_NUM_GPIO             4
 #endif
 #define HT32_GPIO_INDEX_BITS        13
 #define HT32_CCR_PAEN               CKCU_AHBCCR_PAEN
-
-#define HT32_GPIO_CLOCK_ENABLE_REG  (CKCU->AHBCCR)
 
 /* I2C attributes.*/
 #define HT32_HAS_I2C0               TRUE
@@ -101,9 +99,6 @@
 #define HT32_USB0_IS_USBOTG         FALSE
 #define HT32_HAS_USB_CLOCK_RECOVERY FALSE
 
-#define HT32_CCR_USBEN_REG (CKCU->AHBCCR)
-#define HT32_CCR_USBEN (CKCU_AHBCCR_USBEN)
- 
 /** @} */
 
 #endif /* defined(HT32F165x) */

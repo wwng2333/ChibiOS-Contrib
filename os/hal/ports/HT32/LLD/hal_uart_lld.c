@@ -37,8 +37,17 @@
 /**
  * @brief   UART1 driver identifier.
  */
+#if (HT32_UART_USE_UART0 == TRUE) || defined(__DOXYGEN__)
+UARTDriver UARTD0;
+#endif
 #if (HT32_UART_USE_UART1 == TRUE) || defined(__DOXYGEN__)
 UARTDriver UARTD1;
+#endif
+#if (HT32_UART_USE_USART0 == TRUE) || defined(__DOXYGEN__)
+UARTDriver USARTD0;
+#endif
+#if (HT32_UART_USE_USART1 == TRUE) || defined(__DOXYGEN__)
+UARTDriver USARTD1;
 #endif
 
 /*===========================================================================*/
@@ -49,30 +58,43 @@ UARTDriver UARTD1;
 /* Driver local functions.                                                   */
 /*===========================================================================*/
 
+static void uart_lld_handler(UARTDriver * const uartp) {
+
+}
+
 /*===========================================================================*/
 /* Driver interrupt handlers.                                                */
 /*===========================================================================*/
 
-#if (HT32_UART_USE_UART1 == TRUE) || defined(__DOXYGEN__)
-
-#if !defined(HT32_UART1_HANDLER)
-    #error "HT32_UART1_HANDLER not defined"
-#endif
-
-/**
- * @brief   UART1 IRQ handler.
- *
- * @isr
- */
-OSAL_IRQ_HANDLER(HT32_UART1_HANDLER) {
+#if (HT32_UART_USE_UART0 == TRUE) || defined(__DOXYGEN__)
+OSAL_IRQ_HANDLER(HT32_UART0_IRQ_VECTOR) {
     OSAL_IRQ_PROLOGUE();
-
-//    serve_usart_irq(&UARTD1);
-
+    uart_lld_handler(&UARTD0);
     OSAL_IRQ_EPILOGUE();
 }
+#endif
+#if (HT32_UART_USE_UART1 == TRUE) || defined(__DOXYGEN__)
+OSAL_IRQ_HANDLER(HT32_UART1_IRQ_VECTOR) {
+    OSAL_IRQ_PROLOGUE();
+    uart_lld_handler(&UARTD1);
+    OSAL_IRQ_EPILOGUE();
+}
+#endif
 
-#endif /* HT32_UART_USE_UART1 */
+#if (HT32_UART_USE_USART0 == TRUE) || defined(__DOXYGEN__)
+OSAL_IRQ_HANDLER(HT32_USART0_IRQ_VECTOR) {
+    OSAL_IRQ_PROLOGUE();
+    uart_lld_handler(&USARTD0);
+    OSAL_IRQ_EPILOGUE();
+}
+#endif
+#if (HT32_UART_USE_USART1 == TRUE) || defined(__DOXYGEN__)
+OSAL_IRQ_HANDLER(HT32_USART1_IRQ_VECTOR) {
+    OSAL_IRQ_PROLOGUE();
+    uart_lld_handler(&USARTD1);
+    OSAL_IRQ_EPILOGUE();
+}
+#endif
 
 /*===========================================================================*/
 /* Driver exported functions.                                                */
@@ -84,11 +106,26 @@ OSAL_IRQ_HANDLER(HT32_UART1_HANDLER) {
  * @notapi
  */
 void uart_lld_init(void) {
-
-#if HT32_UART_USE_UART1 == TRUE
-    /* Driver initialization.*/
-    uartObjectInit(&UARTD1);
+    /* Driver initialization. */
+#if HT32_UART_USE_UART0 == TRUE
+    uartObjectInit(&UARTD0);
+    UARTD0.UART = UART0;
 #endif
+#if HT32_UART_USE_UART1 == TRUE
+    uartObjectInit(&UARTD1);
+    UARTD1.UART = UART1;
+#endif
+#if HT32_UART_USE_USART0 == TRUE
+    uartObjectInit(&USARTD0);
+    USARTD0.UART = USART0;
+#endif
+#if HT32_UART_USE_USART1 == TRUE
+    uartObjectInit(&USARTD1);
+    USARTD1.UART = USART1;
+#endif
+
+    /* Peripheral initialization. */
+    CKCU->GCFGR = (CKCU->GCFGR & ~CKCU_GCFGR_URPRE_MASK) | ((HT32_USART_PRESCALER - 1) << 22);
 }
 
 /**
@@ -99,17 +136,40 @@ void uart_lld_init(void) {
  * @notapi
  */
 void uart_lld_start(UARTDriver *uartp) {
-
-  if (uartp->state == UART_STOP) {
-    /* Enables the peripheral.*/
-#if HT32_UART_USE_UART1 == TRUE
-    if (&UARTD1 == uartp) {
-
-    }
+    if (uartp->state == UART_STOP) {
+        /* Enables the peripheral.*/
+#if HT32_UART_USE_UART0 == TRUE
+        if (&UARTD1 == uartp) {
+            CKCU->APBCCR0 |= CKCU_APBCCR0_UR0EN;
+            nvicEnableVector(UART0_IRQn, HT32_UART0_IRQ_PRIORITY);
+        }
 #endif
-  }
-  /* Configures the peripheral.*/
+#if HT32_UART_USE_UART1 == TRUE
+        if (&UARTD1 == uartp) {
+            CKCU->APBCCR0 |= CKCU_APBCCR0_UR1EN;
+            nvicEnableVector(UART1_IRQn, HT32_UART1_IRQ_PRIORITY);
+        }
+#endif
+#if HT32_UART_USE_USART0 == TRUE
+        if (&UARTD1 == uartp) {
+            CKCU->APBCCR0 |= CKCU_APBCCR0_USR0EN;
+            nvicEnableVector(USART0_IRQn, HT32_USART0_IRQ_PRIORITY);
+        }
+#endif
+#if HT32_UART_USE_USART1 == TRUE
+        if (&UARTD1 == uartp) {
+            CKCU->APBCCR0 |= CKCU_APBCCR0_USR1EN;
+            nvicEnableVector(USART10_IRQn, HT32_USART1_IRQ_PRIORITY);
+        }
+#endif
+    }
 
+    /* Configures the peripheral.*/
+    uartp->UART->FCR = uartp->config->fcr;
+    uartp->UART->LCR = uartp->config->lcr;
+    uartp->UART->MDR = uartp->config->mdr;
+    // baud = ck_ahb / dlr value
+    uartp->UART->DLR = HT32_CK_AHB_FREQUENCY / uartp->config->baud;
 }
 
 /**
@@ -120,17 +180,38 @@ void uart_lld_start(UARTDriver *uartp) {
  * @notapi
  */
 void uart_lld_stop(UARTDriver *uartp) {
-
-  if (uartp->state == UART_READY) {
-    /* Resets the peripheral.*/
-
-    /* Disables the peripheral.*/
-#if HT32_UART_USE_UART1 == TRUE
-    if (&UARTD1 == uartp) {
-
-    }
+    if (uartp->state == UART_READY) {
+        /* Resets the peripheral.*/
+        /* Disables the peripheral.*/
+#if HT32_UART_USE_UART0 == TRUE
+        if (&UARTD0 == uartp) {
+            RSTCU->APBPRSTR0 = RSTCU_APBPRSTR0_UR0RST;
+            CKCU->APBCCR0 &= ~CKCU_APBCCR0_UR0EN;
+            nvicDisableVector(UART0_IRQn);
+        }
 #endif
-  }
+#if HT32_UART_USE_UART1 == TRUE
+        if (&UARTD1 == uartp) {
+            RSTCU->APBPRSTR0 = RSTCU_APBPRSTR0_UR1RST;
+            CKCU->APBCCR0 &= ~CKCU_APBCCR0_UR1EN;
+            nvicDisableVector(UART1_IRQn);
+        }
+#endif
+#if HT32_UART_USE_USART0 == TRUE
+        if (&USARTD0 == uartp) {
+            RSTCU->APBPRSTR0 = RSTCU_APBPRSTR0_USR0RST;
+            CKCU->APBCCR0 &= ~CKCU_APBCCR0_USR0EN;
+            nvicDisableVector(USART0_IRQn);
+        }
+#endif
+#if HT32_UART_USE_USART1 == TRUE
+        if (&USARTD1 == uartp) {
+            RSTCU->APBPRSTR0 = RSTCU_APBPRSTR0_USR1RST;
+            CKCU->APBCCR0 &= ~CKCU_APBCCR0_USR1EN;
+            nvicDisableVector(USART1_IRQn);
+        }
+#endif
+    }
 }
 
 /**
@@ -146,9 +227,9 @@ void uart_lld_stop(UARTDriver *uartp) {
  */
 void uart_lld_start_send(UARTDriver *uartp, size_t n, const void *txbuf) {
 
-  (void)uartp;
-  (void)n;
-  (void)txbuf;
+    (void)uartp;
+    (void)n;
+    (void)txbuf;
 
 }
 
@@ -165,9 +246,9 @@ void uart_lld_start_send(UARTDriver *uartp, size_t n, const void *txbuf) {
  */
 size_t uart_lld_stop_send(UARTDriver *uartp) {
 
-  (void)uartp;
+    (void)uartp;
 
-  return 0;
+    return 0;
 }
 
 /**
@@ -183,9 +264,9 @@ size_t uart_lld_stop_send(UARTDriver *uartp) {
  */
 void uart_lld_start_receive(UARTDriver *uartp, size_t n, void *rxbuf) {
 
-  (void)uartp;
-  (void)n;
-  (void)rxbuf;
+    (void)uartp;
+    (void)n;
+    (void)rxbuf;
 
 }
 
@@ -202,9 +283,9 @@ void uart_lld_start_receive(UARTDriver *uartp, size_t n, void *rxbuf) {
  */
 size_t uart_lld_stop_receive(UARTDriver *uartp) {
 
-  (void)uartp;
+    (void)uartp;
 
-  return 0;
+    return 0;
 }
 
 #endif /* HAL_USE_UART == TRUE */

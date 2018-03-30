@@ -1,5 +1,6 @@
 /*
     ChibiOS - Copyright (C) 2006..2016 Giovanni Di Sirio
+              Copyright (C) 2018 Charlie Waters
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -54,47 +55,47 @@ SPIDriver SPID1;
 
 #if (HT32_SPI_USE_SPI0 == TRUE) || (HT32_SPI_USE_SPI1 == TRUE) || defined(__DOXYGEN__)
 static void spi_lld_rx(SPIDriver * const spip) {
-  uint32_t fd;
-  uint32_t sr;
+    uint32_t fd;
+    uint32_t sr;
 
-  while (spip->rxcnt) {
-    sr = spip->SPI->SR;
-    if ((sr & SPI_SR_RXBNE) == 0)
-      return;
-    fd = spip->SPI->DR;
-    if (spip->rxptr) {
-      *spip->rxptr++ = fd & 0xff;
+    while (spip->rxcnt) {
+        sr = spip->SPI->SR;
+        if ((sr & SPI_SR_RXBNE) == 0)
+            return;
+        fd = spip->SPI->DR;
+        if (spip->rxptr) {
+            *spip->rxptr++ = fd & 0xff;
+        }
+        spip->rxcnt--;
     }
-    spip->rxcnt--;
-  }
 }
 
 static void spi_lld_tx(SPIDriver * const spip) {
-  uint32_t fd;
-  uint32_t sr;
+    uint32_t fd;
+    uint32_t sr;
 
-  while (spip->txcnt) {
-    sr = spip->SPI->SR;
-    if ((sr & SPI_SR_TXBE) == 0)
-      return;
-    if (spip->txptr) {
-      fd = *spip->txptr++;
-    } else {
-      fd = '\xff';
+    while (spip->txcnt) {
+        sr = spip->SPI->SR;
+        if ((sr & SPI_SR_TXBE) == 0)
+            return;
+        if (spip->txptr) {
+            fd = *spip->txptr++;
+        } else {
+            fd = '\xff';
+        }
+        spip->SPI->DR = fd;
+        spip->txcnt--;
     }
-    spip->SPI->DR = fd;
-    spip->txcnt--;
-  }
 }
 
 static void spi_lld_handler(SPIDriver * const spip) {
-  uint32_t sr = spip->SPI->SR; // & ((1U<<8)|spip->SPI->IER);
+    uint32_t sr = spip->SPI->SR; // & ((1U<<8)|spip->SPI->IER);
     spi_lld_rx(spip);
     spi_lld_tx(spip);
-  if (spip->rxcnt == 0) {
-    spip->SPI->IER = 0;
-    _spi_isr_code(spip);
-  }
+    if (spip->rxcnt == 0) {
+        spip->SPI->IER = 0;
+        _spi_isr_code(spip);
+    }
 }
 #endif
 
@@ -104,17 +105,17 @@ static void spi_lld_handler(SPIDriver * const spip) {
 
 #if (HT32_SPI_USE_SPI0 == TRUE) || defined(__DOXYGEN__)
 OSAL_IRQ_HANDLER(HT32_SPI0_IRQ_VECTOR) {
-  OSAL_IRQ_PROLOGUE();
-  spi_lld_handler(&SPID0);
-  OSAL_IRQ_EPILOGUE();
+    OSAL_IRQ_PROLOGUE();
+    spi_lld_handler(&SPID0);
+    OSAL_IRQ_EPILOGUE();
 }
 #endif
 
 #if (HT32_SPI_USE_SPI1 == TRUE) || defined(__DOXYGEN__)
 OSAL_IRQ_HANDLER(HT32_SPI1_IRQ_VECTOR) {
-  OSAL_IRQ_PROLOGUE();
-  spi_lld_handler(&SPID1);
-  OSAL_IRQ_EPILOGUE();
+    OSAL_IRQ_PROLOGUE();
+    spi_lld_handler(&SPID1);
+    OSAL_IRQ_EPILOGUE();
 }
 #endif
 
@@ -128,18 +129,17 @@ OSAL_IRQ_HANDLER(HT32_SPI1_IRQ_VECTOR) {
  * @notapi
  */
 void spi_lld_init(void) {
-
 #if HT32_SPI_USE_SPI0 == TRUE
-  /* Driver initialization.*/
-  spiObjectInit(&SPID0);
-  SPID0.SPI = SPI0;
-  CKCU->APBCCR0 |= CKCU_APBCCR0_SPI0EN;
+    /* Driver initialization.*/
+    spiObjectInit(&SPID0);
+    SPID0.SPI = SPI0;
+    CKCU->APBCCR0 |= CKCU_APBCCR0_SPI0EN;
 #endif
 #if HT32_SPI_USE_SPI1 == TRUE
-  /* Driver initialization.*/
-  spiObjectInit(&SPID1);
-  SPID1.SPI = SPI1;
-  CKCU->APBCCR0 |= CKCU_APBCCR0_SPI1EN;
+    /* Driver initialization.*/
+    spiObjectInit(&SPID1);
+    SPID1.SPI = SPI1;
+    CKCU->APBCCR0 |= CKCU_APBCCR0_SPI1EN;
 #endif
 }
 
@@ -151,28 +151,27 @@ void spi_lld_init(void) {
  * @notapi
  */
 void spi_lld_start(SPIDriver *spip) {
-
-  if (spip->state == SPI_STOP) {
-    /* Enables the peripheral.*/
+    if (spip->state == SPI_STOP) {
+        /* Enables the peripheral.*/
 #if HT32_SPI_USE_SPI0 == TRUE
-    if (&SPID0 == spip) {
-      CKCU->APBCCR0 |= CKCU_APBCCR0_SPI0EN;
-      nvicEnableVector(SPI0_IRQn, HT32_SPI0_IRQ_PRIORITY);
-    }
+        if (&SPID0 == spip) {
+            CKCU->APBCCR0 |= CKCU_APBCCR0_SPI0EN;
+            nvicEnableVector(SPI0_IRQn, HT32_SPI0_IRQ_PRIORITY);
+        }
 #endif
 #if HT32_SPI_USE_SPI1 == TRUE
-    if (&SPID1 == spip) {
-      CKCU->APBCCR0 |= CKCU_APBCCR0_SPI1EN;
-      nvicEnableVector(SPI1_IRQn, HT32_SPI1_IRQ_PRIORITY);
-    }
+        if (&SPID1 == spip) {
+            CKCU->APBCCR0 |= CKCU_APBCCR0_SPI1EN;
+            nvicEnableVector(SPI1_IRQn, HT32_SPI1_IRQ_PRIORITY);
+        }
 #endif
-  }
-  /* Configures the peripheral.*/
+    }
 
-  spip->SPI->CR0 = spip->config->cr0;
-  spip->SPI->CR1 = spip->config->cr1;
-  spip->SPI->CPR = spip->config->cpr;
-  spip->SPI->FCR = 0; //SPI_FCR_FIFOEN | (1U << 4) | (1U << 0);
+    /* Configures the peripheral.*/
+    spip->SPI->CR0 = spip->config->cr0;
+    spip->SPI->CR1 = spip->config->cr1;
+    spip->SPI->CPR = spip->config->cpr;
+    spip->SPI->FCR = 0; //SPI_FCR_FIFOEN | (1U << 4) | (1U << 0);
 }
 
 /**
@@ -183,24 +182,23 @@ void spi_lld_start(SPIDriver *spip) {
  * @notapi
  */
 void spi_lld_stop(SPIDriver *spip) {
-
-  if (spip->state == SPI_READY) {
-    /* Disables the peripheral.*/
+    if (spip->state == SPI_READY) {
+        /* Disables the peripheral.*/
 #if HT32_SPI_USE_SPI0 == TRUE
-    if (&SPID0 == spip) {
-      RSTCU->APBPRSTR0 = RSTCU_APBPRSTR0_SPI0RST;
-      //CKCU->APBCCR0 &= ~CKCU_APBCCR0_SPI0EN;
-      nvicDisableVector(SPI0_IRQn);
-    }
+        if (&SPID0 == spip) {
+            RSTCU->APBPRSTR0 = RSTCU_APBPRSTR0_SPI0RST;
+            //CKCU->APBCCR0 &= ~CKCU_APBCCR0_SPI0EN;
+            nvicDisableVector(SPI0_IRQn);
+        }
 #endif
 #if HT32_SPI_USE_SPI1 == TRUE
-    if (&SPID1 == spip) {
-      RSTCU->APBPRSTR0 = RSTCU_APBPRSTR0_SPI1RST;
-      //CKCU->APBCCR0 &= ~CKCU_APBCCR0_SPI1EN;
-      nvicDisableVector(SPI1_IRQn);
-    }
+        if (&SPID1 == spip) {
+            RSTCU->APBPRSTR0 = RSTCU_APBPRSTR0_SPI1RST;
+            //CKCU->APBCCR0 &= ~CKCU_APBCCR0_SPI1EN;
+            nvicDisableVector(SPI1_IRQn);
+        }
 #endif
-  }
+    }
 }
 
 /**
@@ -211,9 +209,7 @@ void spi_lld_stop(SPIDriver *spip) {
  * @notapi
  */
 void spi_lld_select(SPIDriver *spip) {
-
-  spip->SPI->CR0 |= SPI_CR0_SSELC;
-
+    spip->SPI->CR0 |= SPI_CR0_SSELC;
 }
 
 /**
@@ -225,9 +221,7 @@ void spi_lld_select(SPIDriver *spip) {
  * @notapi
  */
 void spi_lld_unselect(SPIDriver *spip) {
-
-  spip->SPI->CR0 &= ~SPI_CR0_SSELC;
-
+    spip->SPI->CR0 &= ~SPI_CR0_SSELC;
 }
 
 /**
@@ -242,9 +236,7 @@ void spi_lld_unselect(SPIDriver *spip) {
  * @notapi
  */
 void spi_lld_ignore(SPIDriver *spip, size_t n) {
-
-  spi_lld_exchange(spip, n, NULL, NULL);
-
+    spi_lld_exchange(spip, n, NULL, NULL);
 }
 
 /**
@@ -264,11 +256,10 @@ void spi_lld_ignore(SPIDriver *spip, size_t n) {
  */
 void spi_lld_exchange(SPIDriver *spip, size_t n,
                       const void *txbuf, void *rxbuf) {
-
-  spip->txptr = txbuf;
-  spip->rxptr = rxbuf;
-  spip->rxcnt = spip->txcnt = n;
-  spip->SPI->IER = SPI_IER_RXBNEIEN|SPI_IER_TXBEIEN;
+    spip->txptr = txbuf;
+    spip->rxptr = rxbuf;
+    spip->rxcnt = spip->txcnt = n;
+    spip->SPI->IER = SPI_IER_RXBNEIEN | SPI_IER_TXBEIEN;
 
 }
 
@@ -286,9 +277,7 @@ void spi_lld_exchange(SPIDriver *spip, size_t n,
  * @notapi
  */
 void spi_lld_send(SPIDriver *spip, size_t n, const void *txbuf) {
-
-  spi_lld_exchange(spip, n, txbuf, NULL);
-
+    spi_lld_exchange(spip, n, txbuf, NULL);
 }
 
 /**
@@ -305,9 +294,7 @@ void spi_lld_send(SPIDriver *spip, size_t n, const void *txbuf) {
  * @notapi
  */
 void spi_lld_receive(SPIDriver *spip, size_t n, void *rxbuf) {
-
-  spi_lld_exchange(spip, n, NULL, rxbuf);
-
+    spi_lld_exchange(spip, n, NULL, rxbuf);
 }
 
 /**
@@ -323,11 +310,10 @@ void spi_lld_receive(SPIDriver *spip, size_t n, void *rxbuf) {
  * @return              The received data frame from the SPI bus.
  */
 uint16_t spi_lld_polled_exchange(SPIDriver *spip, uint16_t frame) {
+    (void)spip;
+    (void)frame;
 
-  (void)spip;
-  (void)frame;
-
-  return 0;
+    return 0;
 }
 
 #endif /* HAL_USE_SPI == TRUE */

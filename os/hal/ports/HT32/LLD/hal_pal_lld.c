@@ -43,18 +43,18 @@
 /*===========================================================================*/
 
 static void initgpio(ioportid_t port, const struct port_setup * const setup) {
-  PAL_PORT(port)->DIRCR = setup->DIR;
-  PAL_PORT(port)->INER = setup->INE;
-  PAL_PORT(port)->PUR = setup->PU;
-  PAL_PORT(port)->PDR = setup->PD;
-  PAL_PORT(port)->ODR = setup->OD;
-  PAL_PORT(port)->DRVR = setup->DRV;
-  const uint32_t portidx = HT32_PAL_IDX(port);
-  AFIO->GPxCFGR[portidx][0] = setup->CFG[0];
-  AFIO->GPxCFGR[portidx][1] = setup->CFG[1];
-  if (setup->LOCK != 0) {
-    PAL_PORT(port)->LOCKR = 0x5FA00000 | setup->LOCK;
-  }
+    PAL_PORT(port)->DIRCR = setup->DIR;
+    PAL_PORT(port)->INER = setup->INE;
+    PAL_PORT(port)->PUR = setup->PU;
+    PAL_PORT(port)->PDR = setup->PD;
+    PAL_PORT(port)->ODR = setup->OD;
+    PAL_PORT(port)->DRVR = setup->DRV;
+    const uint32_t portidx = HT32_PAL_IDX(port);
+    AFIO->GPxCFGR[portidx][0] = setup->CFG[0];
+    AFIO->GPxCFGR[portidx][1] = setup->CFG[1];
+    if (setup->LOCK != 0) {
+        PAL_PORT(port)->LOCKR = 0x5FA00000 | setup->LOCK;
+    }
 }
 
 /*===========================================================================*/
@@ -74,16 +74,17 @@ static void initgpio(ioportid_t port, const struct port_setup * const setup) {
  * @notapi
  */
 void _pal_lld_init(const PALConfig *config) {
-  
-  HT32_GPIO_CLOCK_ENABLE_REG |= (HT32_CCR_PAEN << HT32_NUM_GPIO) - HT32_CCR_PAEN;
-  CKCU->APBCCR0 |= CKCU_APBCCR0_AFIOEN;
 
-  if (config == NULL)
-    return;
+    CKCU->AHBCCR |= (HT32_CCR_PAEN << HT32_NUM_GPIO) - HT32_CCR_PAEN;
+    // enable AFIO
+    CKCU->APBCCR0 |= CKCU_APBCCR0_AFIOEN;
 
-  for (size_t i = 0; i < HT32_NUM_GPIO; i++) {
-    initgpio(HT32_PAL_ID(i), &(config->setup[i]));
-  }
+    if (config == NULL)
+        return;
+
+    for (size_t i = 0; i < HT32_NUM_GPIO; i++) {
+        initgpio(HT32_PAL_ID(i), &(config->setup[i]));
+    }
 }
 
 /**
@@ -98,60 +99,60 @@ void _pal_lld_init(const PALConfig *config) {
  * @notapi
  */
 void _pal_lld_setgroupmode(ioportid_t port,
-    ioportmask_t mask,
-    iomode_t mode) {
+                           ioportmask_t mask,
+                           iomode_t mode) {
 
-  if ((mode & PAL_HT32_MODE_AFE) != 0) {
-    const uint32_t afn = (mode >> 8) & 0xf;
-    const uint32_t portidx = HT32_PAL_IDX(port);
-    uint32_t cfg[2];
-    cfg[0] = AFIO->GPxCFGR[portidx][0];
-    cfg[1] = AFIO->GPxCFGR[portidx][1];
-    for (size_t i = 0; i < PAL_IOPORTS_WIDTH; i++) {
-      if ((mask & (1U << i)) == 0)
-        continue;
-      cfg[i / 8] &= ~(0xfU << ((i % 8) * 4));
-      cfg[i / 8] |= afn << ((i % 8) * 4);
+    if ((mode & PAL_HT32_MODE_AFE) != 0) {
+        const uint32_t afn = (mode >> 8) & 0xf;
+        const uint32_t portidx = HT32_PAL_IDX(port);
+        uint32_t cfg[2];
+        cfg[0] = AFIO->GPxCFGR[portidx][0];
+        cfg[1] = AFIO->GPxCFGR[portidx][1];
+        for (size_t i = 0; i < PAL_IOPORTS_WIDTH; i++) {
+            if ((mask & (1U << i)) == 0)
+                continue;
+            cfg[i / 8] &= ~(0xfU << ((i % 8) * 4));
+            cfg[i / 8] |= afn << ((i % 8) * 4);
+        }
+        AFIO->GPxCFGR[portidx][0] = cfg[0];
+        AFIO->GPxCFGR[portidx][1] = cfg[1];
     }
-    AFIO->GPxCFGR[portidx][0] = cfg[0];
-    AFIO->GPxCFGR[portidx][1] = cfg[1];
-  }
 
-  if ((mode & PAL_HT32_MODE_DIR) != 0) {
-    PAL_PORT(port)->DIRCR |= mask;
-  } else {
-    PAL_PORT(port)->DIRCR &= ~mask;
-  }
+    if ((mode & PAL_HT32_MODE_DIR) != 0) {
+        PAL_PORT(port)->DIRCR |= mask;
+    } else {
+        PAL_PORT(port)->DIRCR &= ~mask;
+    }
 
-  if ((mode & PAL_HT32_MODE_INE) != 0) {
-    PAL_PORT(port)->INER |= mask;
-  } else {
-    PAL_PORT(port)->INER &= ~mask;
-  }
+    if ((mode & PAL_HT32_MODE_INE) != 0) {
+        PAL_PORT(port)->INER |= mask;
+    } else {
+        PAL_PORT(port)->INER &= ~mask;
+    }
 
-  if ((mode & PAL_HT32_MODE_PU) != 0) {
-    PAL_PORT(port)->PUR |= mask;
-  } else {
-    PAL_PORT(port)->PUR &= ~mask;
-  }
+    if ((mode & PAL_HT32_MODE_PU) != 0) {
+        PAL_PORT(port)->PUR |= mask;
+    } else {
+        PAL_PORT(port)->PUR &= ~mask;
+    }
 
-  if ((mode & PAL_HT32_MODE_PD) != 0) {
-    PAL_PORT(port)->PDR |= mask;
-  } else {
-    PAL_PORT(port)->PDR &= ~mask;
-  }
+    if ((mode & PAL_HT32_MODE_PD) != 0) {
+        PAL_PORT(port)->PDR |= mask;
+    } else {
+        PAL_PORT(port)->PDR &= ~mask;
+    }
 
-  if ((mode & PAL_HT32_MODE_OD) != 0) {
-    PAL_PORT(port)->ODR |= mask;
-  } else {
-    PAL_PORT(port)->ODR &= ~mask;
-  }
+    if ((mode & PAL_HT32_MODE_OD) != 0) {
+        PAL_PORT(port)->ODR |= mask;
+    } else {
+        PAL_PORT(port)->ODR &= ~mask;
+    }
 
-  if ((mode & PAL_HT32_MODE_DRV) != 0) {
-    PAL_PORT(port)->DRVR |= mask;
-  } else {
-    PAL_PORT(port)->DRVR &= ~mask;
-  }
+    if ((mode & PAL_HT32_MODE_DRV) != 0) {
+        PAL_PORT(port)->DRVR |= mask;
+    } else {
+        PAL_PORT(port)->DRVR &= ~mask;
+    }
 }
 
 #endif /* HAL_USE_PAL == TRUE */

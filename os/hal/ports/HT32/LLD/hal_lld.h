@@ -56,7 +56,76 @@
  * Configuration-related checks.
  */
 #if !defined(HT32_MCUCONF)
-#error "Using a wrong mcuconf.h file, HT32_MCUCONF not defined"
+    #error "Using a wrong mcuconf.h file, HT32_MCUCONF not defined"
+#endif
+
+#define HT32_CK_HSI_FREQUENCY   8000000UL   // 8 MHz
+
+#if HT32_CKCU_SW == CKCU_GCCR_SW_HSI
+    #define HT32_CK_SYS_FREQUENCY   HT32_CK_HSI_FREQUENCY
+
+#elif HT32_CKCU_SW == CKCU_GCCR_SW_HSE
+    #if !defined(HT32_CK_HSE_FREQUENCY)
+        #error "HT32_CK_HSE_FREQUENCY must be defined"
+    #endif
+    #define HT32_CK_SYS_FREQUENCY   HT32_CK_HSE_FREQUENCY
+
+#elif HT32_CKCU_SW == CKCU_GCCR_SW_PLL
+    #if !defined(HT32_PLL_USE_HSE)
+        #error "HT32_PLL_USE_HSE must be defined"
+    #endif
+
+    #if HT32_PLL_USE_HSE == TRUE
+        #if !defined(HT32_CK_HSE_FREQUENCY)
+            #error "HT32_CK_HSE_FREQUENCY must be defined"
+        #endif
+        #define HT32_PLL_IN_FREQ    HT32_CK_HSE_FREQUENCY
+    #else
+        #define HT32_PLL_IN_FREQ    HT32_CK_HSI_FREQUENCY
+    #endif
+
+    #if !defined(HT32_PLL_FBDIV)
+        #error "HT32_PLL_FBDIV must be defined"
+    #endif
+    #if !defined(HT32_PLL_OTDIV)
+        #error "HT32_PLL_OTDIV must be defined"
+    #endif
+
+    #define HT32_CK_PLL_FREQUENCY   (HT32_PLL_IN_FREQ * HT32_PLL_FBDIV) / (1 << HT32_PLL_OTDIV)
+    #define HT32_CK_SYS_FREQUENCY   HT32_CK_PLL_FREQUENCY
+
+#else
+    #error "HT32_CKCU_SW is invalid"
+#endif
+
+#if !defined(HT32_AHB_PRESCALER)
+    #define HT32_AHB_PRESCLAER 1
+#endif
+
+#define HT32_CK_AHB_FREQUENCY   HT32_CK_SYS_FREQUENCY / HT32_AHB_PRESCALER
+
+#define HT32_STCLK_FREQUENCY    HT32_CK_AHB_FREQUENCY / 8   // 9 MHz with 72MHz CK_AHB
+
+#if HAL_USE_UART == TRUE
+    #define HT32_CK_USART_FREQUENCY HT32_CK_AHB_FREQUENCY / HT32_USART_PRESCALER // Max 48 MHz
+#endif
+
+#if HAL_USE_USB == TRUE
+    #if HT32_CKCU_SW != CKCU_GCCR_SW_PLL
+        #error "HT32 USB requires PLL"
+    #endif
+    #define HT32_CK_USB_FREQUENCY HT32_CK_PLL_FREQUENCY / HT32_USB_PRESCALER // Max 48 MHz
+#endif
+
+// Checks
+#if HT32_CK_SYS_FREQUENCY > 144000000
+    #error "HT32 CK_SYS invalid"
+#endif
+#if HT32_CK_AHB_FREQUENCY > 72000000
+    #error "HT32 CK_AHB invalid"
+#endif
+#if defined(HT32_CK_USB_FREQUENCY) && HT32_CK_USB_FREQUENCY > 48000000
+    #error "HT32 CK_USB invalid"
 #endif
 
 /*===========================================================================*/

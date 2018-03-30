@@ -120,7 +120,7 @@ typedef struct {
 #define CKCU_GCCR_HSEEN (1U << 10)
 #define CKCU_GCCR_PLLEN (1U << 9)
 #define CKCU_GCCR_SW_MASK (3U << 0)
-#define CKCU_GCCR_SW_PLL (0U << 0)
+#define CKCU_GCCR_SW_PLL (1U << 0)
 #define CKCU_GCCR_SW_HSE (2U << 0)
 #define CKCU_GCCR_SW_HSI (3U << 0)
 #define CKCU_GCSR_LSIRDY (1U << 5)

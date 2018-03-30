@@ -121,15 +121,15 @@
  *          architecture dependent, fields.
  */
 struct port_setup {
-	uint16_t DIR;
-	uint16_t INE;
-	uint16_t PU;
-	uint16_t PD;
-	uint16_t OD;
-	uint16_t DRV;
-	uint16_t LOCK;
-	uint16_t OUT;
-	uint32_t CFG[2];
+  uint16_t DIR;
+  uint16_t INE;
+  uint16_t PU;
+  uint16_t PD;
+  uint16_t OD;
+  uint16_t DRV;
+  uint16_t LOCK;
+  uint16_t OUT;
+  uint32_t CFG[2];
 };
 
 typedef struct {

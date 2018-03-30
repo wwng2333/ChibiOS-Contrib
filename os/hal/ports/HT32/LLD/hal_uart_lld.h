@@ -44,8 +44,17 @@
  * @details If set to @p TRUE the support for UART1 is included.
  * @note    The default is @p FALSE.
  */
+#if !defined(HT32_UART_USE_UART0) || defined(__DOXYGEN__)
+#define HT32_UART_USE_UART0         FALSE
+#endif
 #if !defined(HT32_UART_USE_UART1) || defined(__DOXYGEN__)
 #define HT32_UART_USE_UART1         FALSE
+#endif
+#if !defined(HT32_UART_USE_USART0) || defined(__DOXYGEN__)
+#define HT32_UART_USE_USART0        FALSE
+#endif
+#if !defined(HT32_UART_USE_USART1) || defined(__DOXYGEN__)
+#define HT32_UART_USE_USART1        FALSE
 #endif
 /** @} */
 
@@ -119,11 +128,14 @@ typedef struct {
    */
   uartecb_t                 rxerr_cb;
   /* End of the mandatory fields.*/
+  uint32_t fcr;
+  uint32_t lcr;
+  uint32_t mdr;
 
   /**
-   * @brief Bit rate.
+   * @brief Baud rate.
    */
-  uint32_t                  speed;
+  uint32_t                  baud;
 } UARTConfig;
 
 /**
@@ -172,6 +184,7 @@ struct UARTDriver {
   UART_DRIVER_EXT_FIELDS
 #endif
   /* End of the mandatory fields.*/
+  USART_Typedef UART;
 };
 
 /*===========================================================================*/
@@ -182,8 +195,17 @@ struct UARTDriver {
 /* External declarations.                                                    */
 /*===========================================================================*/
 
+#if (HT32_UART_USE_UART0 == TRUE) && !defined(__DOXYGEN__)
+extern UARTDriver UARTD0;
+#endif
 #if (HT32_UART_USE_UART1 == TRUE) && !defined(__DOXYGEN__)
 extern UARTDriver UARTD1;
+#endif
+#if (HT32_UART_USE_USART0 == TRUE) && !defined(__DOXYGEN__)
+extern UARTDriver USARTD0;
+#endif
+#if (HT32_UART_USE_USART1 == TRUE) && !defined(__DOXYGEN__)
+extern UARTDriver USARTD1;
 #endif
 
 #ifdef __cplusplus

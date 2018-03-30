@@ -369,8 +369,10 @@ void usb_lld_init(void){
     /* Driver initialization.*/
     usbObjectInit(&USBD1);
 
+    // USB prescaler
+    CKCU->GCFGR = (CKCU->GCFGR & ~CKCU_GCFGR_USBPRE_MASK) | ((HT32_USB_PRESCALER - 1) << 22);
     // enable USB clock
-    HT32_CCR_USBEN_REG |= HT32_CCR_USBEN;
+    CKCU->AHBCCR |= CKCU_AHBCCR_USBEN;
 #endif // HT32_USB_USE_USB1
 }
 
