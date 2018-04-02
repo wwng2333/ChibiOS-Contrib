@@ -151,15 +151,15 @@ void uart_lld_start(UARTDriver *uartp) {
         }
 #endif
 #if HT32_UART_USE_USART0 == TRUE
-        if (&UARTD1 == uartp) {
+        if (&USARTD0 == uartp) {
             CKCU->APBCCR0 |= CKCU_APBCCR0_USR0EN;
             nvicEnableVector(USART0_IRQn, HT32_USART0_IRQ_PRIORITY);
         }
 #endif
 #if HT32_UART_USE_USART1 == TRUE
-        if (&UARTD1 == uartp) {
+        if (&USARTD1 == uartp) {
             CKCU->APBCCR0 |= CKCU_APBCCR0_USR1EN;
-            nvicEnableVector(USART10_IRQn, HT32_USART1_IRQ_PRIORITY);
+            nvicEnableVector(USART1_IRQn, HT32_USART1_IRQ_PRIORITY);
         }
 #endif
     }
@@ -226,11 +226,23 @@ void uart_lld_stop(UARTDriver *uartp) {
  * @notapi
  */
 void uart_lld_start_send(UARTDriver *uartp, size_t n, const void *txbuf) {
-
-    (void)uartp;
-    (void)n;
-    (void)txbuf;
-
+    if ((uartp->config->lcr & 3) == 2) {
+        uint16_t *txdata = (uint16_t *)txbuf;
+        while(n > 0){
+            uartp->UART->TBR = *txdata;
+            while(!(uartp->UART->LSR & USART_LSR_TXEMPT));
+            txdata++;
+            n--;
+        }
+    } else {
+        uint8_t *txdata = (uint8_t *)txbuf;
+        while(n > 0){
+            uartp->UART->TBR = *txdata;
+            while(!(uartp->UART->LSR & USART_LSR_TXEMPT));
+            txdata++;
+            n--;
+        }
+    }
 }
 
 /**

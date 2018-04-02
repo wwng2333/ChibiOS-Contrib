@@ -128,9 +128,9 @@ typedef struct {
    */
   uartecb_t                 rxerr_cb;
   /* End of the mandatory fields.*/
-  uint32_t fcr;
-  uint32_t lcr;
-  uint32_t mdr;
+  uint32_t                  fcr;
+  uint32_t                  lcr;
+  uint32_t                  mdr;
 
   /**
    * @brief Baud rate.
@@ -184,7 +184,7 @@ struct UARTDriver {
   UART_DRIVER_EXT_FIELDS
 #endif
   /* End of the mandatory fields.*/
-  USART_Typedef UART;
+  USART_TypeDef *UART;
 };
 
 /*===========================================================================*/

@@ -87,6 +87,7 @@ typedef struct {
   uint32_t                  cr0;
   uint32_t                  cr1;
   uint32_t                  cpr;
+  uint32_t                  fcr;
 } SPIConfig;
 
 /**

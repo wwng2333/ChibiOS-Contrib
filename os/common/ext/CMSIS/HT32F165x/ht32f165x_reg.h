@@ -113,6 +113,7 @@ typedef struct {
 
 #define CKCU_GCFGR_LPMOD_MASK (7U << 29)
 #define CKCU_GCFGR_USBPRE_MASK (3U << 22)
+#define CKCU_GCFGR_URPRE_MASK (3U << 20)
 #define CKCU_GCFGR_PLLSRC (1U << 8)
 #define CKCU_GCCR_PSRCEN (1U << 17)
 #define CKCU_GCCR_CKMEN (1U << 16)
