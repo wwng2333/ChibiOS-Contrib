@@ -91,7 +91,7 @@
         #error "HT32_PLL_OTDIV must be defined"
     #endif
 
-    #define HT32_CK_PLL_FREQUENCY   (HT32_PLL_IN_FREQ * HT32_PLL_FBDIV) / (1 << HT32_PLL_OTDIV)
+    #define HT32_CK_PLL_FREQUENCY   ((HT32_PLL_IN_FREQ * HT32_PLL_FBDIV) / (1 << HT32_PLL_OTDIV))
     #define HT32_CK_SYS_FREQUENCY   HT32_CK_PLL_FREQUENCY
 
 #else
@@ -102,20 +102,9 @@
     #define HT32_AHB_PRESCLAER 1
 #endif
 
-#define HT32_CK_AHB_FREQUENCY   HT32_CK_SYS_FREQUENCY / HT32_AHB_PRESCALER
+#define HT32_CK_AHB_FREQUENCY   (HT32_CK_SYS_FREQUENCY / HT32_AHB_PRESCALER)
 
-#define HT32_STCLK_FREQUENCY    HT32_CK_AHB_FREQUENCY / 8   // 9 MHz with 72MHz CK_AHB
-
-#if HAL_USE_UART == TRUE
-    #define HT32_CK_USART_FREQUENCY HT32_CK_AHB_FREQUENCY / HT32_USART_PRESCALER // Max 48 MHz
-#endif
-
-#if HAL_USE_USB == TRUE
-    #if HT32_CKCU_SW != CKCU_GCCR_SW_PLL
-        #error "HT32 USB requires PLL"
-    #endif
-    #define HT32_CK_USB_FREQUENCY HT32_CK_PLL_FREQUENCY / HT32_USB_PRESCALER // Max 48 MHz
-#endif
+#define HT32_STCLK_FREQUENCY    (HT32_CK_AHB_FREQUENCY / 8)   // 9 MHz with 72MHz CK_AHB
 
 // Checks
 #if HT32_CK_SYS_FREQUENCY > 144000000
@@ -124,8 +113,24 @@
 #if HT32_CK_AHB_FREQUENCY > 72000000
     #error "HT32 CK_AHB invalid"
 #endif
-#if defined(HT32_CK_USB_FREQUENCY) && HT32_CK_USB_FREQUENCY > 48000000
-    #error "HT32 CK_USB invalid"
+
+#if HAL_USE_UART == TRUE
+    #define HT32_CK_USART_FREQUENCY (HT32_CK_AHB_FREQUENCY / HT32_USART_PRESCALER) // Max 72 MHz
+
+    #if HT32_CK_USART_FREQUENCY > 72000000
+        #error "HT32 CK_USART invalid"
+    #endif
+#endif
+
+#if HAL_USE_USB == TRUE
+    #if HT32_CKCU_SW != CKCU_GCCR_SW_PLL
+        #error "HT32 USB requires PLL"
+    #endif
+    #define HT32_CK_USB_FREQUENCY (HT32_CK_PLL_FREQUENCY / HT32_USB_PRESCALER) // Max 48 MHz
+
+    #if HT32_CK_USB_FREQUENCY > 48000000
+        #error "HT32 CK_USB invalid"
+    #endif
 #endif
 
 /*===========================================================================*/
