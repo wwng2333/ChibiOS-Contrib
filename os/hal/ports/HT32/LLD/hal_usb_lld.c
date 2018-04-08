@@ -144,26 +144,30 @@ static void usb_packet_transmit(USBDriver *usbp, usbep_t ep, size_t n)
 }
 
 static size_t usb_packet_receive(USBDriver *usbp, usbep_t ep) {
-  USBOutEndpointState *osp = usbp->epc[ep]->out_state;
-  const size_t n = USB->EP[ep].TCR >> ((ep == 0) ? 16 : 0);
-  const uint32_t cfgr = USB->EP[ep].CFGR;
-  volatile uint32_t * const EPSRAM = (void *)(USB_SRAM_BASE + (cfgr & 0x3ff) + ((ep == 0) ? ((cfgr >> 10) & 0x7f) : 0));
-  for (size_t i = 0; i < n; i += 4) {
-    const uint32_t word = EPSRAM[i/4];
-    if (i + 0 < n)
-      osp->rxbuf[i + 0] = word >> 0;
-    if (i + 1 < n)
-      osp->rxbuf[i + 1] = word >> 8;
-    if (i + 2 < n)
-      osp->rxbuf[i + 2] = word >> 16;
-    if (i + 3 < n)
-      osp->rxbuf[i + 3] = word >> 24;
-  }
-  osp->rxbuf += n;
-  osp->rxcnt += n;
-  osp->rxsize -= n;
-  osp->rxpkts--;
-  return n;
+    USBOutEndpointState *osp = usbp->epc[ep]->out_state;
+    const size_t n = USB->EP[ep].TCR >> ((ep == 0) ? 16 : 0);
+    const uint32_t cfgr = USB->EP[ep].CFGR;
+    volatile uint32_t *const EPSRAM = (void *)(USB_SRAM_BASE + (cfgr & 0x3ff) + ((ep == 0) ? ((cfgr >> 10) & 0x7f) : 0));
+
+    for (size_t i = 0; i < n; i += 4) {
+        if(!osp->rxbuf)
+            break;
+        const uint32_t word = EPSRAM[i/4];
+        if (i + 0 < n)
+            osp->rxbuf[i + 0] = word >> 0;
+        if (i + 1 < n)
+            osp->rxbuf[i + 1] = word >> 8;
+        if (i + 2 < n)
+            osp->rxbuf[i + 2] = word >> 16;
+        if (i + 3 < n)
+            osp->rxbuf[i + 3] = word >> 24;
+    }
+
+    osp->rxbuf += n;
+    osp->rxcnt += n;
+    osp->rxsize -= n;
+    osp->rxpkts--;
+    return n;
 }
 
 /*===========================================================================*/
