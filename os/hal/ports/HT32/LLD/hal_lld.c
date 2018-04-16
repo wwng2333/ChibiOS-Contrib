@@ -93,6 +93,13 @@ void ht32_clock_init(void) {
     // Only disable if you will not need to erase/write memory
     // with your debug probe after this firmware has booted.
     // /* CKCU->GCCR &= ~CKCU_GCCR_HSIEN; */
+
+#if defined(HT32F1653_4)
+    // Peripheral prescalers are not available on HT32F1655/6
+    // So make sure all prescalers are 1x on HT32F1653/4
+    CKCU->APBPCSR0 = 0;
+    CKCU->APBPCSR1 = 0;
+#endif
 }
 
 /**

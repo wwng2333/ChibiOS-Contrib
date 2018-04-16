@@ -37,8 +37,12 @@
 /**
  * @brief   GPTD1 driver identifier.
  */
-#if (PLATFORM_GPT_USE_GPT1 == TRUE) || defined(__DOXYGEN__)
-GPTDriver GPTD1;
+#if (HT32_GPT_USE_BFTM0 == TRUE) || defined(__DOXYGEN__)
+GPTDriver GPTD_BFTM0;
+#endif
+
+#if (HT32_GPT_USE_BFTM1 == TRUE) || defined(__DOXYGEN__)
+GPTDriver GPTD_BFTM1;
 #endif
 
 /*===========================================================================*/
@@ -49,9 +53,29 @@ GPTDriver GPTD1;
 /* Driver local functions.                                                   */
 /*===========================================================================*/
 
+static void gpt_lld_handler(GPTDriver *gptp) {
+
+}
+
 /*===========================================================================*/
 /* Driver interrupt handlers.                                                */
 /*===========================================================================*/
+
+#if (HT32_GPT_USE_BFTM0 == TRUE) || defined(__DOXYGEN__)
+OSAL_IRQ_HANDLER(HT32_BFTM0_IRQ_VECTOR) {
+    OSAL_IRQ_PROLOGUE();
+    gpt_lld_handler(&GPTD_BFTM0);
+    OSAL_IRQ_EPILOGUE();
+}
+#endif
+
+#if (HT32_GPT_USE_BFTM1 == TRUE) || defined(__DOXYGEN__)
+OSAL_IRQ_HANDLER(HT32_BFTM1_IRQ_VECTOR) {
+    OSAL_IRQ_PROLOGUE();
+    gpt_lld_handler(&GPTD_BFTM1);
+    OSAL_IRQ_EPILOGUE();
+}
+#endif
 
 /*===========================================================================*/
 /* Driver exported functions.                                                */
@@ -63,10 +87,14 @@ GPTDriver GPTD1;
  * @notapi
  */
 void gpt_lld_init(void) {
-
-#if PLATFORM_GPT_USE_GPT1 == TRUE
   /* Driver initialization.*/
-  gptObjectInit(&GPTD1);
+#if HT32_GPT_USE_BFTM0 == TRUE
+  gptObjectInit(&GPTD_BFTM0);
+  GPTD_BFTM0.BFTM = BFTM0;
+#endif
+#if HT32_GPT_USE_BFTM1 == TRUE
+  gptObjectInit(&GPTD_BFTM1);
+  GPTD_BFTM0.BFTM = BFTM1;
 #endif
 }
 
@@ -78,16 +106,23 @@ void gpt_lld_init(void) {
  * @notapi
  */
 void gpt_lld_start(GPTDriver *gptp) {
-
-  if (gptp->state == GPT_STOP) {
-    /* Enables the peripheral.*/
-#if PLATFORM_GPT_USE_GPT1 == TRUE
-    if (&GPTD1 == gptp) {
-
-    }
+    if (gptp->state == GPT_STOP) {
+        /* Enables the peripheral.*/
+#if HT32_GPT_USE_BFTM0 == TRUE
+        if (&GPTD_BFTM0 == gptp) {
+            CKCU->APBCCR1 |= CKCU_APBCCR1_BFTM0EN;
+            nvicEnableVector(BFTM0_IRQn, HT32_BFTM0_IRQ_PRIORITY);
+        }
 #endif
-  }
-  /* Configures the peripheral.*/
+#if HT32_GPT_USE_BFTM1 == TRUE
+        if (&GPTD_BFTM1 == gptp) {
+            CKCU->APBCCR1 |= CKCU_APBCCR1_BFTM1EN;
+            nvicEnableVector(BFTM1_IRQn, HT32_BFTM1_IRQ_PRIORITY);
+        }
+#endif
+    }
+
+    /* Configures the peripheral.*/
 
 }
 
@@ -99,17 +134,24 @@ void gpt_lld_start(GPTDriver *gptp) {
  * @notapi
  */
 void gpt_lld_stop(GPTDriver *gptp) {
-
-  if (gptp->state == GPT_READY) {
-    /* Resets the peripheral.*/
-
-    /* Disables the peripheral.*/
-#if PLATFORM_GPT_USE_GPT1 == TRUE
-    if (&GPTD1 == gptp) {
-
-    }
+    if (gptp->state == GPT_READY) {
+        /* Resets the peripheral.*/
+        /* Disables the peripheral.*/
+#if HT32_GPT_USE_BFTM0 == TRUE
+        if (&GPTD_BFTM0 == gptp) {
+            RSTCU->APBPRSTR1 = RSTCU_APBPRSTR1_BFTM0RST;
+            CKCU->APBCCR1 &= ~CKCU_APBCCR1_BFTM0EN;
+            nvicDisableVector(BFTM0_IRQn);
+        }
 #endif
-  }
+#if HT32_GPT_USE_BFTM1 == TRUE
+        if (&GPTD_BFTM1 == gptp) {
+            RSTCU->APBPRSTR1 = RSTCU_APBPRSTR1_BFTM1RST;
+            CKCU->APBCCR1 &= ~CKCU_APBCCR1_BFTM1EN;
+            nvicDisableVector(BFTM1_IRQn);
+        }
+#endif
+    }
 }
 
 /**

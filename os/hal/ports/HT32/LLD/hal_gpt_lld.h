@@ -44,8 +44,12 @@
  * @details If set to @p TRUE the support for GPTD1 is included.
  * @note    The default is @p FALSE.
  */
-#if !defined(PLATFORM_GPT_USE_GPT1) || defined(__DOXYGEN__)
-#define PLATFORM_GPT_USE_GPT1               FALSE
+#if !defined(HT32_GPT_USE_BFTM0) || defined(__DOXYGEN__)
+#define HT32_GPT_USE_BFTM0               FALSE
+#endif
+
+#if !defined(HT32_GPT_USE_BFTM1) || defined(__DOXYGEN__)
+#define HT32_GPT_USE_BFTM1               FALSE
 #endif
 /** @} */
 
@@ -102,6 +106,7 @@ struct GPTDriver {
   GPT_DRIVER_EXT_FIELDS
 #endif
   /* End of the mandatory fields.*/
+  BFTM_TypeDef *BFTM;
 };
 
 /*===========================================================================*/
@@ -130,8 +135,11 @@ struct GPTDriver {
 /* External declarations.                                                    */
 /*===========================================================================*/
 
-#if (PLATFORM_GPT_USE_GPT1 == TRUE) && !defined(__DOXYGEN__)
-extern GPTDriver GPTD1;
+#if (HT32_GPT_USE_BFTM0 == TRUE) && !defined(__DOXYGEN__)
+extern GPTDriver GPTD_BFTM0;
+#endif
+#if (HT32_GPT_USE_BFTM1 == TRUE) && !defined(__DOXYGEN__)
+extern GPTDriver GPTD_BFTM1;
 #endif
 
 #ifdef __cplusplus

@@ -52,7 +52,6 @@
 #if !defined(HT32_PWM_USE_MCTM0) || defined(__DOXYGEN__)
 #define HT32_PWM_USE_MCTM0                      FALSE
 #endif
-/** @} */
 
 #if !defined(HT32_PWM_USE_MCTM1) || defined(__DOXYGEN__)
 #define HT32_PWM_USE_MCTM1                      FALSE
@@ -65,6 +64,8 @@
 #if !defined(HT32_PWM_USE_GPTM1) || defined(__DOXYGEN__)
 #define HT32_PWM_USE_GPTM1                      FALSE
 #endif
+
+/** @} */
 
 /*===========================================================================*/
 /* Configuration checks.                                                     */

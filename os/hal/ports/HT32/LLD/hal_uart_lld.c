@@ -58,7 +58,7 @@ UARTDriver USARTD1;
 /* Driver local functions.                                                   */
 /*===========================================================================*/
 
-static void uart_lld_handler(UARTDriver * const uartp) {
+static void uart_lld_handler(UARTDriver *uartp) {
 
 }
 
