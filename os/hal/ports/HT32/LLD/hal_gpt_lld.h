@@ -51,6 +51,17 @@
 #if !defined(HT32_GPT_USE_BFTM1) || defined(__DOXYGEN__)
 #define HT32_GPT_USE_BFTM1               FALSE
 #endif
+
+/**
+ * @brief   GPTD1 interrupt priority level setting.
+ */
+#if !defined(HT32_GPT_BFTM0_IRQ_PRIORITY) || defined(__DOXYGEN__)
+#define HT32_GPT_BFTM0_IRQ_PRIORITY         7
+#endif
+
+#if !defined(HT32_GPT_BFTM1_IRQ_PRIORITY) || defined(__DOXYGEN__)
+#define HT32_GPT_BFTM1_IRQ_PRIORITY         7
+#endif
 /** @} */
 
 /*===========================================================================*/
@@ -126,10 +137,32 @@ struct GPTDriver {
  * @param[in] interval  new cycle time in timer ticks
  * @notapi
  */
-#define gpt_lld_change_interval(gptp, interval) {                           \
-  (void)gptp;                                                               \
-  (void)interval;                                                           \
-}
+#define gpt_lld_change_interval(gptp, interval) \
+    ((gptp)->BFTM->CMP = (HT32_CK_AHB_FREQUENCY / (gptp)->config->frequency) * (interval))
+
+/**
+ * @brief   Returns the interval of GPT peripheral.
+ * @pre     The GPT unit must be running in continuous mode.
+ *
+ * @param[in] gptp      pointer to a @p GPTDriver object
+ * @return              The current interval.
+ * @notapi
+ */
+#define gpt_lld_get_interval(gptp) \
+    ((gptcnt_t)(gptp)->BFTM->CMP / (HT32_CK_AHB_FREQUENCY / (gptp)->config->frequency))
+
+/**
+ * @brief   Returns the counter value of GPT peripheral.
+ * @pre     The GPT unit must be running in continuous mode.
+ * @note    The nature of the counter is not defined, it may count upward
+ *          or downward, it could be continuously running or not.
+ *
+ * @param[in] gptp      pointer to a @p GPTDriver object
+ * @return              The current counter value.
+ * @notapi
+ */
+#define gpt_lld_get_counter(gptp) \
+    ((gptcnt_t)((gptp)->BFTM->CNTR / (HT32_CK_AHB_FREQUENCY / (gptp)->config->frequency)))
 
 /*===========================================================================*/
 /* External declarations.                                                    */

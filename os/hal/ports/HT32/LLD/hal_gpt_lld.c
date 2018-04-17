@@ -54,7 +54,11 @@ GPTDriver GPTD_BFTM1;
 /*===========================================================================*/
 
 static void gpt_lld_handler(GPTDriver *gptp) {
-
+    if(gptp->BFTM->SR & BFTM_SR_MIF){
+        gptp->BFTM->SR = 0;
+        if(gptp->config->callback)
+            gptp->config->callback(gptp);
+    }
 }
 
 /*===========================================================================*/
@@ -87,14 +91,14 @@ OSAL_IRQ_HANDLER(HT32_BFTM1_IRQ_VECTOR) {
  * @notapi
  */
 void gpt_lld_init(void) {
-  /* Driver initialization.*/
+    /* Driver initialization.*/
 #if HT32_GPT_USE_BFTM0 == TRUE
-  gptObjectInit(&GPTD_BFTM0);
-  GPTD_BFTM0.BFTM = BFTM0;
+    gptObjectInit(&GPTD_BFTM0);
+    GPTD_BFTM0.BFTM = BFTM0;
 #endif
 #if HT32_GPT_USE_BFTM1 == TRUE
-  gptObjectInit(&GPTD_BFTM1);
-  GPTD_BFTM0.BFTM = BFTM1;
+    gptObjectInit(&GPTD_BFTM1);
+    GPTD_BFTM0.BFTM = BFTM1;
 #endif
 }
 
@@ -111,19 +115,21 @@ void gpt_lld_start(GPTDriver *gptp) {
 #if HT32_GPT_USE_BFTM0 == TRUE
         if (&GPTD_BFTM0 == gptp) {
             CKCU->APBCCR1 |= CKCU_APBCCR1_BFTM0EN;
-            nvicEnableVector(BFTM0_IRQn, HT32_BFTM0_IRQ_PRIORITY);
+            nvicEnableVector(BFTM0_IRQn, HT32_GPT_BFTM0_IRQ_PRIORITY);
         }
 #endif
 #if HT32_GPT_USE_BFTM1 == TRUE
         if (&GPTD_BFTM1 == gptp) {
             CKCU->APBCCR1 |= CKCU_APBCCR1_BFTM1EN;
-            nvicEnableVector(BFTM1_IRQn, HT32_BFTM1_IRQ_PRIORITY);
+            nvicEnableVector(BFTM1_IRQn, HT32_GPT_BFTM1_IRQ_PRIORITY);
         }
 #endif
     }
 
     /* Configures the peripheral.*/
-
+    gptp->BFTM->CR = 0;
+    // counter frequency depends on the AHB clock, we can't
+    // change anything here
 }
 
 /**
@@ -163,10 +169,10 @@ void gpt_lld_stop(GPTDriver *gptp) {
  * @notapi
  */
 void gpt_lld_start_timer(GPTDriver *gptp, gptcnt_t interval) {
-
-  (void)gptp;
-  (void)interval;
-
+    gptp->BFTM->SR = 0;
+    gptp->BFTM->CNTR = 0;
+    gptp->BFTM->CMP = (HT32_CK_AHB_FREQUENCY / gptp->config->frequency) * interval;
+    gptp->BFTM->CR = BFTM_CR_CEN | BFTM_CR_MIEN;
 }
 
 /**
@@ -177,9 +183,7 @@ void gpt_lld_start_timer(GPTDriver *gptp, gptcnt_t interval) {
  * @notapi
  */
 void gpt_lld_stop_timer(GPTDriver *gptp) {
-
-  (void)gptp;
-
+    gptp->BFTM->CR = 0;
 }
 
 /**
@@ -194,10 +198,11 @@ void gpt_lld_stop_timer(GPTDriver *gptp) {
  * @notapi
  */
 void gpt_lld_polled_delay(GPTDriver *gptp, gptcnt_t interval) {
-
-  (void)gptp;
-  (void)interval;
-
+    gptp->BFTM->SR = 0;
+    gptp->BFTM->CNTR = 0;
+    gptp->BFTM->CMP = (HT32_CK_AHB_FREQUENCY / gptp->config->frequency) * interval;
+    gptp->BFTM->CR = BFTM_CR_CEN | BFTM_CR_OSM;
+    while(!(gptp->BFTM->SR & BFTM_SR_MIF));
 }
 
 #endif /* HAL_USE_GPT == TRUE */
