@@ -82,7 +82,7 @@ void st_lld_init(void) {
   /* Periodic systick mode, the Cortex-Mx internal systick timer is used
      in this mode.*/
 #if defined(HT32_ST_USE_HCLK)
-  SysTick->LOAD = (HT32_CK_AHB_FREQUENCY / OSAL_ST_FREQUENCY) - 1;
+  SysTick->LOAD = (HT32_HCLK_FREQUENCY / OSAL_ST_FREQUENCY) - 1;
 #else
   SysTick->LOAD = (HT32_STCLK_FREQUENCY / OSAL_ST_FREQUENCY) - 1;
 #endif

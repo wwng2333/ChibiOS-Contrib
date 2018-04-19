@@ -102,9 +102,14 @@
     #define HT32_AHB_PRESCLAER 1
 #endif
 
+// AHB clock
 #define HT32_CK_AHB_FREQUENCY   (HT32_CK_SYS_FREQUENCY / HT32_AHB_PRESCALER) // Max 72 MHz
-
+// SysTick (may also use HCLK)
 #define HT32_STCLK_FREQUENCY    (HT32_CK_AHB_FREQUENCY / 8) // Max 8MHz
+// CPU clock
+#define HT32_HCLK_FREQUENCY     HT32_CK_AHB_FREQUENCY
+// Peripheral clocks
+#define HT32_PCLK_FREQUENCY     HT32_CK_AHB_FREQUENCY
 
 // Checks
 #if HT32_CK_SYS_FREQUENCY > 144000000
