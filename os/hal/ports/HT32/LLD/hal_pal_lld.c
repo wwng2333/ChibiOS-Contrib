@@ -85,6 +85,8 @@ void _pal_lld_init(const PALConfig *config) {
     for (size_t i = 0; i < HT32_NUM_GPIO; i++) {
         initgpio(HT32_PAL_ID(i), &(config->setup[i]));
     }
+    AFIO->ESSR[0] = config->ESSR[0];
+    AFIO->ESSR[1] = config->ESSR[1];
 }
 
 /**
