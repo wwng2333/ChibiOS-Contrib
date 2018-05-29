@@ -71,6 +71,27 @@
 #define HT32_GPIO_INDEX_BITS        13
 #define HT32_CCR_PAEN               CKCU_AHBCCR_PAEN
 
+/* EXTI attributes */
+#define HT32_HAS_EXTI               TRUE
+#define HT32_NUM_EXTI               16
+#define HT32_EVWUP_IRQ_VECTOR       Vector58
+#define HT32_EXTI0_IRQ_VECTOR       Vector60
+#define HT32_EXTI1_IRQ_VECTOR       Vector64
+#define HT32_EXTI2_IRQ_VECTOR       Vector68
+#define HT32_EXTI3_IRQ_VECTOR       Vector6C
+#define HT32_EXTI4_IRQ_VECTOR       Vector70
+#define HT32_EXTI5_IRQ_VECTOR       Vector74
+#define HT32_EXTI6_IRQ_VECTOR       Vector78
+#define HT32_EXTI7_IRQ_VECTOR       Vector7C
+#define HT32_EXTI8_IRQ_VECTOR       Vector80
+#define HT32_EXTI9_IRQ_VECTOR       Vector84
+#define HT32_EXTI10_IRQ_VECTOR      Vector88
+#define HT32_EXTI11_IRQ_VECTOR      Vector8C
+#define HT32_EXTI12_IRQ_VECTOR      Vector90
+#define HT32_EXTI13_IRQ_VECTOR      Vector94
+#define HT32_EXTI14_IRQ_VECTOR      Vector98
+#define HT32_EXTI15_IRQ_VECTOR      Vector9C
+
 /* I2C attributes.*/
 #define HT32_HAS_I2C0               TRUE
 #define HT32_I2C0_IRQ_VECTOR        VectorEC
