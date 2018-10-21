@@ -108,6 +108,7 @@ static void serve_endpoint_irq(USBDriver *usbp,
       case 0: /* In ACK */
         {
           USBInEndpointState *iesp = usbp->epc[ep]->in_state;
+          osalDbgAssert(iesp != NULL, "USBInEndpointState is NULL");
           iesp->txcnt += USBD->EP[hwEp].MXPLD;
           if (iesp->txcnt >= iesp->txsize) {
             _usb_isr_invoke_in_cb(usbp, ep);
@@ -134,9 +135,12 @@ static void serve_endpoint_irq(USBDriver *usbp,
       case 0x6: /* Out Packet Data 1 ACK */
         {
           USBOutEndpointState *oesp = usbp->epc[ep]->out_state;
-          for (uint32_t n = 0; n < USBD->EP[hwEp].MXPLD; n++) {
-            oesp->rxbuf[oesp->rxcnt] = usbd_sram[USBD->EP[hwEp].BUFSEG + n];
-            oesp->rxcnt++;
+          osalDbgAssert(oesp != NULL, "USBOutEndpointState is NULL");
+          if (oesp->rxbuf) {
+            for (uint32_t n = 0; n < USBD->EP[hwEp].MXPLD; n++) {
+              oesp->rxbuf[oesp->rxcnt] = usbd_sram[USBD->EP[hwEp].BUFSEG + n];
+              oesp->rxcnt++;
+            }
           }
           if (oesp->rxcnt == oesp->rxsize) {
             _usb_isr_invoke_out_cb(usbp, ep);
