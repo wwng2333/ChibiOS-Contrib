@@ -39,7 +39,7 @@
 #define USB_EP0_STATUS_STAGE                USB_EP0_STATUS_STAGE_SW
 
 /**
- * @brief   The address can be changed immediately upon packet reception.
+ * @brief   This device requires the address change after the status packet.
  */
 #define USB_SET_ADDRESS_MODE                USB_LATE_SET_ADDRESS
 
