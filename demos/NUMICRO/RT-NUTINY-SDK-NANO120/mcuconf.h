@@ -22,8 +22,18 @@
  */
 
 /* Select the MCU clocking mode below by enabling the appropriate block. */
-#define PWRCON_VAL_OSC_XTL (CLK_PWRCON_OSC22M_EN_Msk)
-#define PLLCON_VAL (0x20320)
+/* By default, the internal 12M OSC is used to generate  ~48MHz */
+
+/* Use external 12M crystal to generate 48Mhz */
+/*
+#define NUMICRO_CLK_PLL_48MHz_XTL12M
+*/
+
+/* Alternatively configure PWRCTL/PLLCTL registers directly */
+/*
+#define PWRCTL_VAL_OSC_XTL (CLK_PWRCTL_HIRC_EN_Msk)
+#define PLLCTL_VAL (0x20220) // ~96MHz
+*/
 
 
 #define NUMICRO_SERIAL_USE_UART0             TRUE
