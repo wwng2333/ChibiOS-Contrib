@@ -172,39 +172,39 @@ static void configure_uart(UART_T *u, const SerialConfig *config) {
      values are only valid for internal 22.1184MHz clock */
   switch (config->speed) {
   case 921600:
-      u->BAUD = (22 << UART_BAUD_BRD_Pos) | UART_BAUD_DIV_X_EN_Msk |
-        UART_BAUD_DIV_X_ONE_Msk;
-      break;
+    u->BAUD = (22 << UART_BAUD_BRD_Pos) | UART_BAUD_DIV_X_EN_Msk |
+      UART_BAUD_DIV_X_ONE_Msk;
+    break;
   case 460800:
-      u->BAUD = 1 << UART_BAUD_BRD_Pos;
-      break;
+    u->BAUD = 1 << UART_BAUD_BRD_Pos;
+    break;
   case 230400:
-      u->BAUD = 4 << UART_BAUD_BRD_Pos;
-      break;
+    u->BAUD = 4 << UART_BAUD_BRD_Pos;
+    break;
   case 115200:
-      u->BAUD = 10 << UART_BAUD_BRD_Pos;
-      break;
+    u->BAUD = 10 << UART_BAUD_BRD_Pos;
+    break;
   case 57600:
-      u->BAUD = 22 << UART_BAUD_BRD_Pos;
-      break;
+    u->BAUD = 22 << UART_BAUD_BRD_Pos;
+    break;
   case 38400:
-      u->BAUD = (8 << UART_BAUD_DIVIDER_X_Pos)  | (62 << UART_BAUD_BRD_Pos) |
-        UART_BAUD_DIV_X_EN_Msk;
-      break;
+    u->BAUD = (8 << UART_BAUD_DIVIDER_X_Pos)  | (62 << UART_BAUD_BRD_Pos) |
+      UART_BAUD_DIV_X_EN_Msk;
+    break;
   case 19200:
-      u->BAUD = (8 << UART_BAUD_DIVIDER_X_Pos)  | (126 << UART_BAUD_BRD_Pos) |
-        UART_BAUD_DIV_X_EN_Msk;
-      break;
+    u->BAUD = (8 << UART_BAUD_DIVIDER_X_Pos)  | (126 << UART_BAUD_BRD_Pos) |
+      UART_BAUD_DIV_X_EN_Msk;
+    break;
   case 9600:
-      u->BAUD = (8 << UART_BAUD_DIVIDER_X_Pos)  | (254 << UART_BAUD_BRD_Pos) |
-        UART_BAUD_DIV_X_EN_Msk;
-      break;
+    u->BAUD = (8 << UART_BAUD_DIVIDER_X_Pos)  | (254 << UART_BAUD_BRD_Pos) |
+      UART_BAUD_DIV_X_EN_Msk;
+    break;
   case 4800:
-      u->BAUD = (8 << UART_BAUD_DIVIDER_X_Pos)  | (510 << UART_BAUD_BRD_Pos) |
-        UART_BAUD_DIV_X_EN_Msk;
-      break;
+    u->BAUD = (8 << UART_BAUD_DIVIDER_X_Pos)  | (510 << UART_BAUD_BRD_Pos) |
+      UART_BAUD_DIV_X_EN_Msk;
+    break;
   default:
-      osalDbgAssert(FALSE, "not supported");
+    osalDbgAssert(FALSE, "not supported");
   }
   /* only enable Receive interrupt */
   u->IER = UART_IER_RDA_IEN_Msk;

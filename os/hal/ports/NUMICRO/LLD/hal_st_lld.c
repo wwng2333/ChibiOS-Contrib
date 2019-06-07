@@ -82,7 +82,8 @@ void st_lld_init(void) {
 #if OSAL_ST_MODE == OSAL_ST_MODE_PERIODIC
   /* Periodic systick mode, the Cortex-Mx internal systick timer is used
      in this mode.*/
-  SysTick->LOAD = ((NUMICRO_HSICLK / NUMICRO_HCLK_SYSTICK_DIVIDER) / OSAL_ST_FREQUENCY) - 1;
+  SysTick->LOAD = ((NUMICRO_HSICLK / NUMICRO_HCLK_SYSTICK_DIVIDER) /
+                   OSAL_ST_FREQUENCY) - 1;
   SysTick->VAL = 0;
   SysTick->CTRL = (~SysTick_CTRL_CLKSOURCE_Msk) &
                   (SysTick_CTRL_ENABLE_Msk | SysTick_CTRL_TICKINT_Msk);

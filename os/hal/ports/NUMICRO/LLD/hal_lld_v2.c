@@ -36,9 +36,9 @@
 /* Driver local variables and types.                                         */
 /*===========================================================================*/
 
-#ifndef PWRCTL_VAL_OSC_XTL
+#if !defined(PWRCTL_VAL_OSC_XTL)
 
-#ifdef NUMICRO_CLK_PLL_48MHz_XTL12M
+#if defined(NUMICRO_CLK_PLL_48MHz_XTL12M)
 /* configure clock with external 12M crystal for 48MHz*/
 #define PWRCTL_VAL_OSC_XTL (CLK_PWRCTL_HIRC_EN_Msk | CLK_PWRCTL_HXT_EN_Msk)
 #define PLLCTL_FB_DV 32
@@ -84,7 +84,7 @@ void hal_lld_init(void)
 
 void numicro_clock_init(void)
 {
-#ifndef NUMICRO_NO_CLK_INIT
+#if !defined(NUMICRO_NO_CLK_INIT)
   UNLOCKREG();
 
   /* enable clock sources */

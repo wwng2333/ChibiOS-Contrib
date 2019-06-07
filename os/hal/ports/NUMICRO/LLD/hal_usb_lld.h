@@ -349,14 +349,16 @@ struct USBDriver {
  *
  * @api
  */
-#define usb_lld_connect_bus(usbp) (USBD->ATTR |= USBD_ATTR_USB_EN_Msk | USBD_ATTR_PHY_EN_Msk)
+#define usb_lld_connect_bus(usbp)                                           \
+  (USBD->ATTR |= USBD_ATTR_USB_EN_Msk | USBD_ATTR_PHY_EN_Msk)
 
 /**
  * @brief   Disconnect the USB device.
  *
  * @api
  */
-#define usb_lld_disconnect_bus(usbp) (USBD->ATTR &= ~USBD_ATTR_USB_EN_Msk)
+#define usb_lld_disconnect_bus(usbp)                                        \
+  (USBD->ATTR &= ~USBD_ATTR_USB_EN_Msk)
 
 /**
  * @brief   Start of host wake-up procedure.

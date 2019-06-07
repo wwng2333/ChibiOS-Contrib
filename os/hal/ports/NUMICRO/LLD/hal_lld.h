@@ -52,13 +52,13 @@
  * @brief  Internal Clock Sources
  */
 #if defined(NANO120Lxxxx) || defined(NANO120Sxxxx) || defined(NANO120Kxxxx)
-#define NUMICRO_HSICLK								12000000		/**< High speed internal clock. */
+#define NUMICRO_HSICLK          12000000    /**< High speed internal clock. */
 #define NUMICRO_HCLK_SYSTICK_DIVIDER 8
 #else
-#define NUMICRO_HSICLK								22118400		/**< High speed internal clock. */
+#define NUMICRO_HSICLK          22118400    /**< High speed internal clock. */
 #define NUMICRO_HCLK_SYSTICK_DIVIDER 2
 #endif
-#define NUMICRO_LSICLK								10000				/**< Low speed internal clock.  */
+#define NUMICRO_LSICLK          10000       /**< Low speed internal clock.  */
 
 /**
  * @}

@@ -99,10 +99,14 @@ static void serve_endpoint_irq(USBDriver *usbp,
                                uint32_t endpoint_mask,
                                uint32_t epstatus)
 {
+  uint32_t epsts_mask_len = USBD_EPSTS_EPSTS1_Pos - USBD_EPSTS_EPSTS0_Pos;
   for (int hwEp = 0; hwEp < USB_MAX_ENDPOINTS; hwEp++) {
     if (endpoint_mask  & (1 << hwEp)) {
-      uint32_t bus_status = ((epstatus >> (hwEp*(USBD_EPSTS_EPSTS1_Pos - USBD_EPSTS_EPSTS0_Pos))) & USBD_EPSTS_EPSTS0_Msk) >> USBD_EPSTS_EPSTS0_Pos;
-      usbep_t ep = (USBD->EP[hwEp].CFG & USBD_CFG_EP_NUM_Msk) >> USBD_CFG_EP_NUM_Pos;
+      uint32_t shifted_to_first = epstatus >> (hwEp * epsts_mask_len);
+      uint32_t bus_status = (shifted_to_first & USBD_EPSTS_EPSTS0_Msk) >>
+                            USBD_EPSTS_EPSTS0_Pos;
+      usbep_t ep = (USBD->EP[hwEp].CFG & USBD_CFG_EP_NUM_Msk) >>
+                   USBD_CFG_EP_NUM_Pos;
 
       switch (bus_status) {
       case 0: /* In ACK */
@@ -122,7 +126,8 @@ static void serve_endpoint_irq(USBDriver *usbp,
               txcnt = usbp->epc[ep]->in_maxsize;
             }
             for (uint32_t n = 0; n < txcnt; n++) {
-              usbd_sram[(USBD->EP[hwEp].BUFSEG) + n] = iesp->txbuf[iesp->txcnt + n];
+              usbd_sram[(USBD->EP[hwEp].BUFSEG) + n] =
+                iesp->txbuf[iesp->txcnt + n];
             }
             _toggle_dsq(hwEp, &(iesp->dsq));
             USBD->EP[hwEp].MXPLD = txcnt;
@@ -317,7 +322,8 @@ void usb_lld_reset(USBDriver *usbp) {
   /* Post reset initialization.*/
   /* EP0 initialization.*/
   usbp->epc[0] = &ep0config;
-  /* NUC1xx have 512b SRAM for EP-buffers; the first 8b are reserved for setup packets */
+  /* NUC1xx have 512b SRAM for EP-buffers;
+     the first 8b are reserved for setup packets */
   usbp->bufnext = 8;
   usbp->epnext = 0;
 
@@ -365,11 +371,16 @@ void usb_lld_init_endpoint(USBDriver *usbp, usbep_t ep) {
     osalDbgAssert(usbp->epnext <= USB_MAX_ENDPOINTS, "No endpoints left");
 
     USBD->EP[hwep].BUFSEG = usb_alloc_buf(usbp, epcp->in_maxsize);
-    if (epcp->ep_mode == USB_EP_MODE_TYPE_CTRL)
+    if (epcp->ep_mode == USB_EP_MODE_TYPE_CTRL) {
       /* 2 == in */
-      USBD->EP[hwep].CFG = (ep << USBD_CFG_EP_NUM_Pos) | (2 << USBD_CFG_STATE_Pos) |  USBD_CFG_CSTALL_Msk;
-    else
-      USBD->EP[hwep].CFG = (ep << USBD_CFG_EP_NUM_Pos) | (2 << USBD_CFG_STATE_Pos);
+      USBD->EP[hwep].CFG = (ep << USBD_CFG_EP_NUM_Pos) |
+                           (2 << USBD_CFG_STATE_Pos) |
+                           USBD_CFG_CSTALL_Msk;
+    }
+    else {
+      USBD->EP[hwep].CFG = (ep << USBD_CFG_EP_NUM_Pos) |
+                           (2 << USBD_CFG_STATE_Pos);
+    }
     epcp->in_state->hwEp = hwep;
   }
 
@@ -379,11 +390,16 @@ void usb_lld_init_endpoint(USBDriver *usbp, usbep_t ep) {
     osalDbgAssert(usbp->epnext <= USB_MAX_ENDPOINTS, "No endpoints left");
 
     USBD->EP[hwep].BUFSEG = usb_alloc_buf(usbp, epcp->out_maxsize);
-    if (epcp->ep_mode == USB_EP_MODE_TYPE_CTRL)
+    if (epcp->ep_mode == USB_EP_MODE_TYPE_CTRL) {
       /* 1 == Out */
-      USBD->EP[hwep].CFG = (ep << USBD_CFG_EP_NUM_Pos) | (1 << USBD_CFG_STATE_Pos) | USBD_CFG_CSTALL_Msk;
-    else
-      USBD->EP[hwep].CFG = (ep << USBD_CFG_EP_NUM_Pos) | (1 << USBD_CFG_STATE_Pos);
+      USBD->EP[hwep].CFG = (ep << USBD_CFG_EP_NUM_Pos) |
+                           (1 << USBD_CFG_STATE_Pos) |
+                           USBD_CFG_CSTALL_Msk;
+    }
+    else {
+      USBD->EP[hwep].CFG = (ep << USBD_CFG_EP_NUM_Pos) |
+                           (1 << USBD_CFG_STATE_Pos);
+    }
     epcp->out_state->hwEp = hwep;
   }
 

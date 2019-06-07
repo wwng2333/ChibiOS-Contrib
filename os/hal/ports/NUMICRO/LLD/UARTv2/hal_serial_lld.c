@@ -172,34 +172,34 @@ static void configure_uart(UART_T *u, const SerialConfig *config) {
      values are only valid for internal 12MHz clock */
   switch (config->speed) {
   case 921600:
-      u->BAUD = 12 << UART_BAUD_BRD_Pos;
-      break;
+    u->BAUD = 12 << UART_BAUD_BRD_Pos;
+    break;
   case 460800:
-      u->BAUD = 25 << UART_BAUD_BRD_Pos;
-      break;
+    u->BAUD = 25 << UART_BAUD_BRD_Pos;
+    break;
   case 230400:
-      u->BAUD = 51 << UART_BAUD_BRD_Pos;
-      break;
+    u->BAUD = 51 << UART_BAUD_BRD_Pos;
+    break;
   case 115200:
-      u->BAUD = 103 << UART_BAUD_BRD_Pos;
-      break;
+    u->BAUD = 103 << UART_BAUD_BRD_Pos;
+    break;
   case 57600:
-      u->BAUD = 207 << UART_BAUD_BRD_Pos;
-      break;
+    u->BAUD = 207 << UART_BAUD_BRD_Pos;
+    break;
   case 38400:
-      u->BAUD = 311 << UART_BAUD_BRD_Pos;
-      break;
+    u->BAUD = 311 << UART_BAUD_BRD_Pos;
+    break;
   case 19200:
-      u->BAUD = (38 << UART_BAUD_BRD_Pos) | UART_BAUD_DIV_16_EN_Msk;
-      break;
+    u->BAUD = (38 << UART_BAUD_BRD_Pos) | UART_BAUD_DIV_16_EN_Msk;
+    break;
   case 9600:
-      u->BAUD = (77 << UART_BAUD_BRD_Pos) | UART_BAUD_DIV_16_EN_Msk;
-      break;
+    u->BAUD = (77 << UART_BAUD_BRD_Pos) | UART_BAUD_DIV_16_EN_Msk;
+    break;
   case 4800:
-      u->BAUD = (155 << UART_BAUD_BRD_Pos) | UART_BAUD_DIV_16_EN_Msk;
-      break;
+    u->BAUD = (155 << UART_BAUD_BRD_Pos) | UART_BAUD_DIV_16_EN_Msk;
+    break;
   default:
-      osalDbgAssert(FALSE, "not supported");
+    osalDbgAssert(FALSE, "not supported");
   }
 
   /* only enable Receive interrupt */
