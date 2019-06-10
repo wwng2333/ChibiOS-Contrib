@@ -3,3 +3,7 @@ BOARDSRC = ${CHIBIOS_CONTRIB}/os/hal/boards/NANO120_NUTINY/board.c
 
 # Required include directories
 BOARDINC = ${CHIBIOS_CONTRIB}/os/hal/boards/NANO120_NUTINY
+
+# Shared variables
+ALLCSRC += $(BOARDSRC)
+ALLINC  += $(BOARDINC)

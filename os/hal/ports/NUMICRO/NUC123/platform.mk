@@ -1,5 +1,11 @@
 ifeq ($(USE_SMART_BUILD),yes)
-HALCONF := $(strip $(shell cat halconf.h halconf_community.h 2>/dev/null | egrep -e "define"))
+
+# Configuration files directory
+ifeq ($(CONFDIR),)
+  CONFDIR = .
+endif
+
+HALCONF := $(strip $(shell cat $(CONFDIR)/halconf.h $(CONFDIR)/halconf_community.h | egrep -e "\#define"))
 
 # List of all the NUMICRO1x platform files.
 PLATFORMSRC  = ${CHIBIOS}/os/hal/ports/common/ARMCMx/nvic.c \
@@ -30,4 +36,6 @@ PLATFORMINC = ${CHIBIOS}/os/hal/ports/common/ARMCMx \
               ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/LLD \
               ${CHIBIOS_CONTRIB}/os/hal/ports/NUMICRO/LLD/UARTv1
 
-
+# Shared variables
+ALLCSRC += $(PLATFORMSRC)
+ALLINC  += $(PLATFORMINC)

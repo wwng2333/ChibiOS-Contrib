@@ -81,4 +81,5 @@ REGION_ALIAS("BSS_RAM", ram0);
 /* RAM region to be used for HEAP segment.*/
 REGION_ALIAS("HEAP_RAM", ram0);
 
+/* Generic rules inclusion.*/
 INCLUDE rules.ld
