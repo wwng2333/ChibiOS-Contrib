@@ -15,7 +15,7 @@
 */
 
 /**
- * @file    NUMICRO/LLD/hal_lld.c
+ * @file    NUMICRO/LLD/hal_lld_v2.c
  * @brief   NUC1xx HAL Driver subsystem low level driver source.
  *
  * @addtogroup HAL

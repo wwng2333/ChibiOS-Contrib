@@ -15,7 +15,7 @@
 */
 
 /**
- * @file    hal_serial_lld.h
+ * @file    UARTv1/hal_serial_lld.h
  * @brief   NUMICRO serial subsystem low level driver header.
  *
  * @addtogroup SERIAL

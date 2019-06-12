@@ -15,8 +15,8 @@
 */
 
 /**
- * @file    hal_pal_lld.h
- * @brief   NUC122 PAL subsystem low level driver header.
+ * @file    GPIOv1/hal_pal_lld.h
+ * @brief   NUMICRO PAL subsystem low level driver header.
  *
  * @addtogroup PAL
  * @{

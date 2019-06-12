@@ -15,7 +15,7 @@
 */
 
 /**
- * @file    hal_usb_lld.h
+ * @file    USBv1/hal_usb_lld.h
  * @brief   NUMICRO USB subsystem low level driver header.
  *
  * @addtogroup USB
