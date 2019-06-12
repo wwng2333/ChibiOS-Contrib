@@ -415,10 +415,14 @@ void usb_lld_init_endpoint(USBDriver *usbp, usbep_t ep) {
 void usb_lld_disable_endpoints(USBDriver *usbp) {
   (void)usbp;
 
-  for (int i = 0; i < USB_MAX_ENDPOINTS; i++) {
+  for (int i = 2; i < USB_MAX_ENDPOINTS; i++) {
     USBD->EP[i].CFGP |= USBD_CFGP_CLRRDY_Msk;
     USBD->EP[i].CFG &= ~USBD_CFG_STATE_Msk;
   }
+  /* NUC1xx have 512b SRAM for EP-buffers;
+     the first 8b are reserved for setup packets, ep0 is already initialized */
+  usbp->bufnext = 8 + ep0config.in_maxsize + ep0config.out_maxsize;
+  usbp->epnext = 2;
 }
 
 /**
