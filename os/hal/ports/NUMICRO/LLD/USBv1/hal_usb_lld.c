@@ -255,15 +255,9 @@ void usb_lld_start(USBDriver *usbp) {
     /* Enables the peripheral.*/
 #if NUMICRO_USB_USE_USB0 == TRUE
     if (&USBD1 == usbp) {
-      uint16_t delay;
       /* Enable USB Clock */
       UNLOCKREG();
       CLK->APBCLK |= CLK_APBCLK_USBD_EN_Msk;
-
-      /* Reset USB */
-      SYS->IPRSTC2 |= SYS_IPRSTC2_USBD_RST_Msk;
-      for (delay=0x1000; delay > 0; delay--);
-      SYS->IPRSTC2 &= ~SYS_IPRSTC2_USBD_RST_Msk;
       LOCKREG();
 
       USBD->ATTR = (USBD_ATTR_BYTEM_Msk |
@@ -272,9 +266,8 @@ void usb_lld_start(USBDriver *usbp) {
                     USBD_ATTR_USB_EN_Msk |
                     USBD_ATTR_PHY_EN_Msk);
 
-
       USBD->DRVSE0 = 1u;
-      for (delay=0x1000; delay > 0; delay--);
+      for (uint16_t delay=0x1000; delay > 0; delay--);
       USBD->DRVSE0 = 0u;
 
       USBD->INTSTS = USBD->INTSTS;
@@ -304,7 +297,11 @@ void usb_lld_stop(USBDriver *usbp) {
     /* Disables the peripheral.*/
 #if NUMICRO_USB_USE_USB0 == TRUE
     if (&USBD1 == usbp) {
-
+      nvicDisableVector(USBD_IRQn);
+      USBD->ATTR &= ~(USBD_ATTR_PWRDN_Msk |
+                      USBD_ATTR_DPPU_EN_Msk |
+                      USBD_ATTR_USB_EN_Msk |
+                      USBD_ATTR_PHY_EN_Msk);
     }
 #endif
   }
@@ -342,12 +339,18 @@ void usb_lld_set_address(USBDriver *usbp) {
   USBD->FADDR = usbp->address;
 }
 
-uint32_t usb_alloc_buf(USBDriver *usbp, size_t size) {
-  uint32_t buf;
-  buf = usbp->bufnext;
+uint32_t usb_alloc_ep_and_buf(USBDriver *usbp, size_t size) {
+  uint8_t ep;
+
+  ep = usbp->epnext;
+  usbp->epnext += 1;
+  osalDbgAssert(usbp->epnext <= USB_MAX_ENDPOINTS, "No endpoints left");
+
+  USBD->EP[ep].BUFSEG = usbp->bufnext;
   usbp->bufnext += size;
   osalDbgAssert(usbp->bufnext <= 512, "usb buffer space full");
-  return buf;
+
+  return ep;
 }
 
 
@@ -363,13 +366,9 @@ void usb_lld_init_endpoint(USBDriver *usbp, usbep_t ep) {
   const USBEndpointConfig *epcp = usbp->epc[ep];
   uint8_t hwep;
 
-
   if (epcp->in_state != NULL) {
-    hwep = usbp->epnext;
-    usbp->epnext += 1;
-    osalDbgAssert(usbp->epnext <= USB_MAX_ENDPOINTS, "No endpoints left");
+    hwep = usb_alloc_ep_and_buf(usbp, epcp->in_maxsize);
 
-    USBD->EP[hwep].BUFSEG = usb_alloc_buf(usbp, epcp->in_maxsize);
     if (epcp->ep_mode == USB_EP_MODE_TYPE_CTRL) {
       /* 2 == in */
       USBD->EP[hwep].CFG = (ep << USBD_CFG_EP_NUM_Pos) |
@@ -384,11 +383,8 @@ void usb_lld_init_endpoint(USBDriver *usbp, usbep_t ep) {
   }
 
   if (epcp->out_state != NULL) {
-    hwep = usbp->epnext;
-    usbp->epnext += 1;
-    osalDbgAssert(usbp->epnext <= USB_MAX_ENDPOINTS, "No endpoints left");
+    hwep = usb_alloc_ep_and_buf(usbp, epcp->out_maxsize);
 
-    USBD->EP[hwep].BUFSEG = usb_alloc_buf(usbp, epcp->out_maxsize);
     if (epcp->ep_mode == USB_EP_MODE_TYPE_CTRL) {
       /* 1 == Out */
       USBD->EP[hwep].CFG = (ep << USBD_CFG_EP_NUM_Pos) |
@@ -434,10 +430,17 @@ void usb_lld_disable_endpoints(USBDriver *usbp) {
  * @notapi
  */
 usbepstatus_t usb_lld_get_status_out(USBDriver *usbp, usbep_t ep) {
-  (void)usbp;
-  (void)ep;
+  usbepstatus_t epstatus = EP_STATUS_DISABLED;
 
-  return EP_STATUS_DISABLED;
+  USBOutEndpointState *oesp = usbp->epc[ep]->out_state;
+  if ((USBD->EP[oesp->hwEp].CFG & USBD_CFG_STATE_Msk) != 0) {
+    if ((USBD->EP[oesp->hwEp].CFGP & USBD_CFGP_SSTALL_Msk) != 0) {
+      epstatus = EP_STATUS_STALLED;
+    } else {
+      epstatus = EP_STATUS_ACTIVE;
+    }
+  }
+  return epstatus;
 }
 
 /**
@@ -453,7 +456,17 @@ usbepstatus_t usb_lld_get_status_out(USBDriver *usbp, usbep_t ep) {
  * @notapi
  */
 usbepstatus_t usb_lld_get_status_in(USBDriver *usbp, usbep_t ep) {
-  return EP_STATUS_DISABLED;
+  usbepstatus_t epstatus = EP_STATUS_DISABLED;
+
+  USBInEndpointState *iesp = usbp->epc[ep]->in_state;
+  if ((USBD->EP[iesp->hwEp].CFG & USBD_CFG_STATE_Msk) != 0) {
+    if ((USBD->EP[iesp->hwEp].CFGP & USBD_CFGP_SSTALL_Msk) != 0) {
+      epstatus = EP_STATUS_STALLED;
+    } else {
+      epstatus = EP_STATUS_ACTIVE;
+    }
+  }
+  return epstatus;
 }
 
 /**
@@ -473,8 +486,7 @@ usbepstatus_t usb_lld_get_status_in(USBDriver *usbp, usbep_t ep) {
 void usb_lld_read_setup(USBDriver *usbp, usbep_t ep, uint8_t *buf) {
   (void)usbp;
   (void)ep;
-  int i;
-  for (i = 0; i < 8; i++) {
+  for (int i = 0; i < 8; i++) {
     *buf = usbd_sram[i];
     buf += 1;
   }
