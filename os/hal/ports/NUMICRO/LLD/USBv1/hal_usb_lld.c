@@ -193,14 +193,11 @@ static void serve_usb_irq(USBDriver *usbp) {
       _usb_reset(usbp);
     }
     if (bus_attr & USBD_ATTR_SUSPEND_Msk) {
-      if (usbp->state == USB_ACTIVE) {
-        _usb_suspend(usbp);
-      }
+      USBD->ATTR &= ~USBD_ATTR_PHY_EN_Msk;
+      _usb_suspend(usbp);
     }
     if (bus_attr & USBD_ATTR_RESUME_Msk) {
-      usbConnectBus(usbp);
-      (usbp)->receiving = 0;
-      (usbp)->transmitting = 0;
+      USBD->ATTR |= USBD_ATTR_PHY_EN_Msk;
       _usb_wakeup(usbp);
     }
   }
@@ -216,6 +213,7 @@ static void serve_usb_irq(USBDriver *usbp) {
       _usb_isr_invoke_setup_cb(usbp, 0);
     }
   }
+
   if (intsts & USBD_INTSTS_WAKEUP_STS_Msk) {
     USBD->INTSTS |= USBD_INTSTS_WAKEUP_STS_Msk;
     USBD->ATTR |= USBD_ATTR_PHY_EN_Msk;
@@ -268,9 +266,10 @@ void usb_lld_start(USBDriver *usbp) {
       SYS->IPRSTC2 &= ~SYS_IPRSTC2_USBD_RST_Msk;
       LOCKREG();
 
-      usbConnectBus(usbp);
-      USBD->ATTR = (USBD_ATTR_BYTEM_Msk | USBD_ATTR_PWRDN_Msk |
-                    USBD_ATTR_DPPU_EN_Msk |USBD_ATTR_USB_EN_Msk |
+      USBD->ATTR = (USBD_ATTR_BYTEM_Msk |
+                    USBD_ATTR_PWRDN_Msk |
+                    USBD_ATTR_DPPU_EN_Msk |
+                    USBD_ATTR_USB_EN_Msk |
                     USBD_ATTR_PHY_EN_Msk);
 
 
@@ -327,8 +326,8 @@ void usb_lld_reset(USBDriver *usbp) {
   usbp->bufnext = 8;
   usbp->epnext = 0;
 
+  USBD->ATTR |= USBD_ATTR_PHY_EN_Msk;
   usb_lld_init_endpoint(usbp, 0);
-  usbConnectBus(usbp);
   USBD->FADDR = 0;
 }
 
@@ -413,10 +412,7 @@ void usb_lld_init_endpoint(USBDriver *usbp, usbep_t ep) {
  * @notapi
  */
 void usb_lld_disable_endpoints(USBDriver *usbp) {
-  (void)usbp;
-
   for (int i = 2; i < USB_MAX_ENDPOINTS; i++) {
-    USBD->EP[i].CFGP |= USBD_CFGP_CLRRDY_Msk;
     USBD->EP[i].CFG &= ~USBD_CFG_STATE_Msk;
   }
   /* NUC1xx have 512b SRAM for EP-buffers;
@@ -540,7 +536,7 @@ void usb_lld_start_in(USBDriver *usbp, usbep_t ep) {
  */
 void usb_lld_stall_out(USBDriver *usbp, usbep_t ep) {
   USBOutEndpointState *oesp = usbp->epc[ep]->out_state;
-  USBD->EP[oesp->hwEp].CFGP |= (USBD_CFGP_SSTALL_Msk | USBD_CFGP_CLRRDY_Msk);
+  USBD->EP[oesp->hwEp].CFGP |= USBD_CFGP_SSTALL_Msk;
 }
 
 /**
@@ -553,7 +549,7 @@ void usb_lld_stall_out(USBDriver *usbp, usbep_t ep) {
  */
 void usb_lld_stall_in(USBDriver *usbp, usbep_t ep) {
   USBInEndpointState *iesp = usbp->epc[ep]->in_state;
-  USBD->EP[iesp->hwEp].CFGP |= (USBD_CFGP_SSTALL_Msk | USBD_CFGP_CLRRDY_Msk);
+  USBD->EP[iesp->hwEp].CFGP |= USBD_CFGP_SSTALL_Msk;
 }
 
 /**

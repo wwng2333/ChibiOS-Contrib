@@ -350,7 +350,7 @@ struct USBDriver {
  * @api
  */
 #define usb_lld_connect_bus(usbp)                                           \
-  (USBD->ATTR |= USBD_ATTR_USB_EN_Msk | USBD_ATTR_PHY_EN_Msk)
+  (USBD->ATTR |= USBD_ATTR_DPPU_EN_Msk)
 
 /**
  * @brief   Disconnect the USB device.
@@ -358,7 +358,7 @@ struct USBDriver {
  * @api
  */
 #define usb_lld_disconnect_bus(usbp)                                        \
-  (USBD->ATTR &= ~USBD_ATTR_USB_EN_Msk)
+  (USBD->ATTR &= ~USBD_ATTR_DPPU_EN_Msk)
 
 /**
  * @brief   Start of host wake-up procedure.
@@ -367,7 +367,7 @@ struct USBDriver {
  */
 #define usb_lld_wakeup_host(usbp)                                           \
   do{                                                                       \
-    USBD->ATTR |= USBD_ATTR_RWAKEUP_Msk;                                    \
+    USBD->ATTR |= (USBD_ATTR_PHY_EN_Msk | USBD_ATTR_RWAKEUP_Msk);           \
     osalThreadSleepMilliseconds(USB_HOST_WAKEUP_DURATION);                  \
     USBD->ATTR &= ~USBD_ATTR_RWAKEUP_Msk;                                   \
   } while (false)
