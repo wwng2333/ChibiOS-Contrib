@@ -442,6 +442,7 @@ void usb_lld_reset(USBDriver *usbp) {
     // USB Reset
     // Clear CSR, except for DP pull up
     USB->CSR &= USBCSR_DPPUEN;
+    USB->DEVAR = 0;
 
     /* Post reset initialization.*/
     usbp->epmem_next = 8;
@@ -463,7 +464,6 @@ void usb_lld_reset(USBDriver *usbp) {
  * @notapi
  */
 void usb_lld_set_address(USBDriver *usbp) {
-    USB->CSR |= USBCSR_ADRSET;
     USB->DEVAR = usbp->address & 0x7f;
 }
 
