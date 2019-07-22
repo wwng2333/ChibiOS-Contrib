@@ -229,6 +229,11 @@ OSAL_IRQ_HANDLER(HT32_USB_IRQ_VECTOR) {
             usb_clear_ep_int_flags(i, episr);
             usb_clear_int_flags(mask);
 
+            if ((isr & USBISR_URSTIF)
+                || (usbp->epc[i] == NULL)) {
+              mask = mask << 1;
+              continue;
+            }
 #if 0
             // SETUP Token Received
             if(episr & USBEPnISR_STRXIF){
