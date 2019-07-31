@@ -83,7 +83,15 @@ void ht32_clock_init(void) {
 #endif
 
     // AHB prescaler
+#if HT32_AHB_PRESCALER == 1 || HT32_AHB_PRESCALER == 2
     CKCU->AHBCFGR = (CKCU->AHBCFGR & ~CKCU_AHBCFGR_AHBPRE_MASK) | (HT32_AHB_PRESCALER - 1);
+#elif HT32_AHB_PRESCALER == 4
+    CKCU->AHBCFGR = (CKCU->AHBCFGR & ~CKCU_AHBCFGR_AHBPRE_MASK) | (2);
+#elif HT32_AHB_PRESCALER == 8
+    CKCU->AHBCFGR = (CKCU->AHBCFGR & ~CKCU_AHBCFGR_AHBPRE_MASK) | (3);
+#else
+#error "Invalid AHB_PRESCALER value"
+#endif
 
     // Clock switch
     CKCU->GCCR = (CKCU->GCCR & ~CKCU_GCCR_SW_MASK) | HT32_CKCU_SW;

@@ -99,7 +99,7 @@
 #endif
 
 #if !defined(HT32_AHB_PRESCALER)
-    #define HT32_AHB_PRESCLAER 1
+    #define HT32_AHB_PRESCALER 1
 #endif
 
 // AHB clock
