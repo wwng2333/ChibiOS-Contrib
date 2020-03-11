@@ -88,38 +88,8 @@ void numicro_clock_init(void)
 #if !defined(NUMICRO_NO_CLK_INIT)
   SYS_UnlockReg(); // for NUC121
 
-  /* enable clock sources */
-  CLK->PWRCON = CLK_PWRCON_PD_WU_DLY_Msk | PWRCON_VAL_OSC_XTL;
-
-  /* wait until clocks are stable
-  if ((PWRCON_VAL_OSC_XTL & CLK_PWRCON_OSC10K_EN_Msk) != 0)
-    while ((CLK->CLKSTATUS & CLK_CLKSTATUS_OSC10K_STB_Msk) == 0)
-      ;
-  if ((PWRCON_VAL_OSC_XTL & CLK_PWRCON_OSC22M_EN_Msk) != 0)
-    while ((CLK->CLKSTATUS & CLK_CLKSTATUS_OSC22M_STB_Msk) == 0)
-      ;
-#if defined(CLK_PWRCON_XTL32K_EN_Msk)
-  if ((PWRCON_VAL_OSC_XTL & CLK_PWRCON_XTL32K_EN_Msk) != 0)
-    while ((CLK->CLKSTATUS & CLK_CLKSTATUS_XTL32K_STB_Msk) == 0)
-      ;
-#endif
-  if ((PWRCON_VAL_OSC_XTL & CLK_PWRCON_XTL12M_EN_Msk) != 0)
-    while ((CLK->CLKSTATUS & CLK_CLKSTATUS_XTL12M_STB_Msk) == 0)
-      ; 
-  */
-
-  CLK_EnableXtalRC(CLK_PWRCTL_HIRCEN);
-  CLK_WaitClockReady(CLK_STATUS_HIRCSTB_Msk);
-  
-  /* configure the PLL */
-  CLK->PLLCON = PLLCON_VAL;
-
-  while ((CLK->CLKSTATUS & CLK_CLKSTATUS_PLL_STB_Msk) == 0)
-    ;
-
-  /* Switch to internal HIRC as HCLK and Systick clock */
-  //CLK->CLKSEL0 = (7 << CLK_CLKSEL0_HCLK_S_Pos) | (7 << CLK_CLKSEL0_STCLK_S_Pos);
-  CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLKSEL_Msk)) | CLK_CLKSEL0_HCLKSEL_HIRC;
+  CLK->PWRCON |= CLK_PWRCTL_HIRCEN_Msk; //Enable HIRC clock (Internal RC 48 MHz)
+  while (!(CLK->STATUS & CLK_STATUS_HIRCSTB_Msk)); //Wait for HIRC clock ready
 
   LOCKREG();
 #endif
