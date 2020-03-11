@@ -1838,7 +1838,7 @@ typedef struct {
      * |[28]    |ADCCKEN   |Analog-digital-converter (EADC) Clock Enable Bit
      * |        |          |0 = ADC clock Disabled.
      * |        |          |1 = ADC clock Enabled.
-     * @var CLK_T::STATUS
+     * @var CLK_T::CLKSTATUS
      * Offset: 0x0C  Clock Status Monitor Register
      * ---------------------------------------------------------------------------------------------------
      * |Bits    |Field     |Descriptions
@@ -2128,7 +2128,7 @@ typedef struct {
     __IO uint32_t PWRCTL;                /*!< [0x0000] System Power-down Control Register                               */
     __IO uint32_t AHBCLK;                /*!< [0x0004] AHB Devices Clock Enable Control Register                        */
     __IO uint32_t APBCLK0;               /*!< [0x0008] APB Devices Clock Enable Control Register 0                      */
-    __I  uint32_t STATUS;                /*!< [0x000c] Clock Status Monitor Register                                    */
+    __I  uint32_t CLKSTATUS;             /*!< [0x000c] Clock Status Monitor Register                                    */
     __IO uint32_t CLKSEL0;               /*!< [0x0010] Clock Source Select Control Register 0                           */
     __IO uint32_t CLKSEL1;               /*!< [0x0014] Clock Source Select Control Register 1                           */
     __IO uint32_t CLKDIV0;               /*!< [0x0018] Clock Divider Number Register 0                                  */
@@ -2706,7 +2706,7 @@ typedef struct {
      * |        |          |Max. n=2 for port E.
      * |        |          |Max. n=5 for port F.
      * |        |          |Note2: The PB.11, PC.6/PC.7, PD.6/D.7 pin is ignored.
-     * @var GPIO_T::DATMSK
+     * @var GPIO_T::DMASK
      * Offset: 0x0C/0x4C/0x8C/0xCC/0x10C/0x14C  Port A~F Data Output Write Mask
      * ---------------------------------------------------------------------------------------------------
      * |Bits    |Field     |Descriptions
