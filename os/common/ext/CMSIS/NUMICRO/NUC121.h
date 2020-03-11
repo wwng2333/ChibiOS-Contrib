@@ -101,8 +101,8 @@ typedef enum IRQn {
 /*@}*/ /* end of group MCU_CMSIS */
 
 
-#include "CMSIS\core_cm0.h"                   /*!< Cortex-M0 processor and core peripherals             */
-//#include "CMSIS\system_NUC121.h"              /*!< NUC121 System                                        */
+#include "core_cm0.h"                   /*!< Cortex-M0 processor and core peripherals             */
+//#include "system_NUC121.h"              /*!< NUC121 System                                        */
 
 #if defined ( __CC_ARM   )
     #pragma anon_unions
