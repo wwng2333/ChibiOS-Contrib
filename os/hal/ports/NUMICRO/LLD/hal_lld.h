@@ -37,6 +37,8 @@
  */
 #if defined(__DOXYGEN__)
 #define PLATFORM_NAME           "NuMicro NUC1xx"
+#elif defined(NUC121Zxxxx) || defined(NUC121Lxxxx) || defined(NUC121Sxxxx)
+#define PLATFORM_NAME           "NuMicro NUC121"
 #elif defined(NUC122Zxxxx) || defined(NUC122Lxxxx) || defined(NUC122Sxxxx)
 #define PLATFORM_NAME           "NuMicro NUC122"
 #elif defined(NUC123ZxxANx) || defined(NUC123LxxANx) || defined(NUC123SxxANx) || \
