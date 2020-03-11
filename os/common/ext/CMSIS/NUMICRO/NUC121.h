@@ -1688,7 +1688,7 @@ typedef struct {
 
 typedef struct {
     /**
-     * @var CLK_T::PWRCTL
+     * @var CLK_T::PWRCON
      * Offset: 0x00  System Power-down Control Register
      * ---------------------------------------------------------------------------------------------------
      * |Bits    |Field     |Descriptions
@@ -2006,7 +2006,7 @@ typedef struct {
      * |        |          |01 = Clock source from PLL clock.
      * |        |          |10 = Clock source from PCLK0.
      * |        |          |11 = Clock source from 48 MHz internal high speed RC oscillator (HIRC) clock.
-     * @var CLK_T::PLLCTL
+     * @var CLK_T::PLLCON
      * Offset: 0x20  PLL Control Register
      * ---------------------------------------------------------------------------------------------------
      * |Bits    |Field     |Descriptions
@@ -2125,7 +2125,7 @@ typedef struct {
      * |        |          |When HXT frequency monitor value lower than this register, the HXT frequency detect fail interrupt flag will set to 1.
      * |        |          |Note: The boundary is defined as the minimun value of HXT among 246 HIRC clock time
      */
-    __IO uint32_t PWRCTL;                /*!< [0x0000] System Power-down Control Register                               */
+    __IO uint32_t PWRCON;                /*!< [0x0000] System Power-down Control Register                               */
     __IO uint32_t AHBCLK;                /*!< [0x0004] AHB Devices Clock Enable Control Register                        */
     __IO uint32_t APBCLK0;               /*!< [0x0008] APB Devices Clock Enable Control Register 0                      */
     __I  uint32_t CLKSTATUS;             /*!< [0x000c] Clock Status Monitor Register                                    */
