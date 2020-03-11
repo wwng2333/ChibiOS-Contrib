@@ -2886,7 +2886,7 @@ typedef struct {
      * |        |          |Note:
      * |        |          |n=0,1..5 for port C.
      */
-    __IO uint32_t MODE;               /*!< [0x00/0x40/0x80/0xc0/0x100/0x140] Port A~F I/O Mode Control                    */
+    __IO uint32_t PMD;               /*!< [0x00/0x40/0x80/0xc0/0x100/0x140] Port A~F I/O Mode Control                    */
     __IO uint32_t DINOFF;             /*!< [0x04/0x44/0x84/0xc4/0x104/0x144] Port A~F Digital Input Path Disable Control  */
     __IO uint32_t DOUT;               /*!< [0x08/0x48/0x88/0xc8/0x108/0x148] Port A~F Data Output Value                   */
     __IO uint32_t DMASK;             /*!< [0x0c/0x4c/0x8c/0xcc/0x10c/0x14c] Port A~F Data Output Write Mask              */
