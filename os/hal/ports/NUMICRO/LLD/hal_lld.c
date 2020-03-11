@@ -89,7 +89,7 @@ void numicro_clock_init(void)
   SYS_UnlockReg(); // for NUC121
 
   CLK->PWRCON |= CLK_PWRCTL_HIRCEN_Msk; //Enable HIRC clock (Internal RC 48 MHz)
-  while (!(CLK->STATUS & CLK_STATUS_HIRCSTB_Msk)); //Wait for HIRC clock ready
+  while (!(CLK->CLKSTATUS & CLK_STATUS_HIRCSTB_Msk)); //Wait for HIRC clock ready
 
   LOCKREG();
 #endif
