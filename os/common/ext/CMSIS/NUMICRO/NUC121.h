@@ -10058,14 +10058,16 @@ typedef struct {
      * |        |          |These bits field indicate how many clock cycle selected by UART_CLK do the UART controller can get the 1st bit (start bit) when the device is wake-up from power-down mode.
      * |        |          |Note: It is valid only when WKDATEN (UART_WKCTL[1]) is set.
      */
-    __IO uint32_t DAT;                   /*!< [0x0000] UART Receive/Transmit Buffer Register                            */
+    __IO uint32_t DATA;                   /*!< [0x0000] UART Receive/Transmit Buffer Register                            */
+	__IO uint32_t THR;
+	__IO uint32_t RBR;
     __IO uint32_t IER;                 /*!< [0x0004] UART Interrupt Enable Register                                   */
     __IO uint32_t FCR;                  /*!< [0x0008] UART FIFO Control Register                                       */
     __IO uint32_t LCR;                  /*!< [0x000c] UART Line Control Register                                       */
     __IO uint32_t MODEM;                 /*!< [0x0010] UART Modem Control Register                                      */
     __IO uint32_t MODEMSTS;              /*!< [0x0014] UART Modem Status Register                                       */
     __IO uint32_t FIFOSTS;               /*!< [0x0018] UART FIFO Status Register                                        */
-    __IO uint32_t INTSTS;                /*!< [0x001c] UART Interrupt Status Register                                   */
+    __IO uint32_t ISR;                /*!< [0x001c] UART Interrupt Status Register                                   */
     __IO uint32_t TOR;                  /*!< [0x0020] UART Time-out Register                                           */
     __IO uint32_t BAUD;                  /*!< [0x0024] UART Baud Rate Divider Register                                  */
     __IO uint32_t IRDA;                  /*!< [0x0028] UART IrDA Control Register                                       */
