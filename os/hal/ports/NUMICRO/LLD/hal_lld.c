@@ -118,8 +118,7 @@ void numicro_clock_init(void)
     ;
 
   /* Switch to internal HIRC as HCLK and Systick clock */
-  //CLK->CLKSEL0 = (7 << CLK_CLKSEL0_HCLK_S_Pos) |
-                 (7 << CLK_CLKSEL0_STCLK_S_Pos);
+  //CLK->CLKSEL0 = (7 << CLK_CLKSEL0_HCLK_S_Pos) | (7 << CLK_CLKSEL0_STCLK_S_Pos);
   CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLKSEL_Msk)) | CLK_CLKSEL0_HCLKSEL_HIRC;
 
   LOCKREG();
