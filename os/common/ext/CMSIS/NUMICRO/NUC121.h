@@ -2133,7 +2133,7 @@ typedef struct {
     __IO uint32_t CLKSEL1;               /*!< [0x0014] Clock Source Select Control Register 1                           */
     __IO uint32_t CLKDIV0;               /*!< [0x0018] Clock Divider Number Register 0                                  */
     __IO uint32_t CLKSEL2;               /*!< [0x001c] Clock Source Select Control Register 2                           */
-    __IO uint32_t PLLCTL;                /*!< [0x0020] PLL Control Register                                             */
+    __IO uint32_t PLLCON;                /*!< [0x0020] PLL Control Register                                             */
     __IO uint32_t CLKOCTL;               /*!< [0x0024] Clock Output Control Register                                    */
     __I  uint32_t RESERVE0[2];
     __IO uint32_t APBCLK1;               /*!< [0x0030] APB Devices Clock Enable Control Register 1                      */
