@@ -101,8 +101,8 @@ typedef enum IRQn {
 /*@}*/ /* end of group MCU_CMSIS */
 
 
-#include "core_cm0.h"                   /*!< Cortex-M0 processor and core peripherals             */
-//#include "system_NUC121.h"              /*!< NUC121 System                                        */
+#include "CMSIS\core_cm0.h"                   /*!< Cortex-M0 processor and core peripherals             */
+#include "CMSIS\system_NUC121.h"              /*!< NUC121 System                                        */
 
 #if defined ( __CC_ARM   )
     #pragma anon_unions
@@ -1688,7 +1688,7 @@ typedef struct {
 
 typedef struct {
     /**
-     * @var CLK_T::PWRCON
+     * @var CLK_T::PWRCTL
      * Offset: 0x00  System Power-down Control Register
      * ---------------------------------------------------------------------------------------------------
      * |Bits    |Field     |Descriptions
@@ -1838,7 +1838,7 @@ typedef struct {
      * |[28]    |ADCCKEN   |Analog-digital-converter (EADC) Clock Enable Bit
      * |        |          |0 = ADC clock Disabled.
      * |        |          |1 = ADC clock Enabled.
-     * @var CLK_T::CLKSTATUS
+     * @var CLK_T::STATUS
      * Offset: 0x0C  Clock Status Monitor Register
      * ---------------------------------------------------------------------------------------------------
      * |Bits    |Field     |Descriptions
@@ -2006,7 +2006,7 @@ typedef struct {
      * |        |          |01 = Clock source from PLL clock.
      * |        |          |10 = Clock source from PCLK0.
      * |        |          |11 = Clock source from 48 MHz internal high speed RC oscillator (HIRC) clock.
-     * @var CLK_T::PLLCON
+     * @var CLK_T::PLLCTL
      * Offset: 0x20  PLL Control Register
      * ---------------------------------------------------------------------------------------------------
      * |Bits    |Field     |Descriptions
@@ -2125,15 +2125,15 @@ typedef struct {
      * |        |          |When HXT frequency monitor value lower than this register, the HXT frequency detect fail interrupt flag will set to 1.
      * |        |          |Note: The boundary is defined as the minimun value of HXT among 246 HIRC clock time
      */
-    __IO uint32_t PWRCON;                /*!< [0x0000] System Power-down Control Register                               */
+    __IO uint32_t PWRCTL;                /*!< [0x0000] System Power-down Control Register                               */
     __IO uint32_t AHBCLK;                /*!< [0x0004] AHB Devices Clock Enable Control Register                        */
     __IO uint32_t APBCLK0;               /*!< [0x0008] APB Devices Clock Enable Control Register 0                      */
-    __I  uint32_t CLKSTATUS;             /*!< [0x000c] Clock Status Monitor Register                                    */
+    __I  uint32_t STATUS;                /*!< [0x000c] Clock Status Monitor Register                                    */
     __IO uint32_t CLKSEL0;               /*!< [0x0010] Clock Source Select Control Register 0                           */
     __IO uint32_t CLKSEL1;               /*!< [0x0014] Clock Source Select Control Register 1                           */
     __IO uint32_t CLKDIV0;               /*!< [0x0018] Clock Divider Number Register 0                                  */
     __IO uint32_t CLKSEL2;               /*!< [0x001c] Clock Source Select Control Register 2                           */
-    __IO uint32_t PLLCON;                /*!< [0x0020] PLL Control Register                                             */
+    __IO uint32_t PLLCTL;                /*!< [0x0020] PLL Control Register                                             */
     __IO uint32_t CLKOCTL;               /*!< [0x0024] Clock Output Control Register                                    */
     __I  uint32_t RESERVE0[2];
     __IO uint32_t APBCLK1;               /*!< [0x0030] APB Devices Clock Enable Control Register 1                      */
@@ -2706,7 +2706,7 @@ typedef struct {
      * |        |          |Max. n=2 for port E.
      * |        |          |Max. n=5 for port F.
      * |        |          |Note2: The PB.11, PC.6/PC.7, PD.6/D.7 pin is ignored.
-     * @var GPIO_T::DMASK
+     * @var GPIO_T::DATMSK
      * Offset: 0x0C/0x4C/0x8C/0xCC/0x10C/0x14C  Port A~F Data Output Write Mask
      * ---------------------------------------------------------------------------------------------------
      * |Bits    |Field     |Descriptions
@@ -2886,10 +2886,10 @@ typedef struct {
      * |        |          |Note:
      * |        |          |n=0,1..5 for port C.
      */
-    __IO uint32_t PMD;               /*!< [0x00/0x40/0x80/0xc0/0x100/0x140] Port A~F I/O Mode Control                    */
+    __IO uint32_t MODE;               /*!< [0x00/0x40/0x80/0xc0/0x100/0x140] Port A~F I/O Mode Control                    */
     __IO uint32_t DINOFF;             /*!< [0x04/0x44/0x84/0xc4/0x104/0x144] Port A~F Digital Input Path Disable Control  */
     __IO uint32_t DOUT;               /*!< [0x08/0x48/0x88/0xc8/0x108/0x148] Port A~F Data Output Value                   */
-    __IO uint32_t DMASK;             /*!< [0x0c/0x4c/0x8c/0xcc/0x10c/0x14c] Port A~F Data Output Write Mask              */
+    __IO uint32_t DATMSK;             /*!< [0x0c/0x4c/0x8c/0xcc/0x10c/0x14c] Port A~F Data Output Write Mask              */
     __I  uint32_t PIN;                /*!< [0x10/0x50/0x90/0xd0/0x110/0x150] Port A~F Pin Value                           */
     __IO uint32_t DBEN;               /*!< [0x14/0x54/0x94/0xd4/0x114/0x154] Port A~F De-Bounce Enable Control            */
     __IO uint32_t INTTYPE;            /*!< [0x18/0x58/0x98/0xd8/0x118/0x158] Port A~F Interrupt Mode Trigger Type Control */
@@ -10059,14 +10059,14 @@ typedef struct {
      * |        |          |Note: It is valid only when WKDATEN (UART_WKCTL[1]) is set.
      */
     __IO uint32_t DAT;                   /*!< [0x0000] UART Receive/Transmit Buffer Register                            */
-    __IO uint32_t INTEN;                 /*!< [0x0004] UART Interrupt Enable Register                                   */
-    __IO uint32_t FIFO;                  /*!< [0x0008] UART FIFO Control Register                                       */
-    __IO uint32_t LINE;                  /*!< [0x000c] UART Line Control Register                                       */
+    __IO uint32_t IER;                 /*!< [0x0004] UART Interrupt Enable Register                                   */
+    __IO uint32_t FCR;                  /*!< [0x0008] UART FIFO Control Register                                       */
+    __IO uint32_t LCR;                  /*!< [0x000c] UART Line Control Register                                       */
     __IO uint32_t MODEM;                 /*!< [0x0010] UART Modem Control Register                                      */
     __IO uint32_t MODEMSTS;              /*!< [0x0014] UART Modem Status Register                                       */
     __IO uint32_t FIFOSTS;               /*!< [0x0018] UART FIFO Status Register                                        */
     __IO uint32_t INTSTS;                /*!< [0x001c] UART Interrupt Status Register                                   */
-    __IO uint32_t TOUT;                  /*!< [0x0020] UART Time-out Register                                           */
+    __IO uint32_t TOR;                  /*!< [0x0020] UART Time-out Register                                           */
     __IO uint32_t BAUD;                  /*!< [0x0024] UART Baud Rate Divider Register                                  */
     __IO uint32_t IRDA;                  /*!< [0x0028] UART IrDA Control Register                                       */
     __IO uint32_t ALTCTL;                /*!< [0x002c] UART Alternate Control/Status Register                           */
@@ -13257,15 +13257,15 @@ typedef struct {
 
 
 //=============================================================================
-//typedef volatile unsigned char  vu8;
-//typedef volatile unsigned long  vu32;
-//typedef volatile unsigned short vu16;
+typedef volatile unsigned char  vu8;
+typedef volatile unsigned long  vu32;
+typedef volatile unsigned short vu16;
 
-/* #define M8(adr)  (*((vu8  *) (adr)))
+#define M8(adr)  (*((vu8  *) (adr)))
 #define M16(adr) (*((vu16 *) (adr)))
-#define M32(adr) (*((vu32 *) (adr))) */
+#define M32(adr) (*((vu32 *) (adr)))
 
-/* #define outpw(port,value)   (*((volatile unsigned int *)(port))=(value))
+#define outpw(port,value)   (*((volatile unsigned int *)(port))=(value))
 #define inpw(port)          ((*((volatile unsigned int *)(port))))
 #define outpb(port,value)   (*((volatile unsigned char *)(port))=(value))
 #define inpb(port)          ((*((volatile unsigned char *)(port))))
@@ -13277,9 +13277,9 @@ typedef struct {
 #define outp8(port,value)   (*((volatile unsigned char *)(port))=(value))
 #define inp8(port)          ((*((volatile unsigned char *)(port))))
 #define outp16(port,value)  (*((volatile unsigned short *)(port))=(value))
-#define inp16(port)         ((*((volatile unsigned short *)(port)))) */
+#define inp16(port)         ((*((volatile unsigned short *)(port))))
 
-/* #define E_SUCCESS   0
+#define E_SUCCESS   0
 #ifndef NULL
     #define NULL    0
 #endif
@@ -13288,10 +13288,10 @@ typedef struct {
 #define FALSE       0
 
 #define ENABLE      1
-#define DISABLE     0 */
+#define DISABLE     0
 
 /* Bit Mask Definitions */
-/* #define BIT0    0x00000001
+#define BIT0    0x00000001
 #define BIT1    0x00000002
 #define BIT2    0x00000004
 #define BIT3    0x00000008
@@ -13322,26 +13322,23 @@ typedef struct {
 #define BIT28   0x10000000
 #define BIT29   0x20000000
 #define BIT30   0x40000000
-#define BIT31   0x80000000 */
+#define BIT31   0x80000000
 
 /* Byte Mask Definitions */
-/* #define BYTE0_Msk               (0x000000FF)
+#define BYTE0_Msk               (0x000000FF)
 #define BYTE1_Msk               (0x0000FF00)
 #define BYTE2_Msk               (0x00FF0000)
 #define BYTE3_Msk               (0xFF000000)
- */
- 
-//#define _GET_BYTE0(u32Param)    (((u32Param) & BYTE0_Msk)      )  /*!< Extract Byte 0 (Bit  0~ 7) from parameter u32Param */
-//#define _GET_BYTE1(u32Param)    (((u32Param) & BYTE1_Msk) >>  8)  /*!< Extract Byte 1 (Bit  8~15) from parameter u32Param */
-//#define _GET_BYTE2(u32Param)    (((u32Param) & BYTE2_Msk) >> 16)  /*!< Extract Byte 2 (Bit 16~23) from parameter u32Param */
-//#define _GET_BYTE3(u32Param)    (((u32Param) & BYTE3_Msk) >> 24)  /*!< Extract Byte 3 (Bit 24~31) from parameter u32Param */
+
+#define _GET_BYTE0(u32Param)    (((u32Param) & BYTE0_Msk)      )  /*!< Extract Byte 0 (Bit  0~ 7) from parameter u32Param */
+#define _GET_BYTE1(u32Param)    (((u32Param) & BYTE1_Msk) >>  8)  /*!< Extract Byte 1 (Bit  8~15) from parameter u32Param */
+#define _GET_BYTE2(u32Param)    (((u32Param) & BYTE2_Msk) >> 16)  /*!< Extract Byte 2 (Bit 16~23) from parameter u32Param */
+#define _GET_BYTE3(u32Param)    (((u32Param) & BYTE3_Msk) >> 24)  /*!< Extract Byte 3 (Bit 24~31) from parameter u32Param */
 
 
 /******************************************************************************/
 /*                         Peripheral header files                            */
 /******************************************************************************/
-
-/*
 #include "StdDriver\inc\adc.h"
 #include "StdDriver\inc\bpwm.h"
 #include "StdDriver\inc\clk.h"
@@ -13360,6 +13357,5 @@ typedef struct {
 #include "StdDriver\inc\usci_uart.h"
 #include "StdDriver\inc\wdt.h"
 #include "StdDriver\inc\wwdt.h"
-*/
 
 #endif /*__NUC121_H__*/
