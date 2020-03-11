@@ -1,10 +1,10 @@
 *****************************************************************************
-** ChibiOS/RT port for ARM-Cortex-M0 NUC123SD4AN0.                          **
+** ChibiOS/RT port for ARM-Cortex-M0 NUC121SC2AE.                         **
 *****************************************************************************
 
 ** TARGET **
 
-The demo runs on a Nuvoton NUTINY-SDK-NUC123 board.
+The demo runs on a Nuvoton NUTINY-SDK-NUC121 board.
 
 ** The Demo **
 
