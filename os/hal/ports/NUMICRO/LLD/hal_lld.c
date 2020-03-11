@@ -86,12 +86,12 @@ void hal_lld_init(void)
 void numicro_clock_init(void)
 {
 #if !defined(NUMICRO_NO_CLK_INIT)
-  UNLOCKREG();
+  SYS_UnlockReg(); // for NUC121
 
   /* enable clock sources */
   CLK->PWRCON = CLK_PWRCON_PD_WU_DLY_Msk | PWRCON_VAL_OSC_XTL;
 
-  /* wait until clocks are stable */
+  /* wait until clocks are stable
   if ((PWRCON_VAL_OSC_XTL & CLK_PWRCON_OSC10K_EN_Msk) != 0)
     while ((CLK->CLKSTATUS & CLK_CLKSTATUS_OSC10K_STB_Msk) == 0)
       ;
@@ -105,8 +105,12 @@ void numicro_clock_init(void)
 #endif
   if ((PWRCON_VAL_OSC_XTL & CLK_PWRCON_XTL12M_EN_Msk) != 0)
     while ((CLK->CLKSTATUS & CLK_CLKSTATUS_XTL12M_STB_Msk) == 0)
-      ;
+      ; 
+  */
 
+  CLK_EnableXtalRC(CLK_PWRCTL_HIRCEN);
+  CLK_WaitClockReady(CLK_STATUS_HIRCSTB_Msk);
+  
   /* configure the PLL */
   CLK->PLLCON = PLLCON_VAL;
 
