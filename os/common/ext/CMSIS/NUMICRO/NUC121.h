@@ -102,7 +102,7 @@ typedef enum IRQn {
 
 
 #include "CMSIS\core_cm0.h"                   /*!< Cortex-M0 processor and core peripherals             */
-#include "CMSIS\system_NUC121.h"              /*!< NUC121 System                                        */
+//#include "CMSIS\system_NUC121.h"              /*!< NUC121 System                                        */
 
 #if defined ( __CC_ARM   )
     #pragma anon_unions
@@ -13257,15 +13257,15 @@ typedef struct {
 
 
 //=============================================================================
-typedef volatile unsigned char  vu8;
-typedef volatile unsigned long  vu32;
-typedef volatile unsigned short vu16;
+//typedef volatile unsigned char  vu8;
+//typedef volatile unsigned long  vu32;
+//typedef volatile unsigned short vu16;
 
-#define M8(adr)  (*((vu8  *) (adr)))
+/* #define M8(adr)  (*((vu8  *) (adr)))
 #define M16(adr) (*((vu16 *) (adr)))
-#define M32(adr) (*((vu32 *) (adr)))
+#define M32(adr) (*((vu32 *) (adr))) */
 
-#define outpw(port,value)   (*((volatile unsigned int *)(port))=(value))
+/* #define outpw(port,value)   (*((volatile unsigned int *)(port))=(value))
 #define inpw(port)          ((*((volatile unsigned int *)(port))))
 #define outpb(port,value)   (*((volatile unsigned char *)(port))=(value))
 #define inpb(port)          ((*((volatile unsigned char *)(port))))
@@ -13277,9 +13277,9 @@ typedef volatile unsigned short vu16;
 #define outp8(port,value)   (*((volatile unsigned char *)(port))=(value))
 #define inp8(port)          ((*((volatile unsigned char *)(port))))
 #define outp16(port,value)  (*((volatile unsigned short *)(port))=(value))
-#define inp16(port)         ((*((volatile unsigned short *)(port))))
+#define inp16(port)         ((*((volatile unsigned short *)(port)))) */
 
-#define E_SUCCESS   0
+/* #define E_SUCCESS   0
 #ifndef NULL
     #define NULL    0
 #endif
@@ -13288,10 +13288,10 @@ typedef volatile unsigned short vu16;
 #define FALSE       0
 
 #define ENABLE      1
-#define DISABLE     0
+#define DISABLE     0 */
 
 /* Bit Mask Definitions */
-#define BIT0    0x00000001
+/* #define BIT0    0x00000001
 #define BIT1    0x00000002
 #define BIT2    0x00000004
 #define BIT3    0x00000008
@@ -13322,23 +13322,26 @@ typedef volatile unsigned short vu16;
 #define BIT28   0x10000000
 #define BIT29   0x20000000
 #define BIT30   0x40000000
-#define BIT31   0x80000000
+#define BIT31   0x80000000 */
 
 /* Byte Mask Definitions */
-#define BYTE0_Msk               (0x000000FF)
+/* #define BYTE0_Msk               (0x000000FF)
 #define BYTE1_Msk               (0x0000FF00)
 #define BYTE2_Msk               (0x00FF0000)
 #define BYTE3_Msk               (0xFF000000)
-
-#define _GET_BYTE0(u32Param)    (((u32Param) & BYTE0_Msk)      )  /*!< Extract Byte 0 (Bit  0~ 7) from parameter u32Param */
-#define _GET_BYTE1(u32Param)    (((u32Param) & BYTE1_Msk) >>  8)  /*!< Extract Byte 1 (Bit  8~15) from parameter u32Param */
-#define _GET_BYTE2(u32Param)    (((u32Param) & BYTE2_Msk) >> 16)  /*!< Extract Byte 2 (Bit 16~23) from parameter u32Param */
-#define _GET_BYTE3(u32Param)    (((u32Param) & BYTE3_Msk) >> 24)  /*!< Extract Byte 3 (Bit 24~31) from parameter u32Param */
+ */
+ 
+//#define _GET_BYTE0(u32Param)    (((u32Param) & BYTE0_Msk)      )  /*!< Extract Byte 0 (Bit  0~ 7) from parameter u32Param */
+//#define _GET_BYTE1(u32Param)    (((u32Param) & BYTE1_Msk) >>  8)  /*!< Extract Byte 1 (Bit  8~15) from parameter u32Param */
+//#define _GET_BYTE2(u32Param)    (((u32Param) & BYTE2_Msk) >> 16)  /*!< Extract Byte 2 (Bit 16~23) from parameter u32Param */
+//#define _GET_BYTE3(u32Param)    (((u32Param) & BYTE3_Msk) >> 24)  /*!< Extract Byte 3 (Bit 24~31) from parameter u32Param */
 
 
 /******************************************************************************/
 /*                         Peripheral header files                            */
 /******************************************************************************/
+
+/*
 #include "StdDriver\inc\adc.h"
 #include "StdDriver\inc\bpwm.h"
 #include "StdDriver\inc\clk.h"
@@ -13357,5 +13360,6 @@ typedef volatile unsigned short vu16;
 #include "StdDriver\inc\usci_uart.h"
 #include "StdDriver\inc\wdt.h"
 #include "StdDriver\inc\wwdt.h"
+*/
 
 #endif /*__NUC121_H__*/
