@@ -2889,7 +2889,7 @@ typedef struct {
     __IO uint32_t MODE;               /*!< [0x00/0x40/0x80/0xc0/0x100/0x140] Port A~F I/O Mode Control                    */
     __IO uint32_t DINOFF;             /*!< [0x04/0x44/0x84/0xc4/0x104/0x144] Port A~F Digital Input Path Disable Control  */
     __IO uint32_t DOUT;               /*!< [0x08/0x48/0x88/0xc8/0x108/0x148] Port A~F Data Output Value                   */
-    __IO uint32_t DATMSK;             /*!< [0x0c/0x4c/0x8c/0xcc/0x10c/0x14c] Port A~F Data Output Write Mask              */
+    __IO uint32_t DMASK;             /*!< [0x0c/0x4c/0x8c/0xcc/0x10c/0x14c] Port A~F Data Output Write Mask              */
     __I  uint32_t PIN;                /*!< [0x10/0x50/0x90/0xd0/0x110/0x150] Port A~F Pin Value                           */
     __IO uint32_t DBEN;               /*!< [0x14/0x54/0x94/0xd4/0x114/0x154] Port A~F De-Bounce Enable Control            */
     __IO uint32_t INTTYPE;            /*!< [0x18/0x58/0x98/0xd8/0x118/0x158] Port A~F Interrupt Mode Trigger Type Control */
